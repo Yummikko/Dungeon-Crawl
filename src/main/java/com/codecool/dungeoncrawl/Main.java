@@ -83,6 +83,7 @@ public class Main extends Application {
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getItem() != null) {
+                    System.out.println(cell.getItem().getTileName());
                     Tiles.drawTile(context, cell.getItem(), x, y);
                 } else {
                     Tiles.drawTile(context, cell, x, y);
