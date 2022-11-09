@@ -8,6 +8,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -23,6 +24,8 @@ public class Main extends Application {
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label strengthLabel = new Label();
+    Button pickUpButton = new Button("Pick up");
+    Label playerInventory = new Label("INVENTORY: ");
 
     public static void main(String[] args) {
         launch(args);
@@ -38,6 +41,16 @@ public class Main extends Application {
         ui.add(healthLabel, 1, 0);
         ui.add(new Label("Strength: "), 0, 2);
         ui.add(strengthLabel, 1, 2);
+
+        ui.add(pickUpButton, 0, 5);
+        pickUpButton.setOnAction(mousedown -> {
+            map.getPlayer().pickUpItem();
+            refresh();
+        });
+
+        pickUpButton.setFocusTraversable(false);
+        ui.add(new Label("INVENTORY:"), 0, 7);
+        ui.add(playerInventory, 0, 8);
 
         BorderPane borderPane = new BorderPane();
 
