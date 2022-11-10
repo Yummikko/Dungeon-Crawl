@@ -42,13 +42,14 @@ public class Player extends Actor {
     public void pickUpItem() {
         if (this.getCell().getItem() != null) {
             addToInventory(this.getCell().getItem());
-            if (this.getCell().getItem() instanceof Sword) {
+            if (this.getCell().getItem() instanceof Weapon) {
                 this.setStrength(getStrength()+2);
-            } else if (this.getCell().getItem() instanceof Health) {
+            } else if (this.getCell().getItem() instanceof Food) {
                 this.setHealth(getHealth()+3);
-
+            } else if (this.getCell().getItem() instanceof Key) {
+                addToInventory(this.getCell().getItem());
             }
-            System.out.println(inventory);
+            //System.out.println(inventory);
             this.getCell().setItem(null);
         }
     }

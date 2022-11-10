@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -24,7 +25,7 @@ public class Main extends Application {
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label strengthLabel = new Label();
-    Button pickUpButton = new Button("Pick up");
+    Button pickUpButton = new Button("Pick up item");
     Label playerInventory = new Label("INVENTORY: ");
 
     public static void main(String[] args) {
@@ -41,16 +42,18 @@ public class Main extends Application {
         ui.add(healthLabel, 1, 0);
         ui.add(new Label("Strength: "), 0, 2);
         ui.add(strengthLabel, 1, 2);
-
-        ui.add(pickUpButton, 0, 5);
+        ui.add(new Label(""), 0, 3);
+        ui.add(pickUpButton, 0, 4);
         pickUpButton.setOnAction(mousedown -> {
             map.getPlayer().pickUpItem();
             refresh();
         });
 
         pickUpButton.setFocusTraversable(false);
-        ui.add(new Label("INVENTORY:"), 0, 7);
-        ui.add(playerInventory, 0, 8);
+        ui.add(new Label(""), 0, 5);
+        //ui.add(new Label("INVENTORY:"), 0, 5);
+        ui.add(playerInventory, 0, 6);
+        //ui.add(player.getInventory(), 0, 6);
 
         BorderPane borderPane = new BorderPane();
 
@@ -96,8 +99,9 @@ public class Main extends Application {
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getItem() != null) {
-                    System.out.println(cell.getItem().getTileName());
                     Tiles.drawTile(context, cell.getItem(), x, y);
+                } else if (cell.getEnviroment() != null) {
+                    Tiles.drawTile(context, cell.getEnviroment(), x, y);
                 } else {
                     Tiles.drawTile(context, cell, x, y);
                 }

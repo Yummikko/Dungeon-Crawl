@@ -8,6 +8,6 @@ public class Food extends Item {
 
     @Override
     public String getTileName() {
-        return "sword";
+        return "food";
     }
 }

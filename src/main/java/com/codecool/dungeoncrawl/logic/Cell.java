@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.enviroment.Enviroment;
 import com.codecool.dungeoncrawl.logic.items.Item;
 
 public class Cell implements Drawable {
@@ -8,6 +9,7 @@ public class Cell implements Drawable {
     private Actor actor;
     private GameMap gameMap;
     private Item item;
+    private Enviroment enviroment;
     private int x, y;
 
     public Item getItem() {
@@ -57,5 +59,12 @@ public class Cell implements Drawable {
 
     public int getY() {
         return y;
+    }
+
+    public Enviroment getEnviroment() {
+        return enviroment;
+    }
+    public void setEnviroment(Enviroment enviroment) {
+        this.enviroment = enviroment;
     }
 }
