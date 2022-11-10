@@ -5,6 +5,7 @@ import com.codecool.dungeoncrawl.logic.items.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.StringJoiner;
 
 public class Player extends Actor {
     private ArrayList<Item> inventory;
@@ -40,60 +41,75 @@ public class Player extends Actor {
     }
 
     public void pickUpItem() {
-        if (this.getCell().getItem() != null) {
-            addToInventory(this.getCell().getItem());
+        inventory.add(this.getCell().getItem());
             if (this.getCell().getItem() instanceof Weapon) {
                 this.setStrength(getStrength()+2);
+                this.setHasWeapon(true);
             } else if (this.getCell().getItem() instanceof Food) {
                 this.setHealth(getHealth()+3);
             } else if (this.getCell().getItem() instanceof Key) {
-                addToInventory(this.getCell().getItem());
+                this.setHasKey(true);
             }
-            //System.out.println(inventory);
             this.getCell().setItem(null);
         }
+
+//    public void fightWithMonster() {
+//        if (this.getCell().getActor() instanceof Skeleton) {
+//            //fight logic
+//        } else if (this.getCell().getActor() instanceof Octopus) {
+//            //fight logic
+//        }
+//    }
+
+    public String inventoryToString() {
+        StringJoiner s = new StringJoiner("\n");
+        for (Item item : inventory) {
+            if (item != null) s.add(item.getTileName());
+        }
+        return s.toString();
     }
 
-    public String displayInventory() {
-        StringBuilder display = new StringBuilder();
-        int keyCount = 0;
-        int swordCount = 0;
-        int shieldCount = 0;
 
-        HashMap<String, Integer> inventory_dict = new HashMap<String, Integer>();
-        for(Item item : inventory){
-            if(item instanceof Key){
-                keyCount+=1;
-                if(keyCount <= 1){
-                    inventory_dict.put(item.getTileName(), keyCount);
-                }else{
-                    inventory_dict.put("Key", keyCount);
-                }
-
-            } else if (item instanceof Sword){
-                swordCount += 1;
-                if(keyCount <= 1){
-                    inventory_dict.put(item.getTileName(), swordCount);
-                }else{
-                    inventory_dict.put("Sword", swordCount);
-                }
-
-            } else if (item instanceof Shield){
-                shieldCount += 1;
-                if(keyCount <= 1){
-                    inventory_dict.put(item.getTileName(), shieldCount);
-                }else{
-                    inventory_dict.put("Sword", shieldCount);
-                }
-
-            }
-        }
-        for(HashMap.Entry<String, Integer> element: inventory_dict.entrySet()){
-            display.append(element.getKey()+": "+ element.getValue());
-            display.append("\n");
-        }
-
-
-        return display.toString();
-    }
+//    public String displayInventory() {
+//        StringBuilder display = new StringBuilder();
+//        int keyCount = 0;
+//        int swordCount = 0;
+//        int shieldCount = 0;
+//
+//        HashMap<String, Integer> inventory_dict = new HashMap<String, Integer>();
+//        for(Item item : inventory){
+//            if(item instanceof Key){
+//                keyCount+=1;
+//                if(keyCount <= 1){
+//                    inventory_dict.put(item.getTileName(), keyCount);
+//                }else{
+//                    inventory_dict.put("Key", keyCount);
+//                }
+//
+//            } else if (item instanceof Sword){
+//                swordCount += 1;
+//                if(keyCount <= 1){
+//                    inventory_dict.put(item.getTileName(), swordCount);
+//                }else{
+//                    inventory_dict.put("Sword", swordCount);
+//                }
+//
+//            } else if (item instanceof Shield){
+//                shieldCount += 1;
+//                if(keyCount <= 1){
+//                    inventory_dict.put(item.getTileName(), shieldCount);
+//                }else{
+//                    inventory_dict.put("Sword", shieldCount);
+//                }
+//
+//            }
+//        }
+//        for(HashMap.Entry<String, Integer> element: inventory_dict.entrySet()){
+//            display.append(element.getKey()+": "+ element.getValue());
+//            display.append("\n");
+//        }
+//
+//
+//        return display.toString();
+//    }
 }

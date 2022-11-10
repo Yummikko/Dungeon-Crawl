@@ -3,7 +3,6 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.logic.actors.Player;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -31,6 +30,10 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    private void hideButton() { pickUpButton.setVisible(false); }
+
+    private void showButton() { pickUpButton.setVisible(true); }
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -44,16 +47,15 @@ public class Main extends Application {
         ui.add(strengthLabel, 1, 2);
         ui.add(new Label(""), 0, 3);
         ui.add(pickUpButton, 0, 4);
+        hideButton();
         pickUpButton.setOnAction(mousedown -> {
             map.getPlayer().pickUpItem();
             refresh();
         });
-
         pickUpButton.setFocusTraversable(false);
         ui.add(new Label(""), 0, 5);
-        //ui.add(new Label("INVENTORY:"), 0, 5);
+        ui.add(new Label("INVENTORY:"), 0, 5);
         ui.add(playerInventory, 0, 6);
-        //ui.add(player.getInventory(), 0, 6);
 
         BorderPane borderPane = new BorderPane();
 
@@ -91,6 +93,7 @@ public class Main extends Application {
     }
 
     private void refresh() {
+        boolean interactWithItem = false;
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         for (int x = 0; x < map.getWidth(); x++) {
@@ -100,6 +103,7 @@ public class Main extends Application {
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);
+                    interactWithItem = true;
                 } else if (cell.getEnviroment() != null) {
                     Tiles.drawTile(context, cell.getEnviroment(), x, y);
                 } else {
@@ -107,7 +111,12 @@ public class Main extends Application {
                 }
             }
         }
+
+        if(interactWithItem) {
+            showButton();
+        } else { hideButton(); }
         healthLabel.setText("" + map.getPlayer().getHealth());
         strengthLabel.setText("" + map.getPlayer().getStrength());
+        playerInventory.setText("" + map.getPlayer().inventoryToString());
     }
 }

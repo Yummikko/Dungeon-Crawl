@@ -7,6 +7,8 @@ public abstract class Actor implements Drawable {
     private Cell cell;
     private int health = 10;
     private int strength = 3;
+    public boolean hasWeapon = false;
+    public boolean hasKey = false;
 
     public Actor(Cell cell) {
         this.cell = cell;
@@ -19,6 +21,16 @@ public abstract class Actor implements Drawable {
         nextCell.setActor(this);
         cell = nextCell;
     }
+
+    private void fightWithMonster(Actor actor) {
+        actor.setHealth(actor.getHealth() - this.getStrength());
+        if (actor.getHealth() > 0) {
+            this.setHealth(this.getHealth() - actor.getStrength());
+        } else {
+            actor.getCell().setActor(null);
+        }
+    }
+
 
     public int getHealth() {
         return health;
@@ -35,6 +47,10 @@ public abstract class Actor implements Drawable {
     public void setStrength(int strength) {
         this.strength = strength;
     }
+    public void setHasKey(boolean hasKey) { this.hasKey = hasKey; }
+
+    public void setHasWeapon(boolean hasWeapon) { this.hasWeapon = hasWeapon; }
+    //public boolean isHasKey() { return hasKey; }
 
     public Cell getCell() {
         return cell;
