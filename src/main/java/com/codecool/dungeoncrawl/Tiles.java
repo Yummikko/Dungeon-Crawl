@@ -34,6 +34,7 @@ public class Tiles {
         tileMap.put("water", new Tile(8, 4));
         tileMap.put("bridge", new Tile(3, 3));
         tileMap.put("octopus", new Tile(25, 8));
+        tileMap.put("door", new Tile(10, 9));
 
     }
 

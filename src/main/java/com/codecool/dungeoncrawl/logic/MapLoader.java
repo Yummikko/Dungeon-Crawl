@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.actors.Octopus;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.logic.enviroment.Bridge;
+import com.codecool.dungeoncrawl.logic.enviroment.Door;
 import com.codecool.dungeoncrawl.logic.enviroment.Water;
 import com.codecool.dungeoncrawl.logic.items.Food;
 import com.codecool.dungeoncrawl.logic.items.Key;
@@ -67,6 +68,10 @@ public class MapLoader {
                         case 'o':
                             cell.setType(CellType.FLOOR);
                             new Octopus(cell);
+                            break;
+                        case 'd':
+                            cell.setType(CellType.FLOOR);
+                            new Door(cell);
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");

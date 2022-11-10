@@ -30,9 +30,10 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    private void hideButton() { pickUpButton.setVisible(false); }
 
-    private void showButton() { pickUpButton.setVisible(true); }
+    public void hideButton() { pickUpButton.setVisible(false); }
+
+    public void showButton() { pickUpButton.setVisible(true); }
 
 
     @Override
@@ -54,8 +55,8 @@ public class Main extends Application {
         });
         pickUpButton.setFocusTraversable(false);
         ui.add(new Label(""), 0, 5);
-        ui.add(new Label("INVENTORY:"), 0, 5);
-        ui.add(playerInventory, 0, 6);
+        ui.add(new Label("INVENTORY:"), 0, 6);
+        ui.add(playerInventory, 0, 7);
 
         BorderPane borderPane = new BorderPane();
 
@@ -72,28 +73,37 @@ public class Main extends Application {
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
-        switch (keyEvent.getCode()) {
-            case UP:
-                map.getPlayer().move(0, -1);
-                refresh();
-                break;
-            case DOWN:
-                map.getPlayer().move(0, 1);
-                refresh();
-                break;
-            case LEFT:
-                map.getPlayer().move(-1, 0);
-                refresh();
-                break;
-            case RIGHT:
-                map.getPlayer().move(1,0);
-                refresh();
-                break;
+        //if (map.getPlayer().isAlive()) {
+            switch (keyEvent.getCode()) {
+                case UP:
+                    map.getPlayer().move(0, -1);
+                    refresh();
+                    break;
+                case DOWN:
+                    map.getPlayer().move(0, 1);
+                    refresh();
+                    break;
+                case LEFT:
+                    map.getPlayer().move(-1, 0);
+                    refresh();
+                    break;
+                case RIGHT:
+                    map.getPlayer().move(1, 0);
+                    refresh();
+                    break;
+            }
+        }
+
+    private void checkIfOnItem(){
+        if(map.getPlayer().getCell().getItem() != null) {
+            showButton();
+        } else {
+            hideButton();
         }
     }
 
     private void refresh() {
-        boolean interactWithItem = false;
+        checkIfOnItem();
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         for (int x = 0; x < map.getWidth(); x++) {
@@ -103,7 +113,6 @@ public class Main extends Application {
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);
-                    interactWithItem = true;
                 } else if (cell.getEnviroment() != null) {
                     Tiles.drawTile(context, cell.getEnviroment(), x, y);
                 } else {
@@ -112,9 +121,6 @@ public class Main extends Application {
             }
         }
 
-        if(interactWithItem) {
-            showButton();
-        } else { hideButton(); }
         healthLabel.setText("" + map.getPlayer().getHealth());
         strengthLabel.setText("" + map.getPlayer().getStrength());
         playerInventory.setText("" + map.getPlayer().inventoryToString());
