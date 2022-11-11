@@ -84,13 +84,13 @@ public class Main extends Application {
         int max = 4;
         int randomPos = rand.nextInt(max - min) + min;
         if (randomPos == 1) {
-            map.getSkeleton().move(0, 1);
+            map.getSkeleton().randomMove(0, 1);
         } else if (randomPos == 0) {
-            map.getSkeleton().move(0, -1);
+            map.getSkeleton().randomMove(0, -1);
         } else if (randomPos == 3) {
-            map.getSkeleton().move(1, 0);
+            map.getSkeleton().randomMove(1, 0);
         } else {
-            map.getSkeleton().move(-1, 0);
+            map.getSkeleton().randomMove(-1, 0);
         }
     }
 
