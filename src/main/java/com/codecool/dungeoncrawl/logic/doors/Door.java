@@ -5,7 +5,7 @@ import com.codecool.dungeoncrawl.logic.Drawable;
 
 public abstract class Door implements Drawable {
     private Cell cell;
-    private boolean isOpen;
+    protected boolean isOpen;
 
     public Door(Cell cell) {
         this.cell = cell;

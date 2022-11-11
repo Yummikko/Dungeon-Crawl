@@ -4,10 +4,12 @@ import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.doors.Door;
 import com.codecool.dungeoncrawl.logic.items.Item;
 
-public class Cell implements Drawable {
+public class Cell<T> implements Drawable {
     private CellType type;
     private Actor actor;
     private Door door;
+
+    private T t;
 
     private Item item;
     private GameMap gameMap;
@@ -67,5 +69,12 @@ public class Cell implements Drawable {
 
     public int getY() {
         return y;
+    }
+
+    public T switchItem(T original, T a, T b) {
+        if (original == a)
+            return b;
+        else
+            return a;
     }
 }
