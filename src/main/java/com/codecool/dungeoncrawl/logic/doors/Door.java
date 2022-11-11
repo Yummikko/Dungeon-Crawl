@@ -21,4 +21,8 @@ public abstract class Door implements Drawable {
     public void setCell(Cell cell) {
         this.cell = cell;
     }
+
+    public void makeDoorOpen(Door og, Door closed, Door open) {
+        this.cell.switchItem(og, closed, open);
+    }
 }
