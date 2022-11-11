@@ -15,7 +15,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.Random;
+
 public class Main extends Application {
+    boolean gameOver = false;
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
@@ -54,20 +57,40 @@ public class Main extends Application {
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(0, -1);
+                monsterMove();
                 refresh();
                 break;
             case DOWN:
                 map.getPlayer().move(0, 1);
+                monsterMove();
                 refresh();
                 break;
             case LEFT:
                 map.getPlayer().move(-1, 0);
+                monsterMove();
                 refresh();
                 break;
             case RIGHT:
                 map.getPlayer().move(1,0);
+                monsterMove();
                 refresh();
                 break;
+        }
+    }
+
+    public void monsterMove() {
+        Random rand = new Random();
+        int min = 0;
+        int max = 4;
+        int randomPos = rand.nextInt(max - min) + min;
+        if (randomPos == 1) {
+            map.getSkeleton().move(0, 1);
+        } else if (randomPos == 0) {
+            map.getSkeleton().move(0, -1);
+        } else if (randomPos == 3) {
+            map.getSkeleton().move(1, 0);
+        } else {
+            map.getSkeleton().move(-1, 0);
         }
     }
 
