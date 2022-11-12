@@ -5,6 +5,7 @@ import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
 
 public abstract class Actor implements Drawable {
+    protected String name;
     protected Cell cell;
     protected int health = 10;
     protected int strength = 3;
@@ -42,6 +43,10 @@ public abstract class Actor implements Drawable {
         }
     }
 
+    public String getName() {
+        return name; }
+
+    public void setName(String name) { this.name = name; }
 
     private static boolean isWall(Cell nextCell) {
         return nextCell.getType().equals(CellType.WALL);
