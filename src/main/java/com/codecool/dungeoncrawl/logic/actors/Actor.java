@@ -20,6 +20,7 @@ public abstract class Actor implements Drawable {
 
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
+<<<<<<< HEAD
         if (isWall(nextCell)) {
             return;
         }
@@ -28,11 +29,20 @@ public abstract class Actor implements Drawable {
                 this.fightWithMonster(nextCell.getActor());
             }
         }
+=======
+        if (nextCell.getOpenDoor() != null) {
+
+            nextCell.setActor(this);
+        } else if (isWallOrEnemy(nextCell)) {
+            return;
+        }
+>>>>>>> 3b6d171 (Adding open door when there is the key functionality)
         cell.setActor(null);
         nextCell.setActor(this);
         cell = nextCell;
     }
 
+<<<<<<< HEAD
     private void fightWithMonster(Actor actor) {
         actor.setHealth(actor.getHealth() - this.getStrength());
         if (actor.getHealth() > 0) {
@@ -56,6 +66,11 @@ public abstract class Actor implements Drawable {
         return nextCell.getActor() != null;
     }
 
+=======
+    private static boolean isWallOrEnemy(Cell nextCell) {
+        return nextCell.getType().equals(CellType.WALL) || nextCell.getNormalDoor() != null || nextCell.getActor() != null;
+    }
+>>>>>>> 3b6d171 (Adding open door when there is the key functionality)
     public int getHealth() {
         return health;
     }

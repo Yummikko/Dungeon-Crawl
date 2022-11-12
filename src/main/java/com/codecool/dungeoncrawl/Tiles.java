@@ -29,7 +29,12 @@ public class Tiles {
         tileMap.put("player", new Tile(30, 0));
         tileMap.put("skeleton", new Tile(29, 6));
         //key and door
+<<<<<<< HEAD
 //        tileMap.put("openDoor", new Tile(7, 17));
+=======
+        tileMap.put("door", new Tile(6, 16));
+        tileMap.put("openDoor", new Tile(9, 16));
+>>>>>>> 3b6d171 (Adding open door when there is the key functionality)
         tileMap.put("key", new Tile(16, 23));
 
         tileMap.put("weapon", new Tile(1, 30));
