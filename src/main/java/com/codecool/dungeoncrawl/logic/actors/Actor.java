@@ -3,8 +3,10 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.Drawable;
 
+import java.util.Objects;
+
 public abstract class Actor implements Drawable {
-    private Cell cell;
+    protected Cell cell;
     private int health = 10;
 
     public Actor(Cell cell) {
@@ -16,13 +18,6 @@ public abstract class Actor implements Drawable {
         Cell nextCell = cell.getNeighbor(dx, dy);
         cell.setActor(null);
         cell.setItem(null);
-        nextCell.setActor(this);
-        cell = nextCell;
-    }
-
-    public void randomMove(int dx, int dy) {
-        Cell nextCell = cell.getNeighbor(dx, dy);
-        cell.setActor(null);
         nextCell.setActor(this);
         cell = nextCell;
     }

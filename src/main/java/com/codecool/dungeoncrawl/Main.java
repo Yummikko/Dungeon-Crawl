@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -15,10 +16,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Main extends Application {
-    boolean gameOver = false;
+    public boolean gameOver = false;
+    private List<Skeleton> skeletons = new ArrayList<>();
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
@@ -82,15 +86,20 @@ public class Main extends Application {
         Random rand = new Random();
         int min = 0;
         int max = 4;
-        int randomPos = rand.nextInt(max - min) + min;
-        if (randomPos == 1) {
-            map.getSkeleton().randomMove(0, 1);
-        } else if (randomPos == 0) {
-            map.getSkeleton().randomMove(0, -1);
-        } else if (randomPos == 3) {
-            map.getSkeleton().randomMove(1, 0);
-        } else {
-            map.getSkeleton().randomMove(-1, 0);
+        for (int i = 0; i < skeletons.size(); i++){
+            int randomPos = rand.nextInt(max - min) + min;
+            Skeleton a = skeletons.get(i);
+            map.setSkeleton(a);
+            if (randomPos == 1) {
+                System.out.println(map.getSkeleton());
+                map.getSkeleton().move(0, 1);
+            } else if (randomPos == 0) {
+                map.getSkeleton().move(0, -1);
+            } else if (randomPos == 3) {
+                map.getSkeleton().move(1, 0);
+            } else {
+                map.getSkeleton().move(-1, 0);
+            }
         }
     }
 
@@ -101,6 +110,9 @@ public class Main extends Application {
             for (int y = 0; y < map.getHeight(); y++) {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
+                    if (cell.getSkeleton() != null)
+                        if (skeletons.size() <= 3)
+                            skeletons.add(cell.getSkeleton());
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getDoor() != null) {
                     Tiles.drawTile(context, cell.getDoor(), x, y);
