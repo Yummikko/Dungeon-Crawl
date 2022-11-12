@@ -1,10 +1,24 @@
 package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.logic.doors.Door;
+import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
+import com.codecool.dungeoncrawl.logic.items.Item;
 
-public class Cell implements Drawable {
+import java.util.Objects;
+
+public class Cell<T> implements Drawable {
     private CellType type;
     private Actor actor;
+    private Door door;
+    private NormalDoor normalDoor;
+
+    private Skeleton skeleton;
+
+    private T t;
+
+    private Item item;
     private GameMap gameMap;
     private int x, y;
 
@@ -31,6 +45,37 @@ public class Cell implements Drawable {
         return actor;
     }
 
+    public Door getDoor() {
+        return door;
+    }
+
+    public NormalDoor getNormalDoor() {
+        return normalDoor;
+    }
+
+    public Skeleton getSkeleton() {
+        return skeleton;
+    }
+
+    public void setSkeleton(Skeleton skeleton) {
+        this.skeleton = skeleton;
+    }
+
+    public void setDoor(Door door) {
+        this.door = door;
+    }
+    public void setNormalDoor(NormalDoor normalDoor) {
+        this.normalDoor = normalDoor;
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
     public Cell getNeighbor(int dx, int dy) {
         return gameMap.getCell(x + dx, y + dy);
     }
@@ -46,5 +91,20 @@ public class Cell implements Drawable {
 
     public int getY() {
         return y;
+    }
+
+    public T switchItem(T original, T a, T b) {
+        if (original == a)
+            return b;
+        else
+            return a;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        T t = (T) o;
+        return this == actor.getCell() && Objects.equals(this, actor.getCell());
     }
 }

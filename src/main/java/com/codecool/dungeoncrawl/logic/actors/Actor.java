@@ -4,9 +4,12 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
 
+import java.util.Objects;
+
 public abstract class Actor implements Drawable {
     protected Cell cell;
     protected int health = 10;
+    protected int strength = 3;
 
     protected Actor(Cell cell) {
         this.cell = cell;
@@ -29,6 +32,18 @@ public abstract class Actor implements Drawable {
 
     public int getHealth() {
         return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getStrength() {
+        return strength;
+    }
+
+    public void setStrength(int strength) {
+        this.strength = strength;
     }
 
     public Cell getCell() {
