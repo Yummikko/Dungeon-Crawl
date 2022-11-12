@@ -204,7 +204,7 @@ public class Main extends Application {
             case W:
             case UP:
                 map.getPlayer().move(0, -1);
-                monsterMove();
+                Skeleton.monsterMove();
                 refresh();
                 break;
             case S:
@@ -228,32 +228,13 @@ public class Main extends Application {
         }
     }
 
-    private void monsterMove() {
-        Random rand = new Random();
-        int min = 0;
-        int max = 4;
-        for (int i = 0; i < skeletons.size(); i++) {
-            int randomPos = rand.nextInt(max - min) + min;
-            Skeleton a = skeletons.get(i);
-            map.setSkeleton(a);
-            if (randomPos == 1) {
-                map.getSkeleton().move(0, 1);
-            } else if (randomPos == 2) {
-                map.getSkeleton().move(0, -1);
-            } else if (randomPos == 3) {
-                map.getSkeleton().move(1, 0);
-            } else {
-                map.getSkeleton().move(-1, 0);
-            }
-        }
-    }
 
     private void openClosedDoor(NormalDoor door) {
         ArrayList<Item> inventory = map.getPlayer().getInventory();
         for (Item item : inventory) {
             if (item instanceof Key) {
                 System.out.println("The Key is inside inventory!");
-                if (!door.getIsOpen())
+                if(!door.getIsOpen())
                     door.setIsOpen();
             }
         }
@@ -262,71 +243,7 @@ public class Main extends Application {
             door.setCell(new OpenDoor(door.getCell()).getCell());
         }
     }
-
-    private void checkIfOnItem() {
-        if (map.getPlayer().getCell().getItem() != null) {
-            showButton();
-        } else {
-            hideButton();
-        }
-    }
-
-    public void gameOver(Stage primaryStage) throws FileNotFoundException, RuntimeException{
-
-        Button backToMenu = new Button("Back to Menu");
-        Button exitGameButton = new Button("Exit Game");
-
-
-        backToMenu.setId("buttons");
-        exitGameButton.setId("buttons");
-
-        backToMenu.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
-            try {
-                map.getPlayer().setHealth(10);
-                mainMenu(primaryStage);
-            } catch (FileNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
-        });
-        exitGameButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
-            System.exit(0);
-        });
-
-
-        HBox buttons = new HBox(backToMenu, exitGameButton);
-
-        VBox menu = new VBox(buttons);
-
-
-        BorderPane menuLayout = new BorderPane();
-        menuLayout.setPrefWidth(1084);
-        menuLayout.setPrefHeight(768);
-        menuLayout.setCenter(menu);
-        buttons.setAlignment(Pos.CENTER);
-        buttons.setPadding(new Insets(350,5,15,5));
-
-        buttons.setSpacing(25);
-
-        Scene scene = new Scene(menuLayout);
-        scene.getStylesheets().add("game-over.css");
-
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Dungeon Crawl");
-        primaryStage.show();
-
-    }
-
     private void refresh() {
-
-        if(map.getPlayer().getHealth() <= 0 ) {
-            try {
-                gameOver(stage);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-
-        checkIfOnItem();
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         for (int x = 0; x < map.getWidth(); x++) {
@@ -339,20 +256,16 @@ public class Main extends Application {
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getDoor() != null) {
                     if (cell.getDoor() instanceof NormalDoor)
-                    map.getPlayer().openClosedDoor(cell.getNormalDoor());
+                        openClosedDoor(cell.getNormalDoor());
                     Tiles.drawTile(context, cell.getDoor(), x, y);
                 } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);
-                } else if (cell.getEnviroment() != null) {
-                    Tiles.drawTile(context, cell.getEnviroment(), x, y);
-                } else {
+                }
+                else {
                     Tiles.drawTile(context, cell, x, y);
                 }
             }
         }
-
         healthLabel.setText("" + map.getPlayer().getHealth());
-        strengthLabel.setText("" + map.getPlayer().getStrength());
-        playerInventory.setText("" + map.getPlayer().inventoryToString());
     }
 }
