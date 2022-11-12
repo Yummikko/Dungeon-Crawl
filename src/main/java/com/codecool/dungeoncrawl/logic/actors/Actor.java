@@ -33,17 +33,6 @@ public abstract class Actor implements Drawable {
         }
     }
 
-
-//        if (isEnemy(nextCell)) { // todo do playera
-//            if (cell.getActor() instanceof Player) {
-//                this.fightWithMonster(nextCell.getActor());
-//            }
-//        }
-//        cell.setActor(null);
-//        nextCell.setActor(this);
-//        cell = nextCell;
-
-
     private void fightWithMonster(Actor actor) {
         actor.setHealth(actor.getHealth() - this.getStrength());
         if (actor.getHealth() > 0) {

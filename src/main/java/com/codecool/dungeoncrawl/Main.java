@@ -5,6 +5,7 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
+import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.Key;
 import javafx.application.Application;
@@ -257,8 +258,10 @@ public class Main extends Application {
                     door.setIsOpen();
             }
         }
-        if (door.getIsOpen())
+        if (door.getIsOpen()) {
             System.out.println("Player can enter through the door.");
+            door.setCell(new OpenDoor(door.getCell()).getCell());
+        }
     }
 
     private void checkIfOnItem() {
