@@ -3,9 +3,7 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
-import com.codecool.dungeoncrawl.logic.doors.Door;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.Key;
@@ -14,20 +12,20 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Main extends Application {
     public boolean gameOver = false;
-    private List<Skeleton> skeletons = new ArrayList<>();
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
@@ -35,11 +33,20 @@ public class Main extends Application {
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label strengthLabel = new Label();
-    Button pickUpButton = new Button("Pick up");
+    Button pickUpButton = new Button("Pick up item");
     Label playerInventory = new Label("INVENTORY: ");
+    private List<Skeleton> skeletons = new ArrayList<>();
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public void hideButton() {
+        pickUpButton.setVisible(false);
+    }
+
+    public void showButton() {
+        pickUpButton.setVisible(true);
     }
 
     @Override
@@ -99,7 +106,7 @@ public class Main extends Application {
                 break;
             case D:
             case RIGHT:
-                map.getPlayer().move(1,0);
+                map.getPlayer().move(1, 0);
                 monsterMove();
                 refresh();
                 break;
@@ -110,7 +117,7 @@ public class Main extends Application {
         Random rand = new Random();
         int min = 0;
         int max = 4;
-        for (int i = 0; i < skeletons.size(); i++){
+        for (int i = 0; i < skeletons.size(); i++) {
             int randomPos = rand.nextInt(max - min) + min;
             Skeleton a = skeletons.get(i);
             map.setSkeleton(a);
@@ -132,14 +139,24 @@ public class Main extends Application {
         for (Item item : inventory) {
             if (item instanceof Key) {
                 System.out.println("The Key is inside inventory!");
-                if(!door.getIsOpen())
+                if (!door.getIsOpen())
                     door.setIsOpen();
             }
         }
         if (door.getIsOpen())
             System.out.println("Player can enter through the door.");
     }
+
+    private void checkIfOnItem() {
+        if (map.getPlayer().getCell().getItem() != null) {
+            showButton();
+        } else {
+            hideButton();
+        }
+    }
+
     private void refresh() {
+        checkIfOnItem();
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         for (int x = 0; x < map.getWidth(); x++) {
@@ -156,12 +173,15 @@ public class Main extends Application {
                     Tiles.drawTile(context, cell.getDoor(), x, y);
                 } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);
-                }
-                else {
+                } else if (cell.getEnviroment() != null) {
+                    Tiles.drawTile(context, cell.getEnviroment(), x, y);
+                } else {
                     Tiles.drawTile(context, cell, x, y);
                 }
             }
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
+        strengthLabel.setText("" + map.getPlayer().getStrength());
+        playerInventory.setText("" + map.getPlayer().inventoryToString());
     }
 }

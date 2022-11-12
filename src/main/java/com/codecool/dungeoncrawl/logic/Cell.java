@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.logic.doors.Door;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
+import com.codecool.dungeoncrawl.logic.enviroment.Enviroment;
 import com.codecool.dungeoncrawl.logic.items.Item;
 
 import java.util.Objects;
@@ -20,6 +21,7 @@ public class Cell<T> implements Drawable {
 
     private Item item;
     private GameMap gameMap;
+    private Enviroment enviroment;
     private int x, y;
 
     Cell(GameMap gameMap, int x, int y, CellType type) {
@@ -37,20 +39,28 @@ public class Cell<T> implements Drawable {
         this.type = type;
     }
 
-    public void setActor(Actor actor) {
-        this.actor = actor;
-    }
-
     public Actor getActor() {
         return actor;
+    }
+
+    public void setActor(Actor actor) {
+        this.actor = actor;
     }
 
     public Door getDoor() {
         return door;
     }
 
+    public void setDoor(Door door) {
+        this.door = door;
+    }
+
     public NormalDoor getNormalDoor() {
         return normalDoor;
+    }
+
+    public void setNormalDoor(NormalDoor normalDoor) {
+        this.normalDoor = normalDoor;
     }
 
     public Skeleton getSkeleton() {
@@ -59,13 +69,6 @@ public class Cell<T> implements Drawable {
 
     public void setSkeleton(Skeleton skeleton) {
         this.skeleton = skeleton;
-    }
-
-    public void setDoor(Door door) {
-        this.door = door;
-    }
-    public void setNormalDoor(NormalDoor normalDoor) {
-        this.normalDoor = normalDoor;
     }
 
     public Item getItem() {
@@ -100,6 +103,14 @@ public class Cell<T> implements Drawable {
             return a;
     }
 
+    public Enviroment getEnviroment() {
+        return enviroment;
+    }
+
+    public void setEnviroment(Enviroment enviroment) {
+        this.enviroment = enviroment;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -107,4 +118,5 @@ public class Cell<T> implements Drawable {
         T t = (T) o;
         return this == actor.getCell() && Objects.equals(this, actor.getCell());
     }
+
 }

@@ -4,12 +4,13 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
 
-import java.util.Objects;
-
 public abstract class Actor implements Drawable {
     protected Cell cell;
     protected int health = 10;
     protected int strength = 3;
+    protected boolean hasWeapon = false;
+    protected boolean hasKey = false;
+    protected boolean isAlive = true;
 
     protected Actor(Cell cell) {
         this.cell = cell;
@@ -18,16 +19,36 @@ public abstract class Actor implements Drawable {
 
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
-        if (isWallOrEnemy(nextCell)) {
+        if (isWall(nextCell)) {
             return;
+        }
+        if (isEnemy(nextCell)) { // todo do playera
+            if (cell.getActor() instanceof Player) {
+                this.fightWithMonster(nextCell.getActor());
+            }
         }
         cell.setActor(null);
         nextCell.setActor(this);
         cell = nextCell;
     }
 
-    private static boolean isWallOrEnemy(Cell nextCell) {
-        return nextCell.getType().equals(CellType.WALL) || nextCell.getActor() != null;
+    private void fightWithMonster(Actor actor) {
+        actor.setHealth(actor.getHealth() - this.getStrength());
+        if (actor.getHealth() > 0) {
+            this.setHealth(this.getHealth() - actor.getStrength());
+            if (this.getHealth() < 1) this.setAlive(false);
+        } else {
+            actor.getCell().setActor(null);
+        }
+    }
+
+
+    private static boolean isWall(Cell nextCell) {
+        return nextCell.getType().equals(CellType.WALL);
+    }
+
+    private static boolean isEnemy(Cell nextCell) {
+        return nextCell.getActor() != null;
     }
 
     public int getHealth() {
@@ -38,13 +59,16 @@ public abstract class Actor implements Drawable {
         this.health = health;
     }
 
-    public int getStrength() {
-        return strength;
-    }
+    public void setAlive(boolean alive) { isAlive = alive; }
 
-    public void setStrength(int strength) {
-        this.strength = strength;
-    }
+    public int getStrength() { return strength; }
+
+    public void setStrength(int strength) { this.strength = strength;}
+
+    public void setHasKey(boolean hasKey) { this.hasKey = hasKey; }
+
+    public void setHasWeapon(boolean hasWeapon) { this.hasWeapon = hasWeapon; }
+    //public boolean isHasKey() { return hasKey; }
 
     public Cell getCell() {
         return cell;
@@ -57,4 +81,7 @@ public abstract class Actor implements Drawable {
     public int getY() {
         return cell.getY();
     }
+
+    public boolean isAlive() { return isAlive; }
+
 }

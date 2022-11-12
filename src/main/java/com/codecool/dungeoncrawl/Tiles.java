@@ -29,9 +29,15 @@ public class Tiles {
         tileMap.put("player", new Tile(30, 0));
         tileMap.put("skeleton", new Tile(29, 6));
         //key and door
-        tileMap.put("door", new Tile(6, 16));
-        tileMap.put("openDoor", new Tile(7, 17));
+//        tileMap.put("openDoor", new Tile(7, 17));
         tileMap.put("key", new Tile(16, 23));
+
+        tileMap.put("weapon", new Tile(1, 30));
+        tileMap.put("food", new Tile(17, 28));
+        tileMap.put("water", new Tile(8, 4));
+        tileMap.put("bridge", new Tile(3, 3));
+        tileMap.put("octopus", new Tile(25, 8));
+        tileMap.put("door", new Tile(10, 9));
     }
 
     public static void drawTile(GraphicsContext context, Drawable d, int x, int y) {

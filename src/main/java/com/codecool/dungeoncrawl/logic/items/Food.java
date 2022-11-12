@@ -2,16 +2,12 @@ package com.codecool.dungeoncrawl.logic.items;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 
-public class Key extends Item {
+public class Food extends Item {
 
-    public Key(Cell cell) {
-        super(cell);
-
-    }
+    public Food(Cell cell) { super(cell); }
 
     @Override
     public String getTileName() {
-        return "key";
+        return "food";
     }
-
 }

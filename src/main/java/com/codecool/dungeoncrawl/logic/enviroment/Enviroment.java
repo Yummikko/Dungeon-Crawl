@@ -1,21 +1,21 @@
-package com.codecool.dungeoncrawl.logic.items;
+package com.codecool.dungeoncrawl.logic.enviroment;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.Drawable;
 
-public abstract class Item implements Drawable {
+
+public abstract class Enviroment implements Drawable {
 
     private Cell cell;
 
-    public Item(Cell cell) {
+    public Enviroment(Cell cell) {
         this.cell = cell;
-        this.cell.setItem(this);
+        this.cell.setEnviroment(this);
     }
 
     public Cell getCell() {
         return cell;
     }
-
     public void setCell(Cell cell) {
         this.cell = cell;
     }
@@ -27,5 +27,4 @@ public abstract class Item implements Drawable {
     public int getY() {
         return cell.getY();
     }
-
 }

@@ -1,10 +1,14 @@
 package com.codecool.dungeoncrawl.logic;
 
+import com.codecool.dungeoncrawl.logic.actors.Octopus;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
-import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
-import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
+import com.codecool.dungeoncrawl.logic.enviroment.Bridge;
+import com.codecool.dungeoncrawl.logic.enviroment.Door;
+import com.codecool.dungeoncrawl.logic.enviroment.Water;
+import com.codecool.dungeoncrawl.logic.items.Food;
 import com.codecool.dungeoncrawl.logic.items.Key;
+import com.codecool.dungeoncrawl.logic.items.Weapon;
 
 import java.io.InputStream;
 import java.util.Scanner;
@@ -38,21 +42,45 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             map.setSkeleton(new Skeleton(cell));
                             break;
-                        case 'd':
-                            cell.setType(CellType.FLOOR);
-                            new NormalDoor(cell);
-                            break;
-                        case 'o':
-                            cell.setType(CellType.FLOOR);
-                            new OpenDoor(cell);
-                            break;
+//                        case 'd':
+//                            cell.setType(CellType.FLOOR);
+//                            new NormalDoor(cell);
+//                            break;
+//                        case 'o':
+//                            cell.setType(CellType.FLOOR);
+//                            new OpenDoor(cell);
+//                            break;
                         case 'k':
                             cell.setType(CellType.FLOOR);
                             new Key(cell);
                             break;
+                        case 'o':
+                            cell.setType(CellType.FLOOR);
+                            new Octopus(cell);
+                            break;
+                        case 'd':
+                            cell.setType(CellType.FLOOR);
+                            new Door(cell);
+                            break;
                         case '@':
                             cell.setType(CellType.FLOOR);
                             map.setPlayer(new Player(cell));
+                            break;
+                        case 'f':
+                            cell.setType(CellType.FLOOR);
+                            new Food(cell);
+                            break;
+                        case 'w':
+                            cell.setType(CellType.FLOOR);
+                            new Weapon(cell);
+                            break;
+                        case 'r':
+                            cell.setType(CellType.FLOOR);
+                            new Water(cell);
+                            break;
+                        case 'b':
+                            cell.setType(CellType.FLOOR);
+                            new Bridge(cell);
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
