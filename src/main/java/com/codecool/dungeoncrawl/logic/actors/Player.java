@@ -1,6 +1,8 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
+import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.Key;
 
@@ -75,5 +77,20 @@ public class Player extends Actor {
 
         }
         return display.toString();
+    }
+
+    public void openClosedDoor(NormalDoor door) {
+        ArrayList<Item> inventory = this.getInventory();
+        for (Item item : inventory) {
+            if (item instanceof Key) {
+                System.out.println("The Key is inside inventory!");
+                if(!door.getIsOpen())
+                    door.setIsOpen();
+            }
+        }
+        if (door.getIsOpen()) {
+            System.out.println("Player can enter through the door.");
+            door.setCell(new OpenDoor(door.getCell()).getCell());
+        }
     }
 }

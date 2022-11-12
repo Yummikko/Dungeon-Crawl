@@ -123,21 +123,6 @@ public class Main extends Application {
             }
         }
     }
-
-    private void openClosedDoor(NormalDoor door) {
-        ArrayList<Item> inventory = map.getPlayer().getInventory();
-        for (Item item : inventory) {
-            if (item instanceof Key) {
-                System.out.println("The Key is inside inventory!");
-                if(!door.getIsOpen())
-                    door.setIsOpen();
-            }
-        }
-        if (door.getIsOpen()) {
-            System.out.println("Player can enter through the door.");
-            door.setCell(new OpenDoor(door.getCell()).getCell());
-        }
-    }
     private void refresh() {
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -151,7 +136,7 @@ public class Main extends Application {
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getDoor() != null) {
                     if (cell.getDoor() instanceof NormalDoor)
-                        openClosedDoor(cell.getNormalDoor());
+                    map.getPlayer().openClosedDoor(cell.getNormalDoor());
                     Tiles.drawTile(context, cell.getDoor(), x, y);
                 } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);
