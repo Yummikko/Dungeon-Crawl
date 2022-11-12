@@ -3,6 +3,8 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
+import com.codecool.dungeoncrawl.logic.doors.Door;
+import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 
 public abstract class Actor implements Drawable {
     protected String name;
@@ -21,6 +23,7 @@ public abstract class Actor implements Drawable {
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
 <<<<<<< HEAD
+<<<<<<< HEAD
         if (isWall(nextCell)) {
             return;
         }
@@ -32,7 +35,16 @@ public abstract class Actor implements Drawable {
 =======
         if (nextCell.getOpenDoor() != null) {
 
+=======
+        if (nextCell.getNormalDoor() != null) {
+            Door door = nextCell.getNormalDoor();
+>>>>>>> bb3bb64 (Adding open door with key in inventory completed)
             nextCell.setActor(this);
+            if (nextCell.getNormalDoor().getIsOpen()) {
+                System.out.println("Player can enter through the door.");
+                door.setCell(new OpenDoor(door.getCell()).getCell());
+            } else
+                return;
         } else if (isWallOrEnemy(nextCell)) {
             return;
         }
@@ -68,7 +80,7 @@ public abstract class Actor implements Drawable {
 
 =======
     private static boolean isWallOrEnemy(Cell nextCell) {
-        return nextCell.getType().equals(CellType.WALL) || nextCell.getNormalDoor() != null || nextCell.getActor() != null;
+        return nextCell.getType().equals(CellType.WALL) || nextCell.getActor() != null;
     }
 >>>>>>> 3b6d171 (Adding open door when there is the key functionality)
     public int getHealth() {

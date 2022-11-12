@@ -109,10 +109,6 @@ public class Player extends Actor {
                     door.setIsOpen();
             }
         }
-        if (door.getIsOpen()) {
-            System.out.println("Player can enter through the door.");
-            door.setCell(new OpenDoor(door.getCell()).getCell());
-        }
     }
 >>>>>>> fc43c7d (Adding open door when there is the key functionality)
 }
