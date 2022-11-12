@@ -8,6 +8,7 @@ import java.util.Objects;
 public abstract class Actor implements Drawable {
     protected Cell cell;
     private int health = 10;
+    private int strength = 3;
 
     public Actor(Cell cell) {
         this.cell = cell;
@@ -17,13 +18,24 @@ public abstract class Actor implements Drawable {
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
         cell.setActor(null);
-        cell.setItem(null);
         nextCell.setActor(this);
         cell = nextCell;
     }
 
     public int getHealth() {
         return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getStrength() {
+        return strength;
+    }
+
+    public void setStrength(int strength) {
+        this.strength = strength;
     }
 
     public Cell getCell() {
