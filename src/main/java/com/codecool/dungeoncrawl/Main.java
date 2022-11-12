@@ -3,7 +3,12 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.logic.doors.Door;
+import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
+import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.logic.items.Key;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -97,7 +102,7 @@ public class Main extends Application {
         }
     }
 
-    public void monsterMove() {
+    private void monsterMove() {
         Random rand = new Random();
         int min = 0;
         int max = 4;
@@ -108,7 +113,7 @@ public class Main extends Application {
             if (randomPos == 1) {
                 System.out.println(map.getSkeleton());
                 map.getSkeleton().move(0, 1);
-            } else if (randomPos == 0) {
+            } else if (randomPos == 2) {
                 map.getSkeleton().move(0, -1);
             } else if (randomPos == 3) {
                 map.getSkeleton().move(1, 0);
@@ -118,6 +123,18 @@ public class Main extends Application {
         }
     }
 
+    private void openClosedDoor(NormalDoor door) {
+        ArrayList<Item> inventory = map.getPlayer().getInventory();
+        for (Item item : inventory) {
+            if (item instanceof Key) {
+                System.out.println("The Key is inside inventory!");
+                if(!door.getIsOpen())
+                    door.setIsOpen();
+            }
+        }
+        if (door.getIsOpen())
+            System.out.println("Player can enter through the door.");
+    }
     private void refresh() {
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -130,6 +147,8 @@ public class Main extends Application {
                             skeletons.add(cell.getSkeleton());
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getDoor() != null) {
+                    if (cell.getDoor() instanceof NormalDoor)
+                        openClosedDoor(cell.getNormalDoor());
                     Tiles.drawTile(context, cell.getDoor(), x, y);
                 } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);

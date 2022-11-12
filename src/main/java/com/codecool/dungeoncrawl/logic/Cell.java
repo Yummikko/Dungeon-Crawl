@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl.logic;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.logic.doors.Door;
+import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.items.Item;
 
 import java.util.Objects;
@@ -11,6 +12,7 @@ public class Cell<T> implements Drawable {
     private CellType type;
     private Actor actor;
     private Door door;
+    private NormalDoor normalDoor;
 
     private Skeleton skeleton;
 
@@ -47,6 +49,10 @@ public class Cell<T> implements Drawable {
         return door;
     }
 
+    public NormalDoor getNormalDoor() {
+        return normalDoor;
+    }
+
     public Skeleton getSkeleton() {
         return skeleton;
     }
@@ -57,6 +63,9 @@ public class Cell<T> implements Drawable {
 
     public void setDoor(Door door) {
         this.door = door;
+    }
+    public void setNormalDoor(NormalDoor normalDoor) {
+        this.normalDoor = normalDoor;
     }
 
     public Item getItem() {
