@@ -22,15 +22,21 @@ public abstract class Actor implements Drawable {
         Cell nextCell = cell.getNeighbor(dx, dy);
         if (isWall(nextCell)) {
             return;
-        } else if (nextCell.getActor() == null) {
-            cell.setActor(null);
-            nextCell.setActor(this);
-            cell = nextCell;
-        } else if (isEnemy(nextCell)) {
+        }
+        if (isEnemy(nextCell)) { // todo do playera
             if (cell.getActor() instanceof Player) {
                 this.fightWithMonster(nextCell.getActor());
             }
         }
+        if (nextCell.getOpenDoor() != null) {
+
+            nextCell.setActor(this);
+        } else if (isWallOrEnemy(nextCell)) {
+            return;
+        }
+        cell.setActor(null);
+        nextCell.setActor(this);
+        cell = nextCell;
     }
 
     private void fightWithMonster(Actor actor) {
@@ -56,6 +62,9 @@ public abstract class Actor implements Drawable {
         return nextCell.getActor() != null;
     }
 
+    private static boolean isWallOrEnemy(Cell nextCell) {
+        return nextCell.getType().equals(CellType.WALL) || nextCell.getNormalDoor() != null || nextCell.getActor() != null;
+    }
     public int getHealth() {
         return health;
     }
