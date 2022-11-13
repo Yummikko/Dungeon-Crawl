@@ -26,7 +26,6 @@ public class Skeleton extends Actor {
             Skeleton a = skeletons.get(i);
             map.setSkeleton(a);
             if (randomPos == 1) {
-                System.out.println(map.getSkeleton());
                 map.getSkeleton().move(0, 1);
             } else if (randomPos == 2) {
                 map.getSkeleton().move(0, -1);
