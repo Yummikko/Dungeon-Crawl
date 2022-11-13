@@ -247,21 +247,6 @@ public class Main extends Application {
         }
     }
 
-    private void openClosedDoor(NormalDoor door) {
-        ArrayList<Item> inventory = map.getPlayer().getInventory();
-        for (Item item : inventory) {
-            if (item instanceof Key) {
-                System.out.println("The Key is inside inventory!");
-                if (!door.getIsOpen())
-                    door.setIsOpen();
-            }
-        }
-        if (door.getIsOpen()) {
-            System.out.println("Player can enter through the door.");
-            door.setCell(new OpenDoor(door.getCell()).getCell());
-        }
-    }
-
     private void checkIfOnItem() {
         if (map.getPlayer().getCell().getItem() != null) {
             showButton();
