@@ -21,6 +21,7 @@ public class Player extends Actor {
 
     public Player(Cell cell) {
         super(cell);
+        cell.setPlayer(this);
         this.setHealth(HEALTH);
         this.setStrength(ATTACK_STRENGTH);
         this.inventory = new ArrayList<>();

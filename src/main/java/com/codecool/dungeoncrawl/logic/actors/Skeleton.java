@@ -7,11 +7,9 @@ import java.util.Random;
 
 
 public class Skeleton<T> extends Actor {
-    boolean canMove;
 
     public Skeleton(Cell cell) {
         super(cell);
-        this.canMove = true;
         cell.setSkeleton(this);
         this.setStrength(3);
         this.setHealth(5);

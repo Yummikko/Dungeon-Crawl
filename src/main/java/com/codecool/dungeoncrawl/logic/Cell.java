@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Lich;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.logic.doors.Door;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
@@ -22,6 +23,7 @@ public class Cell<T> implements Drawable {
 
     private Skeleton skeleton;
     private Lich lich;
+    private Player player;
 
     private T t;
 
@@ -141,5 +143,12 @@ public class Cell<T> implements Drawable {
         if (o == null || getClass() != o.getClass()) return false;
         T t = (T) o;
         return this == actor.getCell() && Objects.equals(this, actor.getCell());
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+    public Player getPlayer() {
+        return player;
     }
 }

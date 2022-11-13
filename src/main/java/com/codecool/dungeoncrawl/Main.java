@@ -35,7 +35,7 @@ import java.util.Random;
 public class Main extends Application {
     public boolean gameOver = false;
     public final List<Skeleton> skeletons = new ArrayList<>();
-    public List<Lich> lichs = new ArrayList<>();
+    public final List<Lich> lichs = new ArrayList<>();
     GameMap map1;
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
@@ -207,28 +207,28 @@ public class Main extends Application {
             case UP:
                 map.getPlayer().move(0, -1);
                 Skeleton.monsterMove(skeletons, map);
-                Lich.magicMovement(lichs, map, map.getPlayer());
+//                Lich.magicMovement(lichs, map, map.getPlayer());
                 refresh();
                 break;
             case S:
             case DOWN:
                 map.getPlayer().move(0, 1);
                 Skeleton.monsterMove(skeletons, map);
-                Lich.magicMovement(lichs, map, map.getPlayer());
+//                Lich.magicMovement(lichs, map, map.getPlayer());
                 refresh();
                 break;
             case A:
             case LEFT:
                 map.getPlayer().move(-1, 0);
                 Skeleton.monsterMove(skeletons, map);
-                Lich.magicMovement(lichs, map, map.getPlayer());
+//                Lich.magicMovement(lichs, map, map.getPlayer());
                 refresh();
                 break;
             case D:
             case RIGHT:
                 map.getPlayer().move(1, 0);
                 Skeleton.monsterMove(skeletons, map);
-                Lich.magicMovement(lichs, map, map.getPlayer());
+//                Lich.magicMovement(lichs, map, map.getPlayer());
                 refresh();
                 break;
         }

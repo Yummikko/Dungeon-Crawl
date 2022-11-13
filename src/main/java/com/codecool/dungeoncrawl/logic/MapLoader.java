@@ -83,7 +83,7 @@ public class MapLoader {
                             break;
                         case 'l':
                             cell.setType(CellType.FLOOR);
-                            new Lich(cell);
+                            map.setLich(new Lich(cell));
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
