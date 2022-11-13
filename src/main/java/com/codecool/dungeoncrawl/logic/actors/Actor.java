@@ -3,6 +3,11 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
+import com.codecool.dungeoncrawl.logic.doors.Door;
+import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
+import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
+
+import java.text.Normalizer;
 
 public abstract class Actor implements Drawable {
     protected String name;
@@ -20,6 +25,15 @@ public abstract class Actor implements Drawable {
 
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
+        if (nextCell.getNormalDoor() != null) {
+            NormalDoor door = nextCell.getNormalDoor();
+            if(door.getIsOpen()) {
+                cell.setActor(null);
+                nextCell.setActor(this);
+                cell = nextCell;
+                door.setCell(new OpenDoor(door.getCell()).getCell());
+            }
+        }
         if (isWall(nextCell)) {
             return;
         }
@@ -27,12 +41,6 @@ public abstract class Actor implements Drawable {
             if (cell.getActor() instanceof Player) {
                 this.fightWithMonster(nextCell.getActor());
             }
-        }
-        if (nextCell.getOpenDoor() != null) {
-
-            nextCell.setActor(this);
-        } else if (isWallOrEnemy(nextCell)) {
-            return;
         }
         cell.setActor(null);
         nextCell.setActor(this);
@@ -62,8 +70,9 @@ public abstract class Actor implements Drawable {
         return nextCell.getActor() != null;
     }
 
+
     private static boolean isWallOrEnemy(Cell nextCell) {
-        return nextCell.getType().equals(CellType.WALL) || nextCell.getNormalDoor() != null || nextCell.getActor() != null;
+        return nextCell.getType().equals(CellType.WALL) || nextCell.getActor() != null;
     }
     public int getHealth() {
         return health;

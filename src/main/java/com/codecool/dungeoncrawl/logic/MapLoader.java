@@ -3,6 +3,8 @@ package com.codecool.dungeoncrawl.logic;
 import com.codecool.dungeoncrawl.logic.actors.Octopus;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
+import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.enviroment.Bridge;
 import com.codecool.dungeoncrawl.logic.enviroment.Door;
 import com.codecool.dungeoncrawl.logic.enviroment.Water;
@@ -42,14 +44,14 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             map.setSkeleton(new Skeleton(cell));
                             break;
-//                        case 'd':
-//                            cell.setType(CellType.FLOOR);
-//                            new NormalDoor(cell);
-//                            break;
-//                        case 'o':
-//                            cell.setType(CellType.FLOOR);
-//                            new OpenDoor(cell);
-//                            break;
+                        case 'd':
+                            cell.setType(CellType.WALL);
+                            new NormalDoor(cell);
+                            break;
+                        case 'q':
+                            cell.setType(CellType.FLOOR);
+                            new OpenDoor(cell);
+                            break;
                         case 'k':
                             cell.setType(CellType.FLOOR);
                             new Key(cell);
@@ -57,10 +59,6 @@ public class MapLoader {
                         case 'o':
                             cell.setType(CellType.FLOOR);
                             new Octopus(cell);
-                            break;
-                        case 'd':
-                            cell.setType(CellType.FLOOR);
-                            new Door(cell);
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
