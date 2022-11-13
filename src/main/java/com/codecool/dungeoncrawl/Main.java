@@ -33,6 +33,7 @@ import java.util.Random;
 
 public class Main extends Application {
     public boolean gameOver = false;
+    private final List<Skeleton> skeletons = new ArrayList<>();
     GameMap map1;
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
@@ -44,7 +45,6 @@ public class Main extends Application {
     Label strengthLabel = new Label();
     Button pickUpButton = new Button("Pick up item");
     Label playerInventory = new Label("INVENTORY: ");
-    private List<Skeleton> skeletons = new ArrayList<>();
 
     Stage stage;
 
@@ -112,7 +112,7 @@ public class Main extends Application {
         scene.getStylesheets().add("style.css");
 
         primaryStage.setScene(scene);
-        //primaryStage.setTitle("Dungeon Crawl");
+        primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
     }
 
@@ -202,48 +202,29 @@ public class Main extends Application {
         switch (keyEvent.getCode()) {
             case W:
             case UP:
+                System.out.println(skeletons.size());
                 map.getPlayer().move(0, -1);
-                monsterMove();
+                Skeleton.monsterMove(skeletons, map);
                 refresh();
                 break;
             case S:
             case DOWN:
                 map.getPlayer().move(0, 1);
-                monsterMove();
+                Skeleton.monsterMove(skeletons, map);
                 refresh();
                 break;
             case A:
             case LEFT:
                 map.getPlayer().move(-1, 0);
-                monsterMove();
+                Skeleton.monsterMove(skeletons, map);
                 refresh();
                 break;
             case D:
             case RIGHT:
                 map.getPlayer().move(1, 0);
-                monsterMove();
+                Skeleton.monsterMove(skeletons, map);
                 refresh();
                 break;
-        }
-    }
-
-    private void monsterMove() {
-        Random rand = new Random();
-        int min = 0;
-        int max = 4;
-        for (int i = 0; i < skeletons.size(); i++) {
-            int randomPos = rand.nextInt(max - min) + min;
-            Skeleton a = skeletons.get(i);
-            map.setSkeleton(a);
-            if (randomPos == 1) {
-                map.getSkeleton().move(0, 1);
-            } else if (randomPos == 2) {
-                map.getSkeleton().move(0, -1);
-            } else if (randomPos == 3) {
-                map.getSkeleton().move(1, 0);
-            } else {
-                map.getSkeleton().move(-1, 0);
-            }
         }
     }
 
@@ -255,7 +236,7 @@ public class Main extends Application {
         }
     }
 
-    public void gameOver(Stage primaryStage) throws FileNotFoundException, RuntimeException{
+    public void gameOver(Stage primaryStage) throws Exception {
 
         Button backToMenu = new Button("Back to Menu");
         Button exitGameButton = new Button("Exit Game");
@@ -295,11 +276,10 @@ public class Main extends Application {
 
         Scene scene = new Scene(menuLayout);
         scene.getStylesheets().add("game-over.css");
-
         primaryStage.setScene(scene);
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
-
+        skeletons.clear();
     }
 
     private void refresh() {
@@ -309,6 +289,8 @@ public class Main extends Application {
                 gameOver(stage);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
 
@@ -320,7 +302,7 @@ public class Main extends Application {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
                     if (cell.getSkeleton() != null)
-                        if (skeletons.size() <= 3)
+                        if (skeletons.size() < 3)
                             skeletons.add(cell.getSkeleton());
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getDoor() != null) {
