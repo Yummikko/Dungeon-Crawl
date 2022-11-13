@@ -45,7 +45,7 @@ public class Main extends Application {
     Label strengthLabel = new Label();
     Button pickUpButton = new Button("Pick up item");
     Label playerInventory = new Label("INVENTORY: ");
-    private List<Skeleton> skeletons = new ArrayList<>();
+
 
     Stage stage;
 
@@ -307,7 +307,7 @@ public class Main extends Application {
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getDoor() != null) {
                     if (cell.getDoor() instanceof NormalDoor)
-                        openClosedDoor(cell.getNormalDoor());
+                        map.getPlayer().openClosedDoor(cell.getNormalDoor());
                     Tiles.drawTile(context, cell.getDoor(), x, y);
                 } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);

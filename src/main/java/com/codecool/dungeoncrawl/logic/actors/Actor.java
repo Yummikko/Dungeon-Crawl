@@ -3,35 +3,69 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
+import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
+import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 
 import java.util.Objects;
 
 public abstract class Actor implements Drawable {
+    protected String name;
     protected Cell cell;
-    private int health = 10;
-    private int strength = 3;
+    protected int health = 10;
+    protected int strength = 3;
+    protected boolean hasWeapon = false;
+    protected boolean hasKey = false;
+    protected boolean isAlive = true;
 
-    public Actor(Cell cell) {
+    protected Actor(Cell cell) {
         this.cell = cell;
         this.cell.setActor(this);
     }
 
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
-        if (nextCell.getOpenDoor() != null) {
-
-            nextCell.setActor(this);
-        } else if (isWallOrEnemy(nextCell)) {
-            return;
+        if (nextCell.getNormalDoor() != null) {
+            NormalDoor door = nextCell.getNormalDoor();
+            if(door.getIsOpen()) {
+                cell.setActor(null);
+                nextCell.setActor(this);
+                cell = nextCell;
+                door.setCell(new OpenDoor(door.getCell()).getCell());
+            }
         }
-        cell.setActor(null);
-        nextCell.setActor(this);
-        cell = nextCell;
+        if (isWall(nextCell)) {
+            return;
+        } else if (nextCell.getActor() == null) {
+            cell.setActor(null);
+            nextCell.setActor(this);
+            cell = nextCell;
+        } else if (isEnemy(nextCell)) {
+            if (cell.getActor() instanceof Player) {
+                this.fightWithMonster(nextCell.getActor());
+            }
+        }
+    }
+    private static boolean isWall(Cell nextCell) {
+        return nextCell.getType().equals(CellType.WALL);
     }
 
-    private static boolean isWallOrEnemy(Cell nextCell) {
-        return nextCell.getType().equals(CellType.WALL) || nextCell.getNormalDoor() != null || nextCell.getActor() != null;
+    private static boolean isEnemy(Cell nextCell) {
+        return nextCell.getActor() != null;
     }
+    private void fightWithMonster(Actor actor) {
+        actor.setHealth(actor.getHealth() - this.getStrength());
+        if (actor.getHealth() > 0) {
+            this.setHealth(this.getHealth() - actor.getStrength());
+            if (this.getHealth() < 1) this.setAlive(false);
+        } else {
+            actor.getCell().setActor(null);
+        }
+    }
+
+    public String getName() {
+        return name; }
+
+    public void setName(String name) { this.name = name; }
     public int getHealth() {
         return health;
     }
