@@ -10,7 +10,7 @@ import java.util.Objects;
 
 public abstract class Actor implements Drawable {
     protected String name;
-    protected Cell cell;
+    protected static Cell cell;
     protected int health = 10;
     protected int strength = 3;
     protected boolean hasWeapon = false;
@@ -98,5 +98,11 @@ public abstract class Actor implements Drawable {
     }
 
     public boolean isAlive() { return isAlive; }
+
+    public void newMove(Cell cell, Cell nextCell) {
+        cell.setActor(null);
+        nextCell.setActor(this);
+    }
+
 
 }

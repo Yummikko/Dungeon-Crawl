@@ -97,7 +97,6 @@ public class Player extends Actor {
         ArrayList<Item> inventory = this.getInventory();
         for (Item item : inventory) {
             if (item instanceof Key) {
-                System.out.println("The Key is inside inventory!");
                 if(!door.getIsOpen())
                     door.setIsOpen();
             }

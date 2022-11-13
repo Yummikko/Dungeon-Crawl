@@ -6,15 +6,15 @@ import java.util.List;
 import java.util.Random;
 
 
-public class Skeleton extends Actor {
-    private boolean canMove;
+public class Skeleton<T> extends Actor {
+    boolean canMove;
 
     public Skeleton(Cell cell) {
         super(cell);
         this.canMove = true;
         cell.setSkeleton(this);
-        this.setStrength(5);
-        this.setHealth(20);
+        this.setStrength(3);
+        this.setHealth(5);
     }
 
     public static void monsterMove(List<Skeleton> skeletons, GameMap map) {

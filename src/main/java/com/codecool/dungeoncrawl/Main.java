@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Lich;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
@@ -33,7 +34,8 @@ import java.util.Random;
 
 public class Main extends Application {
     public boolean gameOver = false;
-    private final List<Skeleton> skeletons = new ArrayList<>();
+    public final List<Skeleton> skeletons = new ArrayList<>();
+    public List<Lich> lichs = new ArrayList<>();
     GameMap map1;
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
@@ -205,24 +207,28 @@ public class Main extends Application {
             case UP:
                 map.getPlayer().move(0, -1);
                 Skeleton.monsterMove(skeletons, map);
+                Lich.magicMovement(lichs, map, map.getPlayer());
                 refresh();
                 break;
             case S:
             case DOWN:
                 map.getPlayer().move(0, 1);
                 Skeleton.monsterMove(skeletons, map);
+                Lich.magicMovement(lichs, map, map.getPlayer());
                 refresh();
                 break;
             case A:
             case LEFT:
                 map.getPlayer().move(-1, 0);
                 Skeleton.monsterMove(skeletons, map);
+                Lich.magicMovement(lichs, map, map.getPlayer());
                 refresh();
                 break;
             case D:
             case RIGHT:
                 map.getPlayer().move(1, 0);
                 Skeleton.monsterMove(skeletons, map);
+                Lich.magicMovement(lichs, map, map.getPlayer());
                 refresh();
                 break;
         }
@@ -304,6 +310,9 @@ public class Main extends Application {
                     if (cell.getSkeleton() != null)
                         if (skeletons.size() < 3)
                             skeletons.add(cell.getSkeleton());
+                    if (cell.getLich() != null)
+                        if (lichs.size() < 1)
+                            lichs.add(cell.getLich());
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getDoor() != null) {
                     if (cell.getDoor() instanceof NormalDoor)
