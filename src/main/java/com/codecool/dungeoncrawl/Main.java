@@ -229,20 +229,61 @@ public class Main extends Application {
     }
 
 
-    private void openClosedDoor(NormalDoor door) {
-        ArrayList<Item> inventory = map.getPlayer().getInventory();
-        for (Item item : inventory) {
-            if (item instanceof Key) {
-                System.out.println("The Key is inside inventory!");
-                if(!door.getIsOpen())
-                    door.setIsOpen();
-            }
-        }
-        if (door.getIsOpen()) {
-            System.out.println("Player can enter through the door.");
-            door.setCell(new OpenDoor(door.getCell()).getCell());
+    private void checkIfOnItem() {
+        if (map.getPlayer().getCell().getItem() != null) {
+            showButton();
+        } else {
+            hideButton();
         }
     }
+
+    public void gameOver(Stage primaryStage) throws FileNotFoundException, RuntimeException{
+
+        Button backToMenu = new Button("Back to Menu");
+        Button exitGameButton = new Button("Exit Game");
+
+
+        backToMenu.setId("buttons");
+        exitGameButton.setId("buttons");
+
+        backToMenu.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
+            try {
+                map.getPlayer().setHealth(10);
+                mainMenu(primaryStage);
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
+        exitGameButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
+            System.exit(0);
+        });
+
+
+        HBox buttons = new HBox(backToMenu, exitGameButton);
+
+        VBox menu = new VBox(buttons);
+
+
+        BorderPane menuLayout = new BorderPane();
+        menuLayout.setPrefWidth(1084);
+        menuLayout.setPrefHeight(768);
+        menuLayout.setCenter(menu);
+        buttons.setAlignment(Pos.CENTER);
+        buttons.setPadding(new Insets(350,5,15,5));
+
+        buttons.setSpacing(25);
+
+
+
+        Scene scene = new Scene(menuLayout);
+        scene.getStylesheets().add("game-over.css");
+
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Dungeon Crawl");
+        primaryStage.show();
+
+    }
+
     private void refresh() {
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -266,6 +307,9 @@ public class Main extends Application {
                 }
             }
         }
+
         healthLabel.setText("" + map.getPlayer().getHealth());
+        strengthLabel.setText("" + map.getPlayer().getStrength());
+        playerInventory.setText("" + map.getPlayer().inventoryToString());
     }
 }
