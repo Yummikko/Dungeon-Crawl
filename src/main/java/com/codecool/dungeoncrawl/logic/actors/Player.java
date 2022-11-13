@@ -1,12 +1,9 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
-<<<<<<< HEAD
 import com.codecool.dungeoncrawl.logic.items.Food;
-=======
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
->>>>>>> fc43c7d (Adding open door when there is the key functionality)
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.Key;
 import com.codecool.dungeoncrawl.logic.items.Weapon;
@@ -98,8 +95,6 @@ public class Player extends Actor {
         return display.toString();
     }
 
-<<<<<<< HEAD
-=======
     public void openClosedDoor(NormalDoor door) {
         ArrayList<Item> inventory = this.getInventory();
         for (Item item : inventory) {
@@ -110,5 +105,4 @@ public class Player extends Actor {
             }
         }
     }
->>>>>>> fc43c7d (Adding open door when there is the key functionality)
 }
