@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Main extends Application {
-    public boolean gameOver = false;
+    //public boolean gameOver = false;
     GameMap map1;
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
@@ -167,21 +167,22 @@ public class Main extends Application {
         ui.setPadding(new Insets(10));
         ui.setStyle("-fx-background-color: #6C8D9E; -fx-font-size: 18px; -fx-text-fill: #6B8D9E;");
 
-//        ui.add(new Label("Name: "),0, 0 );
-//        ui.add(nameLabel, 0, 1);
+        ui.add(new Label("Name: "),0, 0 );
+        ui.add(nameLabel, 1, 0);
         ui.add(new Label("Health: "), 0, 1);
         ui.add(healthLabel, 1, 1);
         ui.add(new Label("Strength: "), 0, 2);
         ui.add(strengthLabel, 1, 2);
-
-        ui.add(pickUpButton, 0, 5);
+        ui.add(new Label(""), 0, 3);
+        ui.add(pickUpButton, 0, 4);
+        hideButton();
         pickUpButton.setOnAction(mousedown -> {
             map.getPlayer().pickUpItem();
             refresh();
         });
         pickUpButton.setFocusTraversable(false);
-        ui.add(new Label("INVENTORY:"), 0, 7);
-        ui.add(playerInventory, 0, 8);
+        ui.add(new Label("INVENTORY:"), 0, 5);
+        ui.add(playerInventory, 0, 6);
 
         BorderPane borderPane = new BorderPane();
 
@@ -303,8 +304,6 @@ public class Main extends Application {
         buttons.setPadding(new Insets(350,5,15,5));
 
         buttons.setSpacing(25);
-
-
 
         Scene scene = new Scene(menuLayout);
         scene.getStylesheets().add("game-over.css");

@@ -44,12 +44,10 @@ public class Player extends Actor {
     }
 
     public void pickUpItem() {
+        inventory.add(this.getCell().getItem());
         if (this.getCell().getItem() == null) {
             return;
-        }
-        addToInventory(this.getCell().getItem());
-        this.getCell().setItem(null);
-        if (this.getCell().getItem() instanceof Weapon) {
+        } else if (this.getCell().getItem() instanceof Weapon) {
             this.setStrength(getStrength() + 2);
             this.setHasWeapon(true);
         } else if (this.getCell().getItem() instanceof Food) {
@@ -57,6 +55,7 @@ public class Player extends Actor {
         } else if (this.getCell().getItem() instanceof Key) {
             this.setHasKey(true);
         }
+        this.getCell().setItem(null);
     }
 
     public String inventoryToString() {
