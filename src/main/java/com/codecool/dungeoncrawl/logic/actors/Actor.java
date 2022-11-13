@@ -22,16 +22,27 @@ public abstract class Actor implements Drawable {
         Cell nextCell = cell.getNeighbor(dx, dy);
         if (isWall(nextCell)) {
             return;
-        }
-        if (isEnemy(nextCell)) { // todo do playera
+        } else if (nextCell.getActor() == null) {
+            cell.setActor(null);
+            nextCell.setActor(this);
+            cell = nextCell;
+        } else if (isEnemy(nextCell)) {
             if (cell.getActor() instanceof Player) {
                 this.fightWithMonster(nextCell.getActor());
             }
         }
-        cell.setActor(null);
-        nextCell.setActor(this);
-        cell = nextCell;
     }
+
+
+//        if (isEnemy(nextCell)) { // todo do playera
+//            if (cell.getActor() instanceof Player) {
+//                this.fightWithMonster(nextCell.getActor());
+//            }
+//        }
+//        cell.setActor(null);
+//        nextCell.setActor(this);
+//        cell = nextCell;
+
 
     private void fightWithMonster(Actor actor) {
         actor.setHealth(actor.getHealth() - this.getStrength());

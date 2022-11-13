@@ -48,7 +48,6 @@ public class Player extends Actor {
             return;
         }
         addToInventory(this.getCell().getItem());
-        System.out.println(inventory);
         this.getCell().setItem(null);
         if (this.getCell().getItem() instanceof Weapon) {
             this.setStrength(getStrength() + 2);
@@ -67,30 +66,4 @@ public class Player extends Actor {
         }
         return s.toString();
     }
-
-    public String displayInventory() {
-        StringBuilder display = new StringBuilder();
-        int keyCount = 0;
-        int swordCount = 0;
-        int shieldCount = 0;
-
-        HashMap<String, Integer> inventory_dict = new HashMap<String, Integer>();
-        for (Item item : inventory) {
-            if (item instanceof Key) {
-                keyCount += 1;
-                if (keyCount <= 1) {
-                    inventory_dict.put(item.getTileName(), keyCount);
-                } else {
-                    inventory_dict.put("Key", keyCount);
-                }
-            }
-            for (HashMap.Entry<String, Integer> element : inventory_dict.entrySet()) {
-                display.append(element.getKey() + ": " + element.getValue());
-                display.append("\n");
-            }
-
-        }
-        return display.toString();
-    }
-
 }
