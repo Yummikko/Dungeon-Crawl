@@ -32,7 +32,8 @@ import java.util.List;
 import java.util.Random;
 
 public class Main extends Application {
-    //public boolean gameOver = false;
+    public boolean gameOver = false;
+    private final List<Skeleton> skeletons = new ArrayList<>();
     GameMap map1;
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
@@ -168,22 +169,21 @@ public class Main extends Application {
         ui.setPadding(new Insets(10));
         ui.setStyle("-fx-background-color: #6C8D9E; -fx-font-size: 18px; -fx-text-fill: #6B8D9E;");
 
-        ui.add(new Label("Name: "),0, 0 );
-        ui.add(nameLabel, 1, 0);
+//        ui.add(new Label("Name: "),0, 0 );
+//        ui.add(nameLabel, 0, 1);
         ui.add(new Label("Health: "), 0, 1);
         ui.add(healthLabel, 1, 1);
         ui.add(new Label("Strength: "), 0, 2);
         ui.add(strengthLabel, 1, 2);
-        ui.add(new Label(""), 0, 3);
-        ui.add(pickUpButton, 0, 4);
-        hideButton();
+
+        ui.add(pickUpButton, 0, 5);
         pickUpButton.setOnAction(mousedown -> {
             map.getPlayer().pickUpItem();
             refresh();
         });
         pickUpButton.setFocusTraversable(false);
-        ui.add(new Label("INVENTORY:"), 0, 5);
-        ui.add(playerInventory, 0, 6);
+        ui.add(new Label("INVENTORY:"), 0, 7);
+        ui.add(playerInventory, 0, 8);
 
         BorderPane borderPane = new BorderPane();
 
@@ -204,30 +204,29 @@ public class Main extends Application {
             case W:
             case UP:
                 map.getPlayer().move(0, -1);
-                Skeleton.monsterMove();
+                Skeleton.monsterMove(skeletons, map);
                 refresh();
                 break;
             case S:
             case DOWN:
                 map.getPlayer().move(0, 1);
-                monsterMove();
+                Skeleton.monsterMove(skeletons, map);
                 refresh();
                 break;
             case A:
             case LEFT:
                 map.getPlayer().move(-1, 0);
-                monsterMove();
+                Skeleton.monsterMove(skeletons, map);
                 refresh();
                 break;
             case D:
             case RIGHT:
                 map.getPlayer().move(1, 0);
-                monsterMove();
+                Skeleton.monsterMove(skeletons, map);
                 refresh();
                 break;
         }
     }
-
 
     private void checkIfOnItem() {
         if (map.getPlayer().getCell().getItem() != null) {
@@ -237,7 +236,7 @@ public class Main extends Application {
         }
     }
 
-    public void gameOver(Stage primaryStage) throws FileNotFoundException, RuntimeException{
+    public void gameOver(Stage primaryStage) throws Exception {
 
         Button backToMenu = new Button("Back to Menu");
         Button exitGameButton = new Button("Exit Game");
@@ -277,14 +276,25 @@ public class Main extends Application {
 
         Scene scene = new Scene(menuLayout);
         scene.getStylesheets().add("game-over.css");
-
         primaryStage.setScene(scene);
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
-
+        skeletons.clear();
     }
 
     private void refresh() {
+
+        if(map.getPlayer().getHealth() <= 0 ) {
+            try {
+                gameOver(stage);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        checkIfOnItem();
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         for (int x = 0; x < map.getWidth(); x++) {
@@ -292,7 +302,7 @@ public class Main extends Application {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
                     if (cell.getSkeleton() != null)
-                        if (skeletons.size() <= 3)
+                        if (skeletons.size() < 3)
                             skeletons.add(cell.getSkeleton());
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getDoor() != null) {
