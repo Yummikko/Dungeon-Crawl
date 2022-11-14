@@ -6,11 +6,10 @@ import java.util.List;
 import java.util.Random;
 
 
-public class Skeleton<T> extends Actor {
+public class Skeleton extends Actor {
 
     public Skeleton(Cell cell) {
         super(cell);
-        cell.setSkeleton(this);
         this.setStrength(3);
         this.setHealth(5);
     }
@@ -21,16 +20,17 @@ public class Skeleton<T> extends Actor {
         int max = 4;
         for (int i = 0; i < skeletons.size(); i++) {
             int randomPos = rand.nextInt(max - min) + min;
+            System.out.println(skeletons.size());
             Skeleton a = skeletons.get(i);
-            map.setSkeleton(a);
+            cell.setSkeleton(a);
             if (randomPos == 1) {
-                map.getSkeleton().move(0, 1);
+                cell.getSkeleton().move(0, 1);
             } else if (randomPos == 2) {
-                map.getSkeleton().move(0, -1);
+                cell.getSkeleton().move(0, -1);
             } else if (randomPos == 3) {
-                map.getSkeleton().move(1, 0);
+                cell.getSkeleton().move(1, 0);
             } else {
-                map.getSkeleton().move(-1, 0);
+                cell.getSkeleton().move(-1, 0);
             }
         }
     }

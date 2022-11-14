@@ -171,8 +171,8 @@ public class Main extends Application {
         ui.setPadding(new Insets(10));
         ui.setStyle("-fx-background-color: #6C8D9E; -fx-font-size: 18px; -fx-text-fill: #6B8D9E;");
 
-//        ui.add(new Label("Name: "),0, 0 );
-//        ui.add(nameLabel, 0, 1);
+        ui.add(new Label("Name: "),0, 0 );
+        ui.add(nameLabel, 1, 0);
         ui.add(new Label("Health: "), 0, 1);
         ui.add(healthLabel, 1, 1);
         ui.add(new Label("Strength: "), 0, 2);
@@ -207,28 +207,28 @@ public class Main extends Application {
             case UP:
                 map.getPlayer().move(0, -1);
                 Skeleton.monsterMove(skeletons, map);
-//                Lich.magicMovement(lichs, map, map.getPlayer());
+                Lich.magicMovement(lichs, map, map.getPlayer());
                 refresh();
                 break;
             case S:
             case DOWN:
                 map.getPlayer().move(0, 1);
                 Skeleton.monsterMove(skeletons, map);
-//                Lich.magicMovement(lichs, map, map.getPlayer());
+                Lich.magicMovement(lichs, map, map.getPlayer());
                 refresh();
                 break;
             case A:
             case LEFT:
                 map.getPlayer().move(-1, 0);
                 Skeleton.monsterMove(skeletons, map);
-//                Lich.magicMovement(lichs, map, map.getPlayer());
+                Lich.magicMovement(lichs, map, map.getPlayer());
                 refresh();
                 break;
             case D:
             case RIGHT:
                 map.getPlayer().move(1, 0);
                 Skeleton.monsterMove(skeletons, map);
-//                Lich.magicMovement(lichs, map, map.getPlayer());
+                Lich.magicMovement(lichs, map, map.getPlayer());
                 refresh();
                 break;
         }
@@ -286,6 +286,9 @@ public class Main extends Application {
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
         skeletons.clear();
+        lichs.clear();
+        map.getSkeletons().clear();
+        map.getLichs().clear();
     }
 
     private void refresh() {
@@ -308,10 +311,10 @@ public class Main extends Application {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
                     if (cell.getSkeleton() != null)
-                        if (skeletons.size() < 3)
+                        if (skeletons.size() < map.getSkeletons().size())
                             skeletons.add(cell.getSkeleton());
                     if (cell.getLich() != null)
-                        if (lichs.size() < 1)
+                        if (lichs.size() < map.getLichs().size())
                             lichs.add(cell.getLich());
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getDoor() != null) {
@@ -326,7 +329,7 @@ public class Main extends Application {
                 }
             }
         }
-
+        nameLabel.setText("" + map.getPlayer().getName());
         healthLabel.setText("" + map.getPlayer().getHealth());
         strengthLabel.setText("" + map.getPlayer().getStrength());
         playerInventory.setText("" + map.getPlayer().inventoryToString());

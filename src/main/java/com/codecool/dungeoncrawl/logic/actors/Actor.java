@@ -6,8 +6,6 @@ import com.codecool.dungeoncrawl.logic.Drawable;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 
-import java.util.Objects;
-
 public abstract class Actor implements Drawable {
     protected String name;
     protected static Cell cell;
@@ -63,7 +61,8 @@ public abstract class Actor implements Drawable {
     }
 
     public String getName() {
-        return name; }
+        return name;
+    }
 
     public void setName(String name) { this.name = name; }
     public int getHealth() {

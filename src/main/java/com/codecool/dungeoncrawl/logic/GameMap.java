@@ -1,8 +1,12 @@
 package com.codecool.dungeoncrawl.logic;
 
+import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Lich;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameMap {
     private int width;
@@ -14,6 +18,11 @@ public class GameMap {
     private Skeleton skeleton;
 
     private Lich lich;
+    private Actor actor;
+
+    public List<Skeleton> skeletons = new ArrayList<>();
+    public List<Lich> lichs = new ArrayList<>();
+
 
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
@@ -54,11 +63,27 @@ public class GameMap {
         return skeleton;
     }
 
+    public Actor getActor() {
+        return actor;
+    }
+
+    public void setActor(Actor actor) {
+        this.actor = actor;
+    }
+
     public int getWidth() {
         return width;
     }
 
     public int getHeight() {
         return height;
+    }
+
+    public List<Skeleton> getSkeletons() {
+        return skeletons;
+    }
+
+    public List<Lich> getLichs() {
+        return lichs;
     }
 }

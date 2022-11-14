@@ -10,7 +10,6 @@ import java.util.Random;
 public class Lich extends Actor {
     public Lich(Cell cell) {
         super(cell);
-        cell.setLich(this);
         this.setStrength(6);
         this.setHealth(12);
     }
@@ -29,30 +28,30 @@ public class Lich extends Actor {
             int randomX = rand.nextInt(map.getWidth());
             int randomY = rand.nextInt(map.getHeight());
             Lich a = lichs.get(i);
-            map.setLich(a);
+            cell.setLich(a);
             if (randomPos == 1) {
                 if (randomNum < 50)
-                    map.getLich().move(0, 1);
+                    cell.getLich().move(0, 1);
                 else {
-                    teleportMonster(player.getX()+1, player.getY(), map, map.getLich(), randomX, randomY);
+                    teleportMonster(player.getX()+1, player.getY(), map, cell.getLich(), randomX, randomY);
                 }
             } else if (randomPos == 2) {
                 if (randomNum < 50)
-                    map.getLich().move(0, -1);
+                    cell.getLich().move(0, -1);
                 else {
-                    teleportMonster(player.getX()-1, player.getY(), map, map.getLich(), randomX, randomY);
+                    teleportMonster(player.getX()-1, player.getY(), map, cell.getLich(), randomX, randomY);
                 }
             } else if (randomPos == 3) {
                 if (randomNum < 50)
-                    map.getLich().move(1, 0);
+                    cell.getLich().move(1, 0);
                 else {
-                    teleportMonster(player.getX(), player.getY()+1, map, map.getLich(), randomX, randomY);
+                    teleportMonster(player.getX(), player.getY()+1, map, cell.getLich(), randomX, randomY);
                 }
             } else {
                 if (randomNum < 50)
-                    map.getLich().move(-1, 0);
+                    cell.getLich().move(-1, 0);
                 else {
-                    teleportMonster(player.getX(), player.getY()-1, map, map.getLich(), randomX, randomY);
+                    teleportMonster(player.getX(), player.getY()-1, map, cell.getLich(), randomX, randomY);
                 }
             }
         }

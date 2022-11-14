@@ -44,6 +44,7 @@ public class MapLoader {
                         case 's':
                             cell.setType(CellType.FLOOR);
                             map.setSkeleton(new Skeleton(cell));
+                            map.getSkeletons().add(map.getSkeleton());
                             break;
                         case 'd':
                             cell.setType(CellType.WALL);
@@ -84,6 +85,7 @@ public class MapLoader {
                         case 'l':
                             cell.setType(CellType.FLOOR);
                             map.setLich(new Lich(cell));
+                            map.getLichs().add(map.getLich());
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
