@@ -70,18 +70,22 @@ public class Lich extends Actor {
     public static void teleportMonster(int x, int y, GameMap map, Lich lich, int randomPos) {
         Cell nextCell = map.getCell(x+1, y+1);
         Cell evenNextCell = map.getCell(x+2, y+2);
-        if (nextCell != null || !nextCell.getType().equals(CellType.WALL) || nextCell.getActor() != null) {
+        if (nextCell != null || nextCell.getActor() != null) {
             lich.newMove(nextCell, lich);
-        } else if (nextCell.getNeighbor(x, y) != null || !nextCell.getNeighbor(x, y).getType().equals(CellType.WALL) || nextCell.getNeighbor(x, y).getActor() != null) {
+        } else if (nextCell.getNeighbor(x, y) != null || nextCell.getNeighbor(x, y).getActor() != null) {
             lich.newMove(evenNextCell, lich);
         } else if (nextCell.getActor() != null) {
             if (nextCell.getActor() instanceof Player) {
+                System.out.println("should hit player");
                 nextCell.getPlayer().fightWithMonster(lich);
             }
+        } else if (nextCell.getNeighbor(x, y).getType().equals(CellType.WALL) || nextCell.getType().equals(CellType.WALL)) {
+            return;
         }
-        else
+        else {
+            System.out.println("should move randomly");
             lich.moveRandomly(randomPos, lich);
-
+        }
     }
 
     public void newMove(Cell nextCell, Lich lich) {
