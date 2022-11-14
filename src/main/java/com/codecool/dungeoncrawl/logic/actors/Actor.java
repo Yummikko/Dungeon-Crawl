@@ -44,7 +44,7 @@ public abstract class Actor implements Drawable {
 //        cell = nextCell;
 
 
-    private void fightWithMonster(Actor actor) {
+    protected void fightWithMonster(Actor actor) {
         actor.setHealth(actor.getHealth() - this.getStrength());
         if (actor.getHealth() > 0) {
             this.setHealth(this.getHealth() - actor.getStrength());
@@ -59,11 +59,11 @@ public abstract class Actor implements Drawable {
 
     public void setName(String name) { this.name = name; }
 
-    private static boolean isWall(Cell nextCell) {
+    protected static boolean isWall(Cell nextCell) {
         return nextCell.getType().equals(CellType.WALL);
     }
 
-    private static boolean isEnemy(Cell nextCell) {
+    protected static boolean isEnemy(Cell nextCell) {
         return nextCell.getActor() != null;
     }
 

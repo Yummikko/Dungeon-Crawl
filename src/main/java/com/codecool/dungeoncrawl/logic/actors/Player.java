@@ -7,7 +7,7 @@ import com.codecool.dungeoncrawl.logic.items.Key;
 import com.codecool.dungeoncrawl.logic.items.Weapon;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Set;
 import java.util.StringJoiner;
 
 public class Player extends Actor {
@@ -21,6 +21,25 @@ public class Player extends Actor {
         this.setHealth(HEALTH);
         this.setStrength(ATTACK_STRENGTH);
         this.inventory = new ArrayList<>();
+    }
+
+    @Override
+    public void move(int dx, int dy) {
+        Set<String> developerNames = Set.of("Natalia", "Duc", "Ola", "Dawid");
+        Cell nextCell = cell.getNeighbor(dx, dy);
+        if (nextCell == null) return;
+        if (isWall(nextCell) && !developerNames.contains(name)) {
+            return;
+        }
+        if (nextCell.getActor() == null) {
+            cell.setActor(null);
+            nextCell.setActor(this);
+            cell = nextCell;
+            return;
+        }
+        if (isEnemy(nextCell)) {
+            this.fightWithMonster(nextCell.getActor());
+        }
     }
 
     public String getTileName() {
