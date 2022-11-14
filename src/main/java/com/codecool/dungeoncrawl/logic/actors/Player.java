@@ -5,6 +5,7 @@ import com.codecool.dungeoncrawl.logic.items.Food;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.Key;
 import com.codecool.dungeoncrawl.logic.items.Weapon;
+import com.codecool.dungeoncrawl.logic.util.SoundUtils;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -70,6 +71,7 @@ public class Player extends Actor {
             this.setStrength(getStrength() + 2);
             this.setHasWeapon(true);
         } else if (this.getCell().getItem() instanceof Food) {
+            SoundUtils.playSound(SoundUtils.EAT, 0.5f);
             this.setHealth(getHealth() + 3);
         } else if (this.getCell().getItem() instanceof Key) {
             this.setHasKey(true);

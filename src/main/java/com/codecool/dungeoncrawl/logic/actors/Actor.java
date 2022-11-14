@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
+import com.codecool.dungeoncrawl.logic.util.SoundUtils;
 
 public abstract class Actor implements Drawable {
     protected String name;
@@ -48,6 +49,7 @@ public abstract class Actor implements Drawable {
         actor.setHealth(actor.getHealth() - this.getStrength());
         if (actor.getHealth() > 0) {
             this.setHealth(this.getHealth() - actor.getStrength());
+            SoundUtils.playSound(SoundUtils.HIT, 0.8f);
             if (this.getHealth() < 1) this.setAlive(false);
         } else {
             actor.getCell().setActor(null);

@@ -7,6 +7,7 @@ import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.Key;
+import com.codecool.dungeoncrawl.logic.util.SoundUtils;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -318,6 +319,7 @@ public class Main extends Application {
 
         if(map.getPlayer().getHealth() <= 0 ) {
             try {
+                SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);
                 gameOver(stage);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();

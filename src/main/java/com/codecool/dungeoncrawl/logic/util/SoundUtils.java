@@ -1,0 +1,43 @@
+package com.codecool.dungeoncrawl.logic.util;
+
+import com.codecool.dungeoncrawl.Main;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import java.net.URL;
+
+public class SoundUtils {
+
+    public static final String EAT = "/sounds/eat.wav";
+    public static final String HIT = "/sounds/punch1.wav";
+    public static final String GAME_OVER = "/sounds/game_over.wav";
+
+    private SoundUtils() {
+    }
+
+    public static Clip playSound(String fileName, float volume) {
+        try {
+            Clip clip = AudioSystem.getClip();
+            URL url = Main.class.getResource(fileName);
+            AudioInputStream inputStream = AudioSystem.getAudioInputStream(url);
+            clip.open(inputStream);
+            setVolume(volume, clip);
+            clip.start();
+            return clip;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    public static void setVolume(float volume, Clip clip) {
+        if (volume < 0f || volume > 1f)
+            throw new IllegalArgumentException("Volume not valid: " + volume);
+        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        gainControl.setValue(20f * (float) Math.log10(volume));
+    }
+
+}
