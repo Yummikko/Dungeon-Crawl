@@ -50,7 +50,7 @@ public abstract class Actor implements Drawable {
     private static boolean isEnemy(Cell nextCell) {
         return nextCell.getActor() != null;
     }
-    private void fightWithMonster(Actor actor) {
+    protected void fightWithMonster(Actor actor) {
         actor.setHealth(actor.getHealth() - this.getStrength());
         if (actor.getHealth() > 0) {
             this.setHealth(this.getHealth() - actor.getStrength());
