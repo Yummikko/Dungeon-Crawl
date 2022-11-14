@@ -98,5 +98,4 @@ public abstract class Actor implements Drawable {
 
     public boolean isAlive() { return isAlive; }
 
-
 }

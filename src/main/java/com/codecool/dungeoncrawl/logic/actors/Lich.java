@@ -28,7 +28,6 @@ public class Lich extends Actor {
             int randomNum = rand.nextInt(100);
             Lich a = lichs.get(i);
             map.setLich(a);
-            Cell currentPos = a.getCell();
             if (randomPos == 1) {
                 if (randomNum < 50)
                     map.getLich().move(0, 1);
@@ -69,28 +68,28 @@ public class Lich extends Actor {
         }
     }
     public static void teleportMonster(int x, int y, GameMap map, Lich lich, int randomPos) {
-        Cell current = lich.getCell();
         Cell nextCell = map.getCell(x+1, y+1);
         Cell evenNextCell = map.getCell(x+1, y+1);
         if (nextCell != null || !nextCell.equals(CellType.WALL)) {
-            lich.newMove(current, nextCell);
+            lich.newMove(nextCell, lich);
         } else if (nextCell.getNeighbor(x, y) != null || !nextCell.getNeighbor(x, y).equals(CellType.WALL)) {
-            lich.newMove(current, evenNextCell);
+            lich.newMove(evenNextCell, lich);
         } else
             if (randomPos == 1)
-                map.getSkeleton().move(0, 1);
+                lich.move(0, 1);
             else if (randomPos == 2)
-                map.getSkeleton().move(0, -1);
+                lich.move(0, -1);
             else if (randomPos == 3)
-                map.getSkeleton().move(1, 0);
+                lich.move(1, 0);
             else
-                map.getSkeleton().move(-1, 0);
+                lich.move(-1, 0);
 
     }
 
-    public void newMove(Cell cell, Cell nextCell) {
+    public void newMove(Cell nextCell, Lich lich) {
         System.out.println("moved");
-        cell.setLich(null);
-        nextCell.setLich(this);
+        cell.setActor(null);
+        nextCell.setActor(lich);
+        cell = nextCell;
     }
 }
