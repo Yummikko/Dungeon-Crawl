@@ -10,6 +10,7 @@ public class Skeleton extends Actor {
 
     public Skeleton(Cell cell) {
         super(cell);
+        cell.setSkeleton(this);
         this.setStrength(3);
         this.setHealth(5);
     }
@@ -20,17 +21,16 @@ public class Skeleton extends Actor {
         int max = 4;
         for (int i = 0; i < skeletons.size(); i++) {
             int randomPos = rand.nextInt(max - min) + min;
-            System.out.println(skeletons.size());
             Skeleton a = skeletons.get(i);
-            cell.setSkeleton(a);
+            map.setSkeleton(a);
             if (randomPos == 1) {
-                cell.getSkeleton().move(0, 1);
+                map.getSkeleton().move(0, 1);
             } else if (randomPos == 2) {
-                cell.getSkeleton().move(0, -1);
+                map.getSkeleton().move(0, -1);
             } else if (randomPos == 3) {
-                cell.getSkeleton().move(1, 0);
+                map.getSkeleton().move(1, 0);
             } else {
-                cell.getSkeleton().move(-1, 0);
+                map.getSkeleton().move(-1, 0);
             }
         }
     }

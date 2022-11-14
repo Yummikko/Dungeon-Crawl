@@ -10,6 +10,7 @@ import java.util.Random;
 public class Lich extends Actor {
     public Lich(Cell cell) {
         super(cell);
+        cell.setLich(this);
         this.setStrength(6);
         this.setHealth(12);
     }
@@ -25,45 +26,71 @@ public class Lich extends Actor {
         for (int i = 0; i < lichs.size(); i++) {
             int randomPos = rand.nextInt(max - min) + min;
             int randomNum = rand.nextInt(100);
-            int randomX = rand.nextInt(map.getWidth());
-            int randomY = rand.nextInt(map.getHeight());
             Lich a = lichs.get(i);
-            cell.setLich(a);
+            map.setLich(a);
+            Cell currentPos = a.getCell();
             if (randomPos == 1) {
                 if (randomNum < 50)
-                    cell.getLich().move(0, 1);
+                    map.getLich().move(0, 1);
                 else {
-                    teleportMonster(player.getX()+1, player.getY(), map, cell.getLich(), randomX, randomY);
+                    if (player.getX()+1 < map.getWidth())
+                        teleportMonster(player.getX()+1, player.getY(), map, map.getLich(), randomPos);
+                    else
+                        map.getLich().move(0, 1);
                 }
             } else if (randomPos == 2) {
                 if (randomNum < 50)
-                    cell.getLich().move(0, -1);
+                    map.getLich().move(0, -1);
                 else {
-                    teleportMonster(player.getX()-1, player.getY(), map, cell.getLich(), randomX, randomY);
+                    if (player.getX()-1 < map.getWidth())
+                        teleportMonster(player.getX()-1, player.getY(), map, map.getLich(), randomPos);
+                    else
+                        map.getLich().move(0, -1);
                 }
             } else if (randomPos == 3) {
                 if (randomNum < 50)
-                    cell.getLich().move(1, 0);
+                    map.getLich().move(1, 0);
                 else {
-                    teleportMonster(player.getX(), player.getY()+1, map, cell.getLich(), randomX, randomY);
+                    if (player.getY()+1 < map.getHeight())
+                        teleportMonster(player.getX(), player.getY()+1, map, map.getLich(), randomPos);
+                    else
+                        map.getLich().move(1, 0);
                 }
             } else {
                 if (randomNum < 50)
-                    cell.getLich().move(-1, 0);
+                    map.getLich().move(-1, 0);
                 else {
-                    teleportMonster(player.getX(), player.getY()-1, map, cell.getLich(), randomX, randomY);
+                    if (player.getY()-1 < map.getHeight())
+                        teleportMonster(player.getX(), player.getY()-1, map, map.getLich(), randomPos);
+                    else
+                        map.getLich().move(-1, 0);
                 }
             }
         }
     }
-    public static void teleportMonster(int x, int y, GameMap map, Lich lich, int randomX, int randomY) {
+    public static void teleportMonster(int x, int y, GameMap map, Lich lich, int randomPos) {
+        Cell current = lich.getCell();
         Cell nextCell = map.getCell(x+1, y+1);
+        Cell evenNextCell = map.getCell(x+1, y+1);
         if (nextCell != null || !nextCell.equals(CellType.WALL)) {
-            lich.move(x+1, y+1);
+            lich.newMove(current, nextCell);
         } else if (nextCell.getNeighbor(x, y) != null || !nextCell.getNeighbor(x, y).equals(CellType.WALL)) {
-            lich.move(x+2, y+2);
+            lich.newMove(current, evenNextCell);
         } else
-            lich.move(randomX, randomY);
+            if (randomPos == 1)
+                map.getSkeleton().move(0, 1);
+            else if (randomPos == 2)
+                map.getSkeleton().move(0, -1);
+            else if (randomPos == 3)
+                map.getSkeleton().move(1, 0);
+            else
+                map.getSkeleton().move(-1, 0);
+
     }
 
+    public void newMove(Cell cell, Cell nextCell) {
+        System.out.println("moved");
+        cell.setLich(null);
+        nextCell.setLich(this);
+    }
 }
