@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Lich;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
@@ -209,6 +210,7 @@ public class Main extends Application {
                 map.getPlayer().move(0, -1);
                 Skeleton.monsterMove(skeletons, map);
                 Lich.magicMovement(lichs, map, map.getPlayer());
+                Actor.checkIfMonstersHealth(skeletons, lichs);
                 refresh();
                 break;
             case S:
@@ -216,6 +218,7 @@ public class Main extends Application {
                 map.getPlayer().move(0, 1);
                 Skeleton.monsterMove(skeletons, map);
                 Lich.magicMovement(lichs, map, map.getPlayer());
+                Actor.checkIfMonstersHealth(skeletons, lichs);
                 refresh();
                 break;
             case A:
@@ -223,6 +226,7 @@ public class Main extends Application {
                 map.getPlayer().move(-1, 0);
                 Skeleton.monsterMove(skeletons, map);
                 Lich.magicMovement(lichs, map, map.getPlayer());
+                Actor.checkIfMonstersHealth(skeletons, lichs);
                 refresh();
                 break;
             case D:
@@ -230,6 +234,7 @@ public class Main extends Application {
                 map.getPlayer().move(1, 0);
                 Skeleton.monsterMove(skeletons, map);
                 Lich.magicMovement(lichs, map, map.getPlayer());
+                Actor.checkIfMonstersHealth(skeletons, lichs);
                 refresh();
                 break;
         }
