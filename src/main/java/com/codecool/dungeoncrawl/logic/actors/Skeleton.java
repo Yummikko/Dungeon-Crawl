@@ -48,9 +48,9 @@ public class Skeleton extends Actor {
             cell.setActor(null);
             nextCell.setActor(this);
             cell = nextCell;
-        } else if (nextCell.getPlayer() != null) {
+        } else if (nextCell.getActor() != null) {
             if (cell.getActor() instanceof Player) {
-                nextCell.getPlayer().fightWithMonster(this);
+                nextCell.getActor().fightWithMonster(this);
             }
         }
     }

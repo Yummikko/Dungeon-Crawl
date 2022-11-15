@@ -16,8 +16,8 @@ import java.util.StringJoiner;
 
 public class Player extends Actor {
     private ArrayList<Item> inventory;
-    public static final int HEALTH = 10;
-    public static final int ATTACK_STRENGTH = 5;
+    public static final int HEALTH = 20;
+    public static final int ATTACK_STRENGTH = 10;
 
     public Player(Cell cell) {
         super(cell);
@@ -29,18 +29,20 @@ public class Player extends Actor {
 
     @Override
     public void move(int dx, int dy) {
-        Set<String> developerNames = Set.of("Natalia", "Duc", "Ola", "Dawid");
+        Set<String> developerNames = Set.of("natalia", "duc", "ola", "dawid");
         Cell nextCell = cell.getNeighbor(dx, dy);
+        String smallName = name.toLowerCase();
+        System.out.println(developerNames.contains(smallName));
         if (nextCell.getNormalDoor() != null) {
             NormalDoor door = nextCell.getNormalDoor();
-            if(door.getIsOpen() ) {
+            if(door.getIsOpen()) {
                 door.setCell(new OpenDoor(door.getCell()).getCell());
                 cell.setActor(null);
                 nextCell.setActor(this);
                 cell = nextCell;
                 return;
             }
-            if (developerNames.contains(name)) {
+            if (developerNames.contains(smallName)) {
                 cell.setActor(null);
                 nextCell.setActor(this);
                 cell = nextCell;
@@ -48,7 +50,7 @@ public class Player extends Actor {
             }
         }
         if (nextCell == null) return;
-        if (isWall(nextCell) && !developerNames.contains(name)) {
+        if (isWall(nextCell) && !developerNames.contains(smallName)) {
             return;
         }
         if (nextCell.getActor() == null) {

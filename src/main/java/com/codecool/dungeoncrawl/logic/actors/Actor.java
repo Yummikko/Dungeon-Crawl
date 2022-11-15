@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
+import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
@@ -49,14 +50,16 @@ public abstract class Actor implements Drawable {
     }
 
     public static void checkIfMonstersHealth(List<Skeleton> skeletons, List<Lich> liches) {
-        for (Skeleton skeleton : skeletons) {
-            if (skeleton.getHealth() == 0) {
+        for (int i = 0; i < skeletons.size(); i++) {
+            Skeleton skeleton = skeletons.get(i);
+            if (skeleton.getHealth() <= 0) {
                 skeletons.remove(skeleton);
                 skeleton.getCell().setSkeleton(null);
             }
         }
-        for (Lich lich : liches) {
-            if (lich.getHealth() == 0) {
+        for (int j = 0; j < liches.size(); j++) {
+            Lich lich = liches.get(j);
+            if (lich.getHealth() <= 0) {
                 liches.remove(lich);
                 lich.getCell().setLich(null);
             }

@@ -37,25 +37,25 @@ public class Lich extends Actor {
         }
     }
     public static void teleportMonster(Player player, GameMap map, Lich lich, Random rand) {
-        int min = -2;
-        int max = 2;
+        int min = -1;
+        int max = 1;
         int randomPos = rand.nextInt(max - min) + min;
         int randomPosNext = rand.nextInt(max - min) + min;
         System.out.println(randomPos);
         int x = player.getX();
         int y = player.getY();
+        Cell currentCell = map.getCell(x, y);
         Cell nextCell = map.getCell(x+randomPosNext, y+randomPosNext);
-        Cell evenNextCell = map.getCell(x+randomPosNext, y+randomPosNext);
         if (x + randomPosNext < map.getWidth() || y + randomPosNext < map.getHeight()) {
-            System.out.println(x);
+            if (currentCell.getNeighbor(randomPos, randomPosNext) == null || currentCell.getNeighbor(randomPos, randomPosNext).getSkeleton() != null) {
+                return;
+            }
             if (nextCell == null || nextCell.getNeighbor(randomPos, randomPosNext) == null || nextCell.getNeighbor(randomPos, randomPosNext).getType().equals(CellType.WALL) || nextCell.getType().equals(CellType.WALL)) {
                 return;
-            } else if (nextCell.getNeighbor(randomPos, randomPosNext) != null || nextCell.getNeighbor(randomPos,randomPosNext).getActor() != null) {
-                lich.newMove(evenNextCell, lich);
-            } else if (nextCell.getActor() != null) {
+            }
+            else if (nextCell.getActor() != null) {
                 if (nextCell.getActor() instanceof Player) {
-                    System.out.println("should hit player");
-                    nextCell.getPlayer().fightWithMonster(lich);
+                    nextCell.getActor().fightWithMonster(lich);
                 }
             } else {
                 lich.newMove(nextCell, lich);
@@ -78,7 +78,6 @@ public class Lich extends Actor {
         int max = 1;
         int randomX = rand.nextInt(max - min) + min;
         int randomY = rand.nextInt(max - min) + min;
-//        System.out.println("x: " + x + " y: " + y);
         Cell lichNextPos = lich.getCell().getNeighbor(randomX, randomY);
         if (randomPos == 1)
             if (lichNextPos.getType().equals(CellType.WALL) || lichNextPos == null || lichNextPos.getActor() != null) {

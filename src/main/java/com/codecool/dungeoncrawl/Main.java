@@ -33,6 +33,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class Main extends Application {
     public boolean gameOver = false;
@@ -203,6 +205,9 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+
+    // And From your main() method or any other method
+
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case W:
@@ -296,6 +301,7 @@ public class Main extends Application {
         map.getSkeletons().clear();
         map.getLichs().clear();
     }
+
 
     private void refresh() {
 
