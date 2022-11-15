@@ -19,73 +19,49 @@ public class Lich extends Actor {
         return "lich";
     }
 
+    /* think about refactoring this as it's not working perfectly */
     public static void magicMovement(List<Lich> lichs, GameMap map, Player player) {
         Random rand = new Random();
-        int min = 0;
         int max = 4;
+        int randomMove = rand.nextInt(max);
         for (int i = 0; i < lichs.size(); i++) {
-            int randomPos = rand.nextInt(max - min) + min;
             int randomNum = rand.nextInt(100);
             Lich a = lichs.get(i);
             map.setLich(a);
-            if (randomPos == 1) {
-                if (randomNum < 80)
-                    map.getLich().move(0, 1);
-                else {
-                    if (player.getX()+1 < map.getWidth())
-                        teleportMonster(player.getX()+1, player.getY(), map, map.getLich(), randomPos);
-                    else
-                        map.getLich().move(0, 1);
-                }
-            } else if (randomPos == 2) {
-                if (randomNum < 80)
-                    map.getLich().move(0, -1);
-                else {
-                    if (player.getX()-1 < map.getWidth())
-                        teleportMonster(player.getX()-1, player.getY(), map, map.getLich(), randomPos);
-                    else
-                        map.getLich().move(0, -1);
-                }
-            } else if (randomPos == 3) {
-                if (randomNum < 80)
-                    map.getLich().move(1, 0);
-                else {
-                    if (player.getY()+1 < map.getHeight())
-                        teleportMonster(player.getX(), player.getY()+1, map, map.getLich(), randomPos);
-                    else
-                        map.getLich().move(1, 0);
-                }
-            } else {
-                if (randomNum < 80)
-                    map.getLich().move(-1, 0);
-                else {
-                    if (player.getY()-1 < map.getHeight())
-                        teleportMonster(player.getX(), player.getY()-1, map, map.getLich(), randomPos);
-                    else
-                        map.getLich().move(-1, 0);
-                }
+            if (randomNum < 75)
+                map.getLich().moveRandomly(randomMove, map.getLich(), rand);
+            else {
+                if (player.getX()+1 < map.getWidth())
+                    teleportMonster(player, map, map.getLich(), rand);
             }
         }
     }
-    public static void teleportMonster(int x, int y, GameMap map, Lich lich, int randomPos) {
-        Cell nextCell = map.getCell(x+1, y+1);
-        Cell evenNextCell = map.getCell(x+2, y+2);
-        if (nextCell != null || nextCell.getActor() != null) {
-            lich.newMove(nextCell, lich);
-        } else if (nextCell.getNeighbor(x, y) != null || nextCell.getNeighbor(x, y).getActor() != null) {
-            lich.newMove(evenNextCell, lich);
-        } else if (nextCell.getActor() != null) {
-            if (nextCell.getActor() instanceof Player) {
-                System.out.println("should hit player");
-                nextCell.getPlayer().fightWithMonster(lich);
+    public static void teleportMonster(Player player, GameMap map, Lich lich, Random rand) {
+        int min = -2;
+        int max = 2;
+        int randomPos = rand.nextInt(max - min) + min;
+        int randomPosNext = rand.nextInt(max - min) + min;
+        System.out.println(randomPos);
+        int x = player.getX();
+        int y = player.getY();
+        Cell nextCell = map.getCell(x+randomPosNext, y+randomPosNext);
+        Cell evenNextCell = map.getCell(x+randomPosNext, y+randomPosNext);
+        if (x + randomPosNext < map.getWidth() || y + randomPosNext < map.getHeight()) {
+            System.out.println(x);
+            if (nextCell.getNeighbor(randomPos, randomPosNext).getType().equals(CellType.WALL) || nextCell.getType().equals(CellType.WALL) || nextCell == null || nextCell.getNeighbor(randomPos, randomPosNext) == null) {
+                lich.moveRandomly(randomPos, lich, rand);
+            } else if (nextCell.getNeighbor(randomPos, randomPosNext) != null || nextCell.getNeighbor(randomPos,randomPosNext).getActor() != null) {
+                lich.newMove(evenNextCell, lich);
+            } else if (nextCell.getActor() != null) {
+                if (nextCell.getActor() instanceof Player) {
+                    System.out.println("should hit player");
+                    nextCell.getPlayer().fightWithMonster(lich);
+                }
+            } else {
+                lich.newMove(nextCell, lich);
             }
-        } else if (nextCell.getNeighbor(x, y).getType().equals(CellType.WALL) || nextCell.getType().equals(CellType.WALL)) {
+        } else
             return;
-        }
-        else {
-            System.out.println("should move randomly");
-            lich.moveRandomly(randomPos, lich);
-        }
     }
 
     public void newMove(Cell nextCell, Lich lich) {
@@ -95,34 +71,35 @@ public class Lich extends Actor {
         cell = nextCell;
     }
 
-    public static void moveRandomly(int randomPos, Lich lich) {
+    public static void moveRandomly(int randomPos, Lich lich, Random rand) {
         int x = lich.getCell().getX();
         int y = lich.getCell().getY();
-        Cell lichNextPos = lich.getCell().getNeighbor(x, y);
+        int min = -1;
+        int max = 1;
+        int randomX = rand.nextInt(max - min) + min;
+        int randomY = rand.nextInt(max - min) + min;
+        System.out.println("x: " + x + " y: " + y);
+        Cell lichNextPos = lich.getCell().getNeighbor(randomX, randomY);
         if (randomPos == 1)
-            if (lichNextPos.getType().equals(CellType.WALL) || lichNextPos != null || lichNextPos.getNeighbor(x, y).getActor() != null) {
-                System.out.println("shouldn't move");
+            if (lichNextPos.getType().equals(CellType.WALL) || lichNextPos == null || lichNextPos.getActor() != null) {
                 return;
             }
             else
                 lich.move(0, 1);
         else if (randomPos == 2)
-            if (lichNextPos.getType().equals(CellType.WALL) || lichNextPos != null || lichNextPos.getNeighbor(x, y).getActor() != null) {
-                System.out.println("shouldn't move");
+            if (lichNextPos.getType().equals(CellType.WALL) || lichNextPos == null || lichNextPos.getActor() != null) {
                 return;
             }
             else
                 lich.move(0, -1);
         else if (randomPos == 3)
-            if (lichNextPos.getType().equals(CellType.WALL) || lichNextPos != null || lichNextPos.getNeighbor(x, y).getActor() != null) {
-                System.out.println("shouldn't move");
+            if (lichNextPos.getType().equals(CellType.WALL) || lichNextPos == null || lichNextPos.getActor() != null) {
                 return;
             }
             else
                 lich.move(1, 0);
         else
-            if (lichNextPos.getType().equals(CellType.WALL) || lichNextPos != null || lichNextPos.getNeighbor(x, y).getActor() != null) {
-                System.out.println("shouldn't move");
+            if (lichNextPos.getType().equals(CellType.WALL) || lichNextPos == null || lichNextPos.getActor() != null) {
                 return;
             }
             else
