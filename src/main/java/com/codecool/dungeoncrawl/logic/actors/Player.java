@@ -4,14 +4,13 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.items.Food;
-import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
-import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.Key;
 import com.codecool.dungeoncrawl.logic.items.Weapon;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.StringJoiner;
 
@@ -32,6 +31,13 @@ public class Player extends Actor {
     public void move(int dx, int dy) {
         Set<String> developerNames = Set.of("Natalia", "Duc", "Ola", "Dawid");
         Cell nextCell = cell.getNeighbor(dx, dy);
+        if (nextCell.getNormalDoor() != null) {
+            NormalDoor door = nextCell.getNormalDoor();
+            if(door.getIsOpen()) {
+                System.out.println("door is opened");
+                door.setCell(new OpenDoor(door.getCell()).getCell());
+            }
+        }
         if (nextCell == null) return;
         if (isWall(nextCell) && !developerNames.contains(name)) {
             return;
