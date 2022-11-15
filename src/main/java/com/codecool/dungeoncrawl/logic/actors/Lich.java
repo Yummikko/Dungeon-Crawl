@@ -48,8 +48,8 @@ public class Lich extends Actor {
         Cell evenNextCell = map.getCell(x+randomPosNext, y+randomPosNext);
         if (x + randomPosNext < map.getWidth() || y + randomPosNext < map.getHeight()) {
             System.out.println(x);
-            if (nextCell.getNeighbor(randomPos, randomPosNext).getType().equals(CellType.WALL) || nextCell.getType().equals(CellType.WALL) || nextCell == null || nextCell.getNeighbor(randomPos, randomPosNext) == null) {
-                lich.moveRandomly(randomPos, lich, rand);
+            if (nextCell == null || nextCell.getNeighbor(randomPos, randomPosNext) == null || nextCell.getNeighbor(randomPos, randomPosNext).getType().equals(CellType.WALL) || nextCell.getType().equals(CellType.WALL)) {
+                return;
             } else if (nextCell.getNeighbor(randomPos, randomPosNext) != null || nextCell.getNeighbor(randomPos,randomPosNext).getActor() != null) {
                 lich.newMove(evenNextCell, lich);
             } else if (nextCell.getActor() != null) {
@@ -78,7 +78,7 @@ public class Lich extends Actor {
         int max = 1;
         int randomX = rand.nextInt(max - min) + min;
         int randomY = rand.nextInt(max - min) + min;
-        System.out.println("x: " + x + " y: " + y);
+//        System.out.println("x: " + x + " y: " + y);
         Cell lichNextPos = lich.getCell().getNeighbor(randomX, randomY);
         if (randomPos == 1)
             if (lichNextPos.getType().equals(CellType.WALL) || lichNextPos == null || lichNextPos.getActor() != null) {

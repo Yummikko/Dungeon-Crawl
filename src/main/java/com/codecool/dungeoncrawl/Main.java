@@ -321,7 +321,6 @@ public class Main extends Application {
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getDoor() != null) {
                     if (cell.getDoor() instanceof NormalDoor)
-                        System.out.println("checking if door can be opened");
                         map.getPlayer().openClosedDoor(cell.getNormalDoor());
                     Tiles.drawTile(context, cell.getDoor(), x, y);
                 } else if (cell.getItem() != null) {
