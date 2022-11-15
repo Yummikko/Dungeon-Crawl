@@ -33,9 +33,18 @@ public class Player extends Actor {
         Cell nextCell = cell.getNeighbor(dx, dy);
         if (nextCell.getNormalDoor() != null) {
             NormalDoor door = nextCell.getNormalDoor();
-            if(door.getIsOpen()) {
-                System.out.println("door is opened");
+            if(door.getIsOpen() ) {
                 door.setCell(new OpenDoor(door.getCell()).getCell());
+                cell.setActor(null);
+                nextCell.setActor(this);
+                cell = nextCell;
+                return;
+            }
+            if (developerNames.contains(name)) {
+                cell.setActor(null);
+                nextCell.setActor(this);
+                cell = nextCell;
+                return;
             }
         }
         if (nextCell == null) return;
