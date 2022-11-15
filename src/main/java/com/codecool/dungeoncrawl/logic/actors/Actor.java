@@ -3,6 +3,8 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
+import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
+import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
 
 public abstract class Actor implements Drawable {
@@ -21,6 +23,15 @@ public abstract class Actor implements Drawable {
 
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
+        if (nextCell.getNormalDoor() != null) {
+            NormalDoor door = nextCell.getNormalDoor();
+            if(door.getIsOpen()) {
+                cell.setActor(null);
+                nextCell.setActor(this);
+                cell = nextCell;
+                door.setCell(new OpenDoor(door.getCell()).getCell());
+            }
+        }
         if (isWall(nextCell)) {
             return;
         } else if (nextCell.getActor() == null) {
@@ -33,16 +44,6 @@ public abstract class Actor implements Drawable {
             }
         }
     }
-
-
-//        if (isEnemy(nextCell)) { // todo do playera
-//            if (cell.getActor() instanceof Player) {
-//                this.fightWithMonster(nextCell.getActor());
-//            }
-//        }
-//        cell.setActor(null);
-//        nextCell.setActor(this);
-//        cell = nextCell;
 
 
     protected void fightWithMonster(Actor actor) {

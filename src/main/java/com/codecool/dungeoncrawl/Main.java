@@ -3,8 +3,10 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Lich;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
+import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.Key;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
@@ -32,7 +34,9 @@ import java.util.List;
 import java.util.Random;
 
 public class Main extends Application {
-    //public boolean gameOver = false;
+    public boolean gameOver = false;
+    public final List<Skeleton> skeletons = new ArrayList<>();
+    public final List<Lich> lichs = new ArrayList<>();
     GameMap map1;
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
@@ -44,7 +48,7 @@ public class Main extends Application {
     Label strengthLabel = new Label();
     Button pickUpButton = new Button("Pick up item");
     Label playerInventory = new Label("INVENTORY: ");
-    private List<Skeleton> skeletons = new ArrayList<>();
+
 
     Stage stage;
 
@@ -174,16 +178,15 @@ public class Main extends Application {
         ui.add(healthLabel, 1, 1);
         ui.add(new Label("Strength: "), 0, 2);
         ui.add(strengthLabel, 1, 2);
-        ui.add(new Label(""), 0, 3);
-        ui.add(pickUpButton, 0, 4);
-        hideButton();
+
+        ui.add(pickUpButton, 0, 5);
         pickUpButton.setOnAction(mousedown -> {
             map.getPlayer().pickUpItem();
             refresh();
         });
         pickUpButton.setFocusTraversable(false);
-        ui.add(new Label("INVENTORY:"), 0, 5);
-        ui.add(playerInventory, 0, 6);
+        ui.add(new Label("INVENTORY:"), 0, 7);
+        ui.add(playerInventory, 0, 8);
 
         BorderPane borderPane = new BorderPane();
 
@@ -204,62 +207,32 @@ public class Main extends Application {
             case W:
             case UP:
                 map.getPlayer().move(0, -1);
-                monsterMove();
+                Skeleton.monsterMove(skeletons, map);
+                Lich.magicMovement(lichs, map, map.getPlayer());
                 refresh();
                 break;
             case S:
             case DOWN:
                 map.getPlayer().move(0, 1);
-                monsterMove();
+                Skeleton.monsterMove(skeletons, map);
+                Lich.magicMovement(lichs, map, map.getPlayer());
                 refresh();
                 break;
             case A:
             case LEFT:
                 map.getPlayer().move(-1, 0);
-                monsterMove();
+                Skeleton.monsterMove(skeletons, map);
+                Lich.magicMovement(lichs, map, map.getPlayer());
                 refresh();
                 break;
             case D:
             case RIGHT:
                 map.getPlayer().move(1, 0);
-                monsterMove();
+                Skeleton.monsterMove(skeletons, map);
+                Lich.magicMovement(lichs, map, map.getPlayer());
                 refresh();
                 break;
         }
-    }
-
-    private void monsterMove() {
-        Random rand = new Random();
-        int min = 0;
-        int max = 4;
-        for (int i = 0; i < skeletons.size(); i++) {
-            int randomPos = rand.nextInt(max - min) + min;
-            Skeleton a = skeletons.get(i);
-            map.setSkeleton(a);
-            if (randomPos == 1) {
-                System.out.println(map.getSkeleton());
-                map.getSkeleton().move(0, 1);
-            } else if (randomPos == 2) {
-                map.getSkeleton().move(0, -1);
-            } else if (randomPos == 3) {
-                map.getSkeleton().move(1, 0);
-            } else {
-                map.getSkeleton().move(-1, 0);
-            }
-        }
-    }
-
-    private void openClosedDoor(NormalDoor door) {
-        ArrayList<Item> inventory = map.getPlayer().getInventory();
-        for (Item item : inventory) {
-            if (item instanceof Key) {
-                System.out.println("The Key is inside inventory!");
-                if (!door.getIsOpen())
-                    door.setIsOpen();
-            }
-        }
-        if (door.getIsOpen())
-            System.out.println("Player can enter through the door.");
     }
 
     private void checkIfOnItem() {
@@ -270,7 +243,7 @@ public class Main extends Application {
         }
     }
 
-    public void gameOver(Stage primaryStage) throws FileNotFoundException, RuntimeException{
+    public void gameOver(Stage primaryStage) throws Exception {
 
         Button backToMenu = new Button("Back to Menu");
         Button exitGameButton = new Button("Exit Game");
@@ -306,13 +279,17 @@ public class Main extends Application {
 
         buttons.setSpacing(25);
 
+
+
         Scene scene = new Scene(menuLayout);
         scene.getStylesheets().add("game-over.css");
-
         primaryStage.setScene(scene);
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
-
+        skeletons.clear();
+        lichs.clear();
+        map.getSkeletons().clear();
+        map.getLichs().clear();
     }
 
     private void refresh() {
@@ -323,6 +300,8 @@ public class Main extends Application {
                 gameOver(stage);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
 
@@ -334,23 +313,25 @@ public class Main extends Application {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
                     if (cell.getSkeleton() != null)
-                        if (skeletons.size() <= 3)
+                        if (skeletons.size() < map.getSkeletons().size())
                             skeletons.add(cell.getSkeleton());
+                    if (cell.getLich() != null)
+                        if (lichs.size() < map.getLichs().size())
+                            lichs.add(cell.getLich());
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getDoor() != null) {
                     if (cell.getDoor() instanceof NormalDoor)
-                        openClosedDoor(cell.getNormalDoor());
+                        map.getPlayer().openClosedDoor(cell.getNormalDoor());
                     Tiles.drawTile(context, cell.getDoor(), x, y);
                 } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);
-                } else if (cell.getEnviroment() != null) {
-                    Tiles.drawTile(context, cell.getEnviroment(), x, y);
-                } else {
+                }
+                else {
                     Tiles.drawTile(context, cell, x, y);
                 }
             }
         }
-
+        nameLabel.setText("" + map.getPlayer().getName());
         healthLabel.setText("" + map.getPlayer().getHealth());
         strengthLabel.setText("" + map.getPlayer().getStrength());
         playerInventory.setText("" + map.getPlayer().inventoryToString());
