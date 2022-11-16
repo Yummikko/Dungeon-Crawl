@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.graphics.GameCamera;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
@@ -38,11 +39,13 @@ public class Main extends Application {
     public boolean gameOver = false;
     public final List<Skeleton> skeletons = new ArrayList<>();
     public final List<Lich> lichs = new ArrayList<>();
+
     GameMap map1;
     GameMap map = MapLoader.loadMap();
+    public GameCamera gameCamera = new GameCamera(0, 0, map);
     Canvas canvas = new Canvas(
-            map.getWidth() * Tiles.TILE_WIDTH,
-            map.getHeight() * Tiles.TILE_WIDTH);
+            (int) (map.getWidth() * Tiles.TILE_WIDTH - map.getGameCamera().getxOffset()),
+            (int) (map.getHeight() * Tiles.TILE_WIDTH - map.getGameCamera().getyOffset()));
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label nameLabel = new Label();
     Label healthLabel = new Label();
@@ -117,7 +120,6 @@ public class Main extends Application {
         scene.getStylesheets().add("style.css");
 
         primaryStage.setScene(scene);
-        //primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
     }
 
@@ -194,6 +196,7 @@ public class Main extends Application {
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
 
+
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         refresh();
@@ -201,6 +204,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
+
     }
 
 
@@ -219,6 +223,7 @@ public class Main extends Application {
             case S:
             case DOWN:
                 map.getPlayer().move(0, 1);
+                map.getGameCamera().centerOnPlayer(map.getPlayer());
                 Skeleton.monsterMove(skeletons, map);
                 Lich.magicMovement(lichs, map, map.getPlayer());
                 Actor.checkIfMonstersHealth(skeletons, lichs);
@@ -327,6 +332,8 @@ public class Main extends Application {
                         if (lichs.size() < map.getLichs().size())
                             lichs.add(cell.getLich());
                     Tiles.drawTile(context, cell.getActor(), x, y);
+                } else if (cell.getPlayer() != null) {
+                    Tiles.drawTile(context, cell.getPlayer(), (int) (x - map.getGameCamera().getxOffset()), (int) (y - map.getGameCamera().getyOffset()));
                 } else if (cell.getDoor() != null) {
                     if (cell.getDoor() instanceof NormalDoor)
                         map.getPlayer().openClosedDoor(cell.getNormalDoor());
