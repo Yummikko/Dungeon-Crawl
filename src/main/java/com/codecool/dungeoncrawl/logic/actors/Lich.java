@@ -12,7 +12,7 @@ public class Lich extends Actor {
         super(cell);
         cell.setLich(this);
         this.setStrength(6);
-        this.setHealth(12);
+        this.setHealth(22);
     }
     @Override
     public String getTileName() {
@@ -28,8 +28,9 @@ public class Lich extends Actor {
             int randomNum = rand.nextInt(100);
             Lich a = lichs.get(i);
             map.setLich(a);
-            if (randomNum < 75)
+            if (randomNum < 75) {
                 map.getLich().moveRandomly(randomMove, map.getLich(), rand);
+            }
             else {
                 if (player.getX()+1 < map.getWidth())
                     teleportMonster(player, map, map.getLich(), rand);
@@ -64,7 +65,6 @@ public class Lich extends Actor {
     }
 
     public void newMove(Cell nextCell, Lich lich) {
-//        System.out.println("moved");
         cell.setActor(null);
         nextCell.setActor(lich);
         cell = nextCell;
