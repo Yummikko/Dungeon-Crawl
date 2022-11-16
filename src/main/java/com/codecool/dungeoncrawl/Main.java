@@ -26,10 +26,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import javax.sound.sampled.Line;
 import java.io.FileNotFoundException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

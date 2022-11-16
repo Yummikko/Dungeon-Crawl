@@ -1,12 +1,10 @@
 package com.codecool.dungeoncrawl.logic;
 
-import com.codecool.dungeoncrawl.logic.actors.Lich;
-import com.codecool.dungeoncrawl.logic.actors.Octopus;
-import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.logic.actors.*;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.enviroment.Bridge;
+import com.codecool.dungeoncrawl.logic.enviroment.Skull;
 import com.codecool.dungeoncrawl.logic.enviroment.Water;
 import com.codecool.dungeoncrawl.logic.items.Food;
 import com.codecool.dungeoncrawl.logic.items.Key;
@@ -61,6 +59,10 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             new Octopus(cell);
                             break;
+                        case 'a':
+                            cell.setType(CellType.FLOOR);
+                            new Spider(cell);
+                            break;
                         case '@':
                             cell.setType(CellType.FLOOR);
                             map.setPlayer(new Player(cell));
@@ -76,6 +78,10 @@ public class MapLoader {
                         case 'r':
                             cell.setType(CellType.FLOOR);
                             new Water(cell);
+                            break;
+                        case 'u':
+                            cell.setType(CellType.FLOOR);
+                            new Skull(cell);
                             break;
                         case 'b':
                             cell.setType(CellType.FLOOR);
