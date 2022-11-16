@@ -7,7 +7,6 @@ import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.enviroment.Bridge;
-import com.codecool.dungeoncrawl.logic.enviroment.Door;
 import com.codecool.dungeoncrawl.logic.enviroment.Water;
 import com.codecool.dungeoncrawl.logic.items.Food;
 import com.codecool.dungeoncrawl.logic.items.Key;

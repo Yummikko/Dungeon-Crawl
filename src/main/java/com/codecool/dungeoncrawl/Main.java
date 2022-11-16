@@ -336,6 +336,8 @@ public class Main extends Application {
                     Tiles.drawTile(context, cell.getDoor(), x, y);
                 } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);
+                } else if (cell.getEnviroment() != null) {
+                    Tiles.drawTile(context, cell.getEnviroment(), x, y);
                 }
                 else {
                     Tiles.drawTile(context, cell, x, y);
