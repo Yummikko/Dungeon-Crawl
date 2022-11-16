@@ -7,9 +7,6 @@ import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Lich;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
-import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
-import com.codecool.dungeoncrawl.logic.items.Item;
-import com.codecool.dungeoncrawl.logic.items.Key;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -26,16 +23,12 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javax.sound.sampled.Line;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class Main extends Application {
-    public boolean gameOver = false;
+
     public final List<Skeleton> skeletons = new ArrayList<>();
     public final List<Lich> lichs = new ArrayList<>();
     GameMap map1;
@@ -166,8 +159,8 @@ public class Main extends Application {
         mainMenu(primaryStage);
     }
 
-
-    public void gameStart(Stage primaryStage) throws Exception {
+    public void gameStart(Stage primaryStage) {
+        SoundUtils.playContinuously(SoundUtils.BACKGROUND, 0.5f);
         GridPane ui = new GridPane();
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
@@ -251,7 +244,9 @@ public class Main extends Application {
         }
     }
 
-    public void gameOver(Stage primaryStage) throws Exception {
+    public void gameOver(Stage primaryStage) {
+        SoundUtils.stopAll();
+        SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);
 
         Button backToMenu = new Button("Back to Menu");
         Button exitGameButton = new Button("Exit Game");
@@ -302,13 +297,9 @@ public class Main extends Application {
 
 
     private void refresh() {
-
-        if(map.getPlayer().getHealth() <= 0 ) {
+        if (map.getPlayer().getHealth() <= 0) {
             try {
-                SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);
                 gameOver(stage);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

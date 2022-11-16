@@ -31,36 +31,37 @@ public class Player extends Actor {
     public void move(int dx, int dy) {
         Set<String> developerNames = Set.of("natalia", "duc", "ola", "dawid");
         Cell nextCell = cell.getNeighbor(dx, dy);
+        if (nextCell == null) return;
         String smallName = name.toLowerCase();
         if (nextCell.getNormalDoor() != null) {
             NormalDoor door = nextCell.getNormalDoor();
             if(door.getIsOpen()) {
                 door.setCell(new OpenDoor(door.getCell()).getCell());
-                cell.setActor(null);
-                nextCell.setActor(this);
-                cell = nextCell;
+                moveActor(nextCell);
                 return;
             }
             if (developerNames.contains(smallName)) {
-                cell.setActor(null);
-                nextCell.setActor(this);
-                cell = nextCell;
+                moveActor(nextCell);
                 return;
             }
         }
-        if (nextCell == null) return;
         if (isWall(nextCell) && !developerNames.contains(smallName)) {
             return;
         }
         if (nextCell.getActor() == null) {
-            cell.setActor(null);
-            nextCell.setActor(this);
-            cell = nextCell;
+            moveActor(nextCell);
             return;
         }
         if (isEnemy(nextCell)) {
             this.fightWithMonster(nextCell.getActor());
         }
+    }
+
+    private void moveActor(Cell nextCell) {
+        SoundUtils.playSound(SoundUtils.STEP, 0.7f);
+        cell.setActor(null);
+        nextCell.setActor(this);
+        cell = nextCell;
     }
 
     public String getTileName() {
