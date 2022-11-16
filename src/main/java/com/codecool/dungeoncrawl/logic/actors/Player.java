@@ -18,13 +18,16 @@ public class Player extends Actor {
     private ArrayList<Item> inventory;
     public static final int HEALTH = 20;
     public static final int ATTACK_STRENGTH = 10;
+    private int playerOnMap;
+    private boolean changeMap = false;
 
     public Player(Cell cell) {
         super(cell);
-        cell.setPlayer(this);
+//        cell.setPlayer(this);
         this.setHealth(HEALTH);
         this.setStrength(ATTACK_STRENGTH);
         this.inventory = new ArrayList<>();
+        setPlayerOnMap(1);
     }
 
     @Override
@@ -66,6 +69,23 @@ public class Player extends Actor {
     public String getTileName() {
         return "player";
     }
+
+    public boolean getChangeMap() {
+        return changeMap;
+    }
+
+    public void setChangeMap(boolean changeMap) {
+        this.changeMap = changeMap;
+    }
+
+    public int getPlayerOnMap() {
+        return playerOnMap;
+    }
+
+    public void setPlayerOnMap(int playerOnMap) {
+        this.playerOnMap = playerOnMap;
+    }
+
     public void addToInventory(Item item) {
         inventory.add(item);
     }

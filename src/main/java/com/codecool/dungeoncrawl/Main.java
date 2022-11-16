@@ -39,7 +39,7 @@ public class Main extends Application {
     public final List<Skeleton> skeletons = new ArrayList<>();
     public final List<Lich> lichs = new ArrayList<>();
     GameMap map1;
-    GameMap map = MapLoader.loadMap();
+    GameMap map = MapLoader.loadMap(1);
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -86,7 +86,7 @@ public class Main extends Application {
 
         startButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
             try {
-                map1 = MapLoader.loadMap();
+                map1 = MapLoader.loadMap(1);
                 map = map1;
                 map.getPlayer().setName(textField.getText());
                 gameStart(primaryStage);
@@ -346,5 +346,23 @@ public class Main extends Application {
         healthLabel.setText("" + map.getPlayer().getHealth());
         strengthLabel.setText("" + map.getPlayer().getStrength());
         playerInventory.setText("" + map.getPlayer().inventoryToString());
+    }
+
+    public void changeMap() {
+        int previousHealth = map.getPlayer().getHealth();
+        int previousAttackStrength = map.getPlayer().getStrength();
+        ArrayList<Item> previousInventory = map.getPlayer().getInventory();
+
+        if (map.getPlayer().getChangeMap() == true && map.getPlayer().getPlayerOnMap() == 1) {
+            map = MapLoader.loadMap(1);
+            map.getPlayer().setPlayerOnMap(2);
+        } else if (map.getPlayer().getChangeMap() == true && map.getPlayer().getPlayerOnMap() == 2) {
+            map = MapLoader.loadMap(2);
+            map.getPlayer().setPlayerOnMap(2);
+        }
+        map.getPlayer().setChangeMap(false);
+        map.getPlayer().setHealth(previousHealth);
+        map.getPlayer().setStrength(previousAttackStrength);
+        map.getPlayer().setInventory(previousInventory);
     }
 }

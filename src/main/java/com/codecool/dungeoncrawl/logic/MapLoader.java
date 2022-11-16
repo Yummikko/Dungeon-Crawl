@@ -8,14 +8,21 @@ import com.codecool.dungeoncrawl.logic.enviroment.Skull;
 import com.codecool.dungeoncrawl.logic.enviroment.Water;
 import com.codecool.dungeoncrawl.logic.items.Food;
 import com.codecool.dungeoncrawl.logic.items.Key;
+import com.codecool.dungeoncrawl.logic.enviroment.Stairs;
 import com.codecool.dungeoncrawl.logic.items.Weapon;
 
 import java.io.InputStream;
 import java.util.Scanner;
 
 public class MapLoader {
-    public static GameMap loadMap() {
-        InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
+    public static GameMap loadMap(int playerOnMap) {
+        InputStream is = null;
+        if (playerOnMap == 1) {
+            is = MapLoader.class.getResourceAsStream("/map.txt");
+        } else if (playerOnMap == 2){
+            is = MapLoader.class.getResourceAsStream("/map2.txt");
+        }
+//        MapLoader.class.getResourceAsStream("/map.txt");
         Scanner scanner = new Scanner(is);
         int width = scanner.nextInt();
         int height = scanner.nextInt();
@@ -78,6 +85,10 @@ public class MapLoader {
                         case 'r':
                             cell.setType(CellType.FLOOR);
                             new Water(cell);
+                            break;
+                        case 't':
+                            cell.setType(CellType.FLOOR);
+                            new Stairs(cell);
                             break;
                         case 'u':
                             cell.setType(CellType.FLOOR);
