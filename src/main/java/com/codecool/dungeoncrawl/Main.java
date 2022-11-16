@@ -302,8 +302,7 @@ public class Main extends Application {
 
 
     private void refresh() {
-
-        if(map.getPlayer().getHealth() <= 0 ) {
+        if(map.getPlayer().isAlive() == false) {
             try {
                 SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);
                 gameOver(stage);

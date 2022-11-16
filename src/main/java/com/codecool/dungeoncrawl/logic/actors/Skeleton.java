@@ -15,8 +15,8 @@ public class Skeleton extends Actor {
     public Skeleton(Cell cell) {
         super(cell);
         cell.setSkeleton(this);
-        this.setStrength(3);
-        this.setHealth(5);
+        this.setStrength(2);
+        this.setHealth(10);
     }
 
     public static void monsterMove(List<Skeleton> skeletons, GameMap map) {
@@ -48,9 +48,9 @@ public class Skeleton extends Actor {
             cell.setActor(null);
             nextCell.setActor(this);
             cell = nextCell;
-        } else if (nextCell.getActor() != null) {
-            if (cell.getActor() instanceof Player) {
-                nextCell.getActor().fightWithMonster(this);
+        } else if (isEnemy(nextCell)) {
+            if (nextCell.getActor() instanceof Player) {
+                nextCell.getActor().fightWithMonster(cell.getActor());
             }
         }
     }

@@ -54,20 +54,22 @@ public abstract class Actor implements Drawable {
             Skeleton skeleton = skeletons.get(i);
             if (skeleton.getHealth() <= 0) {
                 skeletons.remove(skeleton);
-                skeleton.getCell().setSkeleton(null);
+                skeleton.getCell().setActor(null);
             }
         }
         for (int j = 0; j < liches.size(); j++) {
             Lich lich = liches.get(j);
             if (lich.getHealth() <= 0) {
                 liches.remove(lich);
-                lich.getCell().setLich(null);
+                lich.getCell().setActor(null);
             }
         }
     }
 
     protected void fightWithMonster(Actor actor) {
+        System.out.println(actor.getTileName());
         actor.setHealth(actor.getHealth() - this.getStrength());
+        System.out.println("Enemy life = " + actor.getHealth());
         if (actor.getHealth() > 0) {
             this.setHealth(this.getHealth() - actor.getStrength());
             SoundUtils.playSound(SoundUtils.HIT, 0.8f);
