@@ -16,7 +16,7 @@ import java.util.StringJoiner;
 
 public class Player extends Actor {
     private ArrayList<Item> inventory;
-    public static final int HEALTH = 25;
+    public static final int HEALTH = 35;
     public static final int ATTACK_STRENGTH = 5;
 
     public Player(Cell cell) {
