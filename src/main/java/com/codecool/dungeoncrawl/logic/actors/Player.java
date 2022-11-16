@@ -32,7 +32,6 @@ public class Player extends Actor {
         Set<String> developerNames = Set.of("natalia", "duc", "ola", "dawid");
         Cell nextCell = cell.getNeighbor(dx, dy);
         String smallName = name.toLowerCase();
-        System.out.println(developerNames.contains(smallName));
         if (nextCell.getNormalDoor() != null) {
             NormalDoor door = nextCell.getNormalDoor();
             if(door.getIsOpen()) {

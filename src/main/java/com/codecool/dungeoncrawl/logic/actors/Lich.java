@@ -41,7 +41,6 @@ public class Lich extends Actor {
         int max = 1;
         int randomPos = rand.nextInt(max - min) + min;
         int randomPosNext = rand.nextInt(max - min) + min;
-        System.out.println(randomPos);
         int x = player.getX();
         int y = player.getY();
         Cell currentCell = map.getCell(x, y);
