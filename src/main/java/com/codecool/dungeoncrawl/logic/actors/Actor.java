@@ -70,10 +70,18 @@ public abstract class Actor implements Drawable {
         actor.setHealth(actor.getHealth() - this.getStrength());
         if (actor.getHealth() > 0) {
             this.setHealth(this.getHealth() - actor.getStrength());
-            SoundUtils.playSound(SoundUtils.HIT, 0.8f);
+            playHitSound();
             if (this.getHealth() < 1) this.setAlive(false);
         } else {
             actor.getCell().setActor(null);
+        }
+    }
+
+    private void playHitSound() {
+        if (this.hasWeapon) {
+            SoundUtils.playSound(SoundUtils.SWORD_HIT, 0.8f);
+        } else {
+            SoundUtils.playSound(SoundUtils.HIT, 0.8f);
         }
     }
 

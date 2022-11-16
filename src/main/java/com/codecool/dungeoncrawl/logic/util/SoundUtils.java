@@ -14,6 +14,7 @@ public class SoundUtils {
 
     public static final String EAT = "/sounds/eat.wav";
     public static final String HIT = "/sounds/punch1.wav";
+    public static final String SWORD_HIT = "/sounds/sword_hit.wav";
     public static final String GAME_OVER = "/sounds/game_over.wav";
     public static final String BACKGROUND = "/sounds/background.wav";
     public static final String STEP = "/sounds/step.wav";
