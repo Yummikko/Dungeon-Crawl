@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic;
 
+import com.codecool.dungeoncrawl.graphics.GameCamera;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Lich;
 import com.codecool.dungeoncrawl.logic.actors.Player;
@@ -20,9 +21,10 @@ public class GameMap {
     private Lich lich;
     private Actor actor;
 
-    public List<Skeleton> skeletons = new ArrayList<>();
-    public List<Lich> lichs = new ArrayList<>();
+    private List<Skeleton> skeletons = new ArrayList<>();
+    private List<Lich> lichs = new ArrayList<>();
 
+    private GameCamera gameCamera;
 
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
@@ -90,4 +92,10 @@ public class GameMap {
     public List<Lich> getLichs() {
         return lichs;
     }
+
+    public GameCamera getGameCamera() {
+        return gameCamera;
+    }
+
+
 }

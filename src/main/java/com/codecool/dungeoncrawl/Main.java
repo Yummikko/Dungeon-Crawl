@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.graphics.GameCamera;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
@@ -35,24 +36,24 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 public class Main extends Application {
-    static GameMap map = MapLoader.loadMap("/map1.txt");
     public boolean gameOver = false;
     public final List<Skeleton> skeletons = new ArrayList<>();
     public final List<Lich> lichs = new ArrayList<>();
+
+    Stage stage;
     GameMap map1;
-//    GameMap map = MapLoader.loadMap("/map1.txt");
+    GameMap map = MapLoader.loadMap("/map1.txt");
+    GameCamera gameCamera = new GameCamera(0, 0, map);
     Canvas canvas = new Canvas(
-            map.getWidth() * Tiles.TILE_WIDTH,
-            map.getHeight() * Tiles.TILE_WIDTH);
+            25 * Tiles.TILE_WIDTH,
+            21 * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label nameLabel = new Label();
     Label healthLabel = new Label();
     Label strengthLabel = new Label();
-    Button pickUpButton = new Button("Pick up item");
     Label playerInventory = new Label("INVENTORY: ");
+    Button pickUpButton = new Button("Pick up item");
 
-
-    Stage stage;
 
     public static void main(String[] args) {
         launch(args);
@@ -106,7 +107,6 @@ public class Main extends Application {
 
         BorderPane menu = new BorderPane();
 
-        //menu.setBackground(new Background(new BackgroundFill(Color.rgb(100, 100, 100), CornerRadii.EMPTY, Insets.EMPTY)));
         menu.setPrefWidth(1084);
         menu.setPrefHeight(768);
         menu.setCenter(settings);
@@ -118,15 +118,58 @@ public class Main extends Application {
         scene.getStylesheets().add("style.css");
 
         primaryStage.setScene(scene);
-        //primaryStage.setTitle("Dungeon Crawl");
+        primaryStage.show();
+    }
+
+    public void gameRules(Stage primaryStage) throws FileNotFoundException {
+        Button startButton = new Button("Start the Game");
+        Button backButton = new Button("Back to Menu");
+
+        startButton.setId("buttons");
+        backButton.setId("buttons");
+
+
+        startButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
+            try {
+                gameStart(primaryStage);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        });
+
+        backButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
+            try {
+                mainMenu(primaryStage);
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
+
+        VBox buttons = new VBox(startButton, backButton);
+
+        buttons.setAlignment(Pos.BOTTOM_CENTER);
+        buttons.setSpacing(5);
+
+        BorderPane rulesLayout = new BorderPane();
+
+        rulesLayout.setCenter(buttons);
+        rulesLayout.setPrefWidth(1084);
+        rulesLayout.setPrefHeight(768);
+
+        Scene scene = new Scene(rulesLayout);
+        scene.getStylesheets().add("rules.css");
+
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 
     public void mainMenu(Stage primaryStage) throws FileNotFoundException, RuntimeException {
         Button startGameButton = new Button("Start new game");
+        Button rulesButton = new Button("Show game rules");
         Button exitGameButton = new Button("Exit Game");
 
         startGameButton.setId("buttons");
+        rulesButton.setId("buttons");
         exitGameButton.setId("buttons");
 
         startGameButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
@@ -136,11 +179,20 @@ public class Main extends Application {
                 fileNotFoundException.printStackTrace();
             }
         });
+
+        rulesButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
+            try {
+                gameRules(primaryStage);
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
+
         exitGameButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
             System.exit(0);
         });
 
-        VBox buttons = new VBox(startGameButton, exitGameButton);
+        VBox buttons = new VBox(startGameButton, rulesButton, exitGameButton);
 
         buttons.setAlignment(Pos.CENTER);
         buttons.setSpacing(10);
@@ -167,8 +219,8 @@ public class Main extends Application {
         mainMenu(primaryStage);
     }
 
-
-    public void gameStart(Stage primaryStage) throws Exception {
+    public void gameStart(Stage primaryStage) {
+        SoundUtils.playContinuously(SoundUtils.BACKGROUND, 0.5f);
         GridPane ui = new GridPane();
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
@@ -202,10 +254,9 @@ public class Main extends Application {
 
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
+        canvas.setScaleX(1.2);
+        canvas.setScaleY(1.2);
     }
-
-
-    // And From your main() method or any other method
 
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
@@ -252,7 +303,9 @@ public class Main extends Application {
         }
     }
 
-    public void gameOver(Stage primaryStage) throws Exception {
+    public void gameOver(Stage primaryStage) {
+        SoundUtils.stopAll();
+        SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);
 
         Button backToMenu = new Button("Back to Menu");
         Button exitGameButton = new Button("Exit Game");
@@ -303,13 +356,11 @@ public class Main extends Application {
 
 
     private void refresh() {
-
-        if(map.getPlayer().getHealth() <= 0 ) {
+        gameCamera.centerOnPlayer(map.getPlayer());
+        if (map.getPlayer().isAlive() == false) {
             try {
                 SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);
                 gameOver(stage);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -328,18 +379,17 @@ public class Main extends Application {
                     if (cell.getLich() != null)
                         if (lichs.size() < map.getLichs().size())
                             lichs.add(cell.getLich());
-                    Tiles.drawTile(context, cell.getActor(), x, y);
+                    Tiles.drawTile(context, cell.getActor(), (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
                 } else if (cell.getDoor() != null) {
                     if (cell.getDoor() instanceof NormalDoor)
                         map.getPlayer().openClosedDoor(cell.getNormalDoor());
-                    Tiles.drawTile(context, cell.getDoor(), x, y);
+                    Tiles.drawTile(context, cell.getDoor(), (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
                 } else if (cell.getItem() != null) {
-                    Tiles.drawTile(context, cell.getItem(), x, y);
+                    Tiles.drawTile(context, cell.getItem(), (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
                 } else if (cell.getEnviroment() != null) {
-                    Tiles.drawTile(context, cell.getEnviroment(), x, y);
-                }
-                else {
-                    Tiles.drawTile(context, cell, x, y);
+                    Tiles.drawTile(context, cell.getEnviroment(), (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
+                } else {
+                    Tiles.drawTile(context, cell, (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
                 }
             }
         }

@@ -7,12 +7,18 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SoundUtils {
 
     public static final String EAT = "/sounds/eat.wav";
     public static final String HIT = "/sounds/punch1.wav";
+    public static final String SWORD_HIT = "/sounds/sword_hit.wav";
     public static final String GAME_OVER = "/sounds/game_over.wav";
+    public static final String BACKGROUND = "/sounds/background.wav";
+    public static final String STEP = "/sounds/step.wav";
+    private static final List<Clip> playingClips = new ArrayList<>();
 
     private SoundUtils() {
     }
@@ -31,6 +37,19 @@ public class SoundUtils {
             System.out.println(e);
         }
         return null;
+    }
+
+    public static void playContinuously(String fileName, float volume) {
+        Clip clip = playSound(fileName, volume);
+        playingClips.add(clip);
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
+    }
+
+    public static void stopAll() {
+        for (int i = playingClips.size() - 1; i >= 0; --i) {
+            playingClips.get(i).close();
+            playingClips.remove(i);
+        }
     }
 
     public static void setVolume(float volume, Clip clip) {

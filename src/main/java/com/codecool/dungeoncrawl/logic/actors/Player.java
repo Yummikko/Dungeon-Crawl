@@ -20,8 +20,8 @@ import java.util.StringJoiner;
 
 public class Player extends Actor {
     private ArrayList<Item> inventory;
-    public static final int HEALTH = 20;
-    public static final int ATTACK_STRENGTH = 10;
+    public static final int HEALTH = 35;
+    public static final int ATTACK_STRENGTH = 5;
 
     public Player(Cell cell) {
         super(cell);
@@ -36,6 +36,7 @@ public class Player extends Actor {
     public void move(int dx, int dy) {
         Set<String> developerNames = Set.of("natalia", "duc", "ola", "dawid");
         Cell nextCell = cell.getNeighbor(dx, dy);
+        if (nextCell == null) return;
         String smallName = name.toLowerCase();
         if(nextCell.getType() == CellType.STAIRS) {
             GameMap map2 = MapLoader.loadMap("/map2.txt");
@@ -45,31 +46,31 @@ public class Player extends Actor {
             NormalDoor door = nextCell.getNormalDoor();
             if(door.getIsOpen()) {
                 door.setCell(new OpenDoor(door.getCell()).getCell());
-                cell.setActor(null);
-                nextCell.setActor(this);
-                cell = nextCell;
+                moveActor(nextCell);
                 return;
             }
             if (developerNames.contains(smallName)) {
-                cell.setActor(null);
-                nextCell.setActor(this);
-                cell = nextCell;
+                moveActor(nextCell);
                 return;
             }
         }
-        if (nextCell == null) return;
         if (isWall(nextCell) && !developerNames.contains(smallName)) {
             return;
         }
         if (nextCell.getActor() == null) {
-            cell.setActor(null);
-            nextCell.setActor(this);
-            cell = nextCell;
+            moveActor(nextCell);
             return;
         }
         if (isEnemy(nextCell)) {
-            this.fightWithMonster(nextCell.getActor());
+            cell.getActor().fightWithMonster(nextCell.getActor());
         }
+    }
+
+    private void moveActor(Cell nextCell) {
+        SoundUtils.playSound(SoundUtils.STEP, 0.7f);
+        cell.setActor(null);
+        nextCell.setActor(this);
+        cell = nextCell;
     }
 
     public String getTileName() {

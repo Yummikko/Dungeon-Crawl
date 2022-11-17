@@ -5,8 +5,8 @@ import com.codecool.dungeoncrawl.logic.Cell;
 public class Spider extends Actor{
     public Spider(Cell cell) {
         super(cell);
-        this.setStrength(5);
-        this.setHealth(10);
+        this.setStrength(3);
+        this.setHealth(30);
     }
 
     @Override

@@ -50,15 +50,16 @@ public class Lich extends Actor {
             if (currentCell.getNeighbor(randomPos, randomPosNext) == null || currentCell.getNeighbor(randomPos, randomPosNext).getSkeleton() != null) {
                 return;
             }
-            if (nextCell == null || nextCell.getNeighbor(randomPos, randomPosNext) == null || nextCell.getNeighbor(randomPos, randomPosNext).getType().equals(CellType.WALL) || nextCell.getType().equals(CellType.WALL)) {
+            else if (nextCell == null || nextCell.getNeighbor(randomPos, randomPosNext) == null || nextCell.getNeighbor(randomPos, randomPosNext).getType().equals(CellType.WALL) || nextCell.getType().equals(CellType.WALL)) {
                 return;
             }
-            else if (nextCell.getActor() != null) {
+            else {
+                lich.newMove(nextCell, lich);
+            }
+            if (isEnemy(nextCell.getNeighbor(randomPos, randomPosNext))) {
                 if (nextCell.getActor() instanceof Player) {
                     nextCell.getActor().fightWithMonster(lich);
                 }
-            } else {
-                lich.newMove(nextCell, lich);
             }
         } else
             return;

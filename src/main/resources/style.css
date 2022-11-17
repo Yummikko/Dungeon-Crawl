@@ -1,5 +1,6 @@
 .root{
     -fx-background-image: url("background.jpeg");
+    -fx-font-size: 26px;
     }
 
 .ui {
