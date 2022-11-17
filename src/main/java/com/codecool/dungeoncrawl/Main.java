@@ -32,9 +32,9 @@ public class Main extends Application {
     static GameMap map = MapLoader.loadMap("/map1.txt");
     public final List<Skeleton> skeletons = new ArrayList<>();
     public final List<Lich> lichs = new ArrayList<>();
+    static String playerName;
 
     Stage stage;
-    GameMap map1;
     GameCamera gameCamera = new GameCamera(0, 0, map);
     Canvas canvas = new Canvas(
             25 * Tiles.TILE_WIDTH,
@@ -80,8 +80,7 @@ public class Main extends Application {
 
         startButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
             try {
-                map1 = MapLoader.loadMap("/map1.txt");
-                map = map1;
+                playerName = textField.getText();
                 map.getPlayer().setName(textField.getText());
                 gameStart(primaryStage);
             } catch (Exception exception) {
@@ -349,6 +348,7 @@ public class Main extends Application {
 
     private void refresh() {
         gameCamera.centerOnPlayer(map.getPlayer());
+        System.out.println(map.getPlayer());
         if (map.getPlayer().isAlive() == false) {
             try {
                 SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);
@@ -393,6 +393,7 @@ public class Main extends Application {
 
     public static void setMap(GameMap map){
         Main.map = map;
+        map.getPlayer().setName(playerName);
     }
 
 }

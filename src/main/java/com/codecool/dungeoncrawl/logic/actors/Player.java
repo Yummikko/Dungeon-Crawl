@@ -41,6 +41,7 @@ public class Player extends Actor {
         if(nextCell.getType() == CellType.STAIRS) {
             GameMap map2 = MapLoader.loadMap("/map2.txt");
             Main.setMap(map2);
+
         }
         if (nextCell.getNormalDoor() != null) {
             NormalDoor door = nextCell.getNormalDoor();
