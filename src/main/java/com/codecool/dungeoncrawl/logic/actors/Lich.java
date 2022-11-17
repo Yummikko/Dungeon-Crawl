@@ -53,12 +53,13 @@ public class Lich extends Actor {
             else if (nextCell == null || nextCell.getNeighbor(randomPos, randomPosNext) == null || nextCell.getNeighbor(randomPos, randomPosNext).getType().equals(CellType.WALL) || nextCell.getType().equals(CellType.WALL)) {
                 return;
             }
-            else if (isEnemy(nextCell)) {
+            else {
+                lich.newMove(nextCell, lich);
+            }
+            if (isEnemy(nextCell.getNeighbor(randomPos, randomPosNext))) {
                 if (nextCell.getActor() instanceof Player) {
                     nextCell.getActor().fightWithMonster(lich);
                 }
-            } else {
-                lich.newMove(nextCell, lich);
             }
         } else
             return;

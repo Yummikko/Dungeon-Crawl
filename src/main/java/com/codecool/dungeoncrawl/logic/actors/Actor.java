@@ -67,7 +67,7 @@ public abstract class Actor implements Drawable {
     }
 
     protected void fightWithMonster(Actor actor) {
-        System.out.println(actor.getTileName());
+        System.out.println("Fight with " + actor.getTileName());
         actor.setHealth(actor.getHealth() - this.getStrength());
         System.out.println("Enemy life = " + actor.getHealth());
         if (actor.getHealth() > 0) {
