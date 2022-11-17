@@ -13,9 +13,12 @@ import com.codecool.dungeoncrawl.logic.enviroment.Stairs;
 import com.codecool.dungeoncrawl.logic.items.Weapon;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class MapLoader {
+    private static List<GameMap> maps = new ArrayList<>();
     public static GameMap loadMap(String mapname) {
         InputStream is = MapLoader.class.getResourceAsStream(mapname);
 
@@ -26,6 +29,7 @@ public class MapLoader {
         scanner.nextLine(); // empty line
 
         GameMap map = new GameMap(width, height, CellType.EMPTY);
+        maps.add(map);
         for (int y = 0; y < height; y++) {
             String line = scanner.nextLine();
             for (int x = 0; x < width; x++) {
