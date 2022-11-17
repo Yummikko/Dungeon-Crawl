@@ -33,21 +33,20 @@ public class Main extends Application {
     public final List<Skeleton> skeletons = new ArrayList<>();
     public final List<Lich> lichs = new ArrayList<>();
 
+    Stage stage;
     GameMap map1;
-    GameMap map = MapLoader.loadMap();
+    GameMap map = MapLoader.loadMap("/map2.txt");
     GameCamera gameCamera = new GameCamera(0, 0, map);
     Canvas canvas = new Canvas(
-            (int) (map.getWidth() * Tiles.TILE_WIDTH - gameCamera.getxOffset()),
-            (int) (map.getHeight() * Tiles.TILE_WIDTH - gameCamera.getyOffset()));
+            25 * Tiles.TILE_WIDTH,
+            21 * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label nameLabel = new Label();
     Label healthLabel = new Label();
     Label strengthLabel = new Label();
-    Button pickUpButton = new Button("Pick up item");
     Label playerInventory = new Label("INVENTORY: ");
+    Button pickUpButton = new Button("Pick up item");
 
-
-    Stage stage;
 
     public static void main(String[] args) {
         launch(args);
@@ -82,9 +81,6 @@ public class Main extends Application {
 
         startButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
             try {
-                map1 = MapLoader.loadMap();
-                map = map1;
-                gameCamera = new GameCamera(0, 0, map);
                 map.getPlayer().setName(textField.getText());
                 gameStart(primaryStage);
             } catch (Exception exception) {
@@ -102,7 +98,6 @@ public class Main extends Application {
 
         BorderPane menu = new BorderPane();
 
-        //menu.setBackground(new Background(new BackgroundFill(Color.rgb(100, 100, 100), CornerRadii.EMPTY, Insets.EMPTY)));
         menu.setPrefWidth(1084);
         menu.setPrefHeight(768);
         menu.setCenter(settings);
@@ -114,15 +109,16 @@ public class Main extends Application {
         scene.getStylesheets().add("style.css");
 
         primaryStage.setScene(scene);
-        //primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
     }
 
     public void mainMenu(Stage primaryStage) throws FileNotFoundException, RuntimeException {
         Button startGameButton = new Button("Start new game");
+        Button rulesButton = new Button("Show game rules");
         Button exitGameButton = new Button("Exit Game");
 
         startGameButton.setId("buttons");
+        rulesButton.setId("buttons");
         exitGameButton.setId("buttons");
 
         startGameButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
@@ -199,9 +195,6 @@ public class Main extends Application {
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
     }
-
-
-    // And From your main() method or any other method
 
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
