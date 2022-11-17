@@ -8,9 +8,6 @@ import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Lich;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
-import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
-import com.codecool.dungeoncrawl.logic.items.Item;
-import com.codecool.dungeoncrawl.logic.items.Key;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -27,22 +24,17 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javax.sound.sampled.Line;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class Main extends Application {
-    public boolean gameOver = false;
+    static GameMap map = MapLoader.loadMap("/map1.txt");
     public final List<Skeleton> skeletons = new ArrayList<>();
     public final List<Lich> lichs = new ArrayList<>();
 
     Stage stage;
     GameMap map1;
-    GameMap map = MapLoader.loadMap("/map1.txt");
     GameCamera gameCamera = new GameCamera(0, 0, map);
     Canvas canvas = new Canvas(
             25 * Tiles.TILE_WIDTH,
