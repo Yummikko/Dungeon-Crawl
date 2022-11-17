@@ -114,6 +114,48 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    public void gameRules(Stage primaryStage) throws FileNotFoundException {
+        Button startButton = new Button("Start the Game");
+        Button backButton = new Button("Back to Menu");
+
+        startButton.setId("buttons");
+        backButton.setId("buttons");
+
+
+        startButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
+            try {
+                gameStart(primaryStage);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        });
+
+        backButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
+            try {
+                mainMenu(primaryStage);
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
+
+        VBox buttons = new VBox(startButton, backButton);
+
+        buttons.setAlignment(Pos.BOTTOM_CENTER);
+        buttons.setSpacing(5);
+
+        BorderPane rulesLayout = new BorderPane();
+
+        rulesLayout.setCenter(buttons);
+        rulesLayout.setPrefWidth(1084);
+        rulesLayout.setPrefHeight(768);
+
+        Scene scene = new Scene(rulesLayout);
+        scene.getStylesheets().add("rules.css");
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
     public void mainMenu(Stage primaryStage) throws FileNotFoundException, RuntimeException {
         Button startGameButton = new Button("Start new game");
         Button rulesButton = new Button("Show game rules");
@@ -130,11 +172,20 @@ public class Main extends Application {
                 fileNotFoundException.printStackTrace();
             }
         });
+
+        rulesButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
+            try {
+                gameRules(primaryStage);
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
+
         exitGameButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
             System.exit(0);
         });
 
-        VBox buttons = new VBox(startGameButton, exitGameButton);
+        VBox buttons = new VBox(startGameButton, rulesButton, exitGameButton);
 
         buttons.setAlignment(Pos.CENTER);
         buttons.setSpacing(10);
