@@ -27,18 +27,6 @@ public abstract class Actor implements Drawable {
 
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
-        if (nextCell.getType() == CellType.STAIRS) {
-            if (this instanceof Player) {
-                if (((Player) this).getPlayerOnMap() == 1) {
-                    ((Player) this).setPlayerOnMap(2);
-                    ((Player) this).setChangeMap(true);
-//                } else if (((Player) this).getPlayerOnMap() == 2) {
-//                    ((Player) this).setPlayerOnMap(3);
-//                    ((Player) this).setChangeMap(true);
-                }
-            }
-        }
-
         if (nextCell.getNormalDoor() != null) {
             NormalDoor door = nextCell.getNormalDoor();
             if(door.getIsOpen()) {

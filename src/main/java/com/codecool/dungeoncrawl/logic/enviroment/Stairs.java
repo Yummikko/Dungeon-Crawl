@@ -4,7 +4,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.items.Item;
 
 
-public class Stairs extends Item {
+public class Stairs extends Enviroment {
     public Stairs(Cell cell){super(cell);}
 
     @Override

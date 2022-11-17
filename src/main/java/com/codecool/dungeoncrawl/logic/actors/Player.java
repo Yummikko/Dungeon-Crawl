@@ -1,6 +1,10 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
+import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
+import com.codecool.dungeoncrawl.logic.GameMap;
+import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.items.Food;
@@ -18,16 +22,14 @@ public class Player extends Actor {
     private ArrayList<Item> inventory;
     public static final int HEALTH = 20;
     public static final int ATTACK_STRENGTH = 10;
-    private int playerOnMap;
-    private boolean changeMap = false;
 
     public Player(Cell cell) {
         super(cell);
-//        cell.setPlayer(this);
+        cell.setPlayer(this);
         this.setHealth(HEALTH);
         this.setStrength(ATTACK_STRENGTH);
         this.inventory = new ArrayList<>();
-        setPlayerOnMap(1);
+//        setPlayerOnMap(1);
     }
 
     @Override
@@ -35,6 +37,10 @@ public class Player extends Actor {
         Set<String> developerNames = Set.of("natalia", "duc", "ola", "dawid");
         Cell nextCell = cell.getNeighbor(dx, dy);
         String smallName = name.toLowerCase();
+        if(nextCell.getType() == CellType.STAIRS) {
+            GameMap map2 = MapLoader.loadMap("/map2.txt");
+            Main.setMap(map2);
+        }
         if (nextCell.getNormalDoor() != null) {
             NormalDoor door = nextCell.getNormalDoor();
             if(door.getIsOpen()) {
@@ -68,22 +74,6 @@ public class Player extends Actor {
 
     public String getTileName() {
         return "player";
-    }
-
-    public boolean getChangeMap() {
-        return changeMap;
-    }
-
-    public void setChangeMap(boolean changeMap) {
-        this.changeMap = changeMap;
-    }
-
-    public int getPlayerOnMap() {
-        return playerOnMap;
-    }
-
-    public void setPlayerOnMap(int playerOnMap) {
-        this.playerOnMap = playerOnMap;
     }
 
     public void addToInventory(Item item) {
