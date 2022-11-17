@@ -24,6 +24,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.awt.*;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -198,6 +200,8 @@ public class Main extends Application {
 
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
+        canvas.setScaleX(1.2);
+        canvas.setScaleY(1.2);
     }
 
 
@@ -343,4 +347,14 @@ public class Main extends Application {
         strengthLabel.setText("" + map.getPlayer().getStrength());
         playerInventory.setText("" + map.getPlayer().inventoryToString());
     }
+
+//    protected void zoomIn(Canvas g) {
+//        Graphics2D g2 = (Graphics2D) g;
+//        int w = (int)(canvas.getWidth());// real width of canvas
+//        int h = (int)(canvas.getHeight());// real height of canvas
+//// Translate used to make sure scale is centered
+//        g2.translate(w/2, h/2);
+//        g2.scale(1.5, 1.5);
+//        g2.translate(-w/2, -h/2);
+//    }
 }
