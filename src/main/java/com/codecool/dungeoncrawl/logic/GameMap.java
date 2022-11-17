@@ -94,7 +94,6 @@ public class GameMap {
     }
 
     public GameCamera getGameCamera() {
-        GameCamera gameCamera = new GameCamera(0, 0, this);
         return gameCamera;
     }
 
