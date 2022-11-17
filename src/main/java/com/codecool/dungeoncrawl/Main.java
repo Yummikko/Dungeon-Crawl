@@ -301,48 +301,46 @@ public class Main extends Application {
 
 
     private void refresh() {
-        if (map.getPlayer().getHealth() <= 0) {
-            gameCamera.centerOnPlayer(map.getPlayer());
-            if (map.getPlayer().isAlive() == false) {
-                try {
-                    SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);
-                    gameOver(stage);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
+        gameCamera.centerOnPlayer(map.getPlayer());
+        if (map.getPlayer().isAlive() == false) {
+            try {
+                SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);
+                gameOver(stage);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
-
-            checkIfOnItem();
-            context.setFill(Color.BLACK);
-            context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-            for (int x = 0; x < map.getWidth(); x++) {
-                for (int y = 0; y < map.getHeight(); y++) {
-                    Cell cell = map.getCell(x, y);
-                    if (cell.getActor() != null) {
-                        if (cell.getSkeleton() != null)
-                            if (skeletons.size() < map.getSkeletons().size())
-                                skeletons.add(cell.getSkeleton());
-                        if (cell.getLich() != null)
-                            if (lichs.size() < map.getLichs().size())
-                                lichs.add(cell.getLich());
-                        Tiles.drawTile(context, cell.getActor(), (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
-                    } else if (cell.getDoor() != null) {
-                        if (cell.getDoor() instanceof NormalDoor)
-                            map.getPlayer().openClosedDoor(cell.getNormalDoor());
-                        Tiles.drawTile(context, cell.getDoor(), (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
-                    } else if (cell.getItem() != null) {
-                        Tiles.drawTile(context, cell.getItem(), (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
-                    } else if (cell.getEnviroment() != null) {
-                        Tiles.drawTile(context, cell.getEnviroment(), (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
-                    } else {
-                        Tiles.drawTile(context, cell, (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
-                    }
-                }
-            }
-            nameLabel.setText("" + map.getPlayer().getName());
-            healthLabel.setText("" + map.getPlayer().getHealth());
-            strengthLabel.setText("" + map.getPlayer().getStrength());
-            playerInventory.setText("" + map.getPlayer().inventoryToString());
         }
+
+        checkIfOnItem();
+        context.setFill(Color.BLACK);
+        context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        for (int x = 0; x < map.getWidth(); x++) {
+            for (int y = 0; y < map.getHeight(); y++) {
+                Cell cell = map.getCell(x, y);
+                if (cell.getActor() != null) {
+                    if (cell.getSkeleton() != null)
+                        if (skeletons.size() < map.getSkeletons().size())
+                            skeletons.add(cell.getSkeleton());
+                    if (cell.getLich() != null)
+                        if (lichs.size() < map.getLichs().size())
+                            lichs.add(cell.getLich());
+                    Tiles.drawTile(context, cell.getActor(), (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
+                } else if (cell.getDoor() != null) {
+                    if (cell.getDoor() instanceof NormalDoor)
+                        map.getPlayer().openClosedDoor(cell.getNormalDoor());
+                    Tiles.drawTile(context, cell.getDoor(), (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
+                } else if (cell.getItem() != null) {
+                    Tiles.drawTile(context, cell.getItem(), (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
+                } else if (cell.getEnviroment() != null) {
+                    Tiles.drawTile(context, cell.getEnviroment(), (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
+                } else {
+                    Tiles.drawTile(context, cell, (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
+                }
+            }
+        }
+        nameLabel.setText("" + map.getPlayer().getName());
+        healthLabel.setText("" + map.getPlayer().getHealth());
+        strengthLabel.setText("" + map.getPlayer().getStrength());
+        playerInventory.setText("" + map.getPlayer().inventoryToString());
     }
 }
