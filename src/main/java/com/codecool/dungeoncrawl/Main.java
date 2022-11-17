@@ -35,7 +35,7 @@ public class Main extends Application {
 
     Stage stage;
     GameMap map1;
-    GameMap map = MapLoader.loadMap("/map2.txt");
+    GameMap map = MapLoader.loadMap("/map.txt");
     GameCamera gameCamera = new GameCamera(0, 0, map);
     Canvas canvas = new Canvas(
             25 * Tiles.TILE_WIDTH,
