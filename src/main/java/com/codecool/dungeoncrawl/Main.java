@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.graphics.GameCamera;
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
@@ -346,6 +347,12 @@ public class Main extends Application {
         map.getLichs().clear();
     }
 
+    public void checkForWin() {
+        if (map.getPlayer().inventoryToString().contains("crown")) {
+            System.out.println("---------------------  YOU WON!!!  -----------------------");
+        }
+    }
+
 
     private void refresh() {
         gameCamera.centerOnPlayer(map.getPlayer());
@@ -359,6 +366,7 @@ public class Main extends Application {
         }
 
         checkIfOnItem();
+        checkForWin();
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         for (int x = 0; x < map.getWidth(); x++) {

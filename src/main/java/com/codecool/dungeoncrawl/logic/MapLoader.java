@@ -7,6 +7,7 @@ import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.enviroment.Bridge;
 import com.codecool.dungeoncrawl.logic.enviroment.Skull;
 import com.codecool.dungeoncrawl.logic.enviroment.Water;
+import com.codecool.dungeoncrawl.logic.items.Crown;
 import com.codecool.dungeoncrawl.logic.items.Food;
 import com.codecool.dungeoncrawl.logic.items.Key;
 import com.codecool.dungeoncrawl.logic.enviroment.Stairs;
@@ -79,7 +80,7 @@ public class MapLoader {
                             new Weapon(cell);
                             break;
                         case 'r':
-                            cell.setType(CellType.FLOOR);
+                            cell.setType(CellType.WATER);
                             new Water(cell);
                             break;
                         case 't':
@@ -87,8 +88,12 @@ public class MapLoader {
                             new Stairs(cell);
                             break;
                         case 'u':
-                            cell.setType(CellType.FLOOR);
+                            cell.setType(CellType.SKULL);
                             new Skull(cell);
+                            break;
+                        case 'c':
+                            cell.setType(CellType.FLOOR);
+                            new Crown(cell);
                             break;
                         case 'b':
                             cell.setType(CellType.FLOOR);
