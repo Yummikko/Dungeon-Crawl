@@ -73,9 +73,12 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             Player nextPlayer = new Player(cell);
                             map.setPlayer(nextPlayer);
-                            if(maps.size() >= 1) {
+                            if(maps.size() == 1) {
                                 nextPlayer.setName(maps.get(0).getPlayer().getName());
                                 nextPlayer.setInventory(maps.get(0).getPlayer().getInventory());
+                            } else if (maps.size() == 2) {
+                                nextPlayer.setName(maps.get(1).getPlayer().getName());
+                                nextPlayer.setInventory(maps.get(1).getPlayer().getInventory());
                             }
                             break;
                         case 'f':
