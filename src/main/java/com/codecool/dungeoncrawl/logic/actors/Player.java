@@ -39,9 +39,7 @@ public class Player extends Actor {
         if (nextCell == null) return;
         String smallName = name.toLowerCase();
         if(nextCell.getType() == CellType.STAIRS) {
-            GameMap map2 = MapLoader.loadMap("/map2.txt");
-            Main.setMap(map2);
-
+            Main.setMap();
         }
         if (nextCell.getNormalDoor() != null) {
             NormalDoor door = nextCell.getNormalDoor();
@@ -56,9 +54,6 @@ public class Player extends Actor {
             }
         }
         if (isWall(nextCell) && !developerNames.contains(smallName)) {
-            return;
-        }
-        if(isWater(nextCell) || isSkull(nextCell)){
             return;
         }
         if (nextCell.getActor() == null) {

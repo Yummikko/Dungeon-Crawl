@@ -2,7 +2,6 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.graphics.GameCamera;
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
@@ -33,10 +32,10 @@ public class Main extends Application {
     static GameMap map = MapLoader.loadMap("/map1.txt");
     public final List<Skeleton> skeletons = new ArrayList<>();
     public final List<Lich> lichs = new ArrayList<>();
-    static String playerName;
 
     Stage stage;
-    GameCamera gameCamera = new GameCamera(0, 0, map);
+    static GameMap map1;
+    static GameCamera gameCamera = new GameCamera(0, 0, map);
     Canvas canvas = new Canvas(
             25 * Tiles.TILE_WIDTH,
             21 * Tiles.TILE_WIDTH);
@@ -81,7 +80,8 @@ public class Main extends Application {
 
         startButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
             try {
-                playerName = textField.getText();
+                map1 = MapLoader.loadMap("/map1.txt");
+                map = map1;
                 map.getPlayer().setName(textField.getText());
                 gameStart(primaryStage);
             } catch (Exception exception) {
@@ -346,16 +346,9 @@ public class Main extends Application {
         map.getLichs().clear();
     }
 
-    public void checkForWin() {
-        if (map.getPlayer().inventoryToString().contains("crown")) {
-            System.out.println("---------------------  YOU WON!!!  -----------------------");
-        }
-    }
-
 
     private void refresh() {
         gameCamera.centerOnPlayer(map.getPlayer());
-        System.out.println(map.getPlayer());
         if (map.getPlayer().isAlive() == false) {
             try {
                 SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);
@@ -366,7 +359,6 @@ public class Main extends Application {
         }
 
         checkIfOnItem();
-        checkForWin();
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         for (int x = 0; x < map.getWidth(); x++) {
@@ -399,9 +391,10 @@ public class Main extends Application {
         playerInventory.setText("" + map.getPlayer().inventoryToString());
     }
 
-    public static void setMap(GameMap map){
-        Main.map = map;
-        map.getPlayer().setName(playerName);
+    public static void setMap(){
+        MapLoader.maps.add(map);
+        GameMap map2 = MapLoader.loadMap("/map2.txt");
+        map = map2;
     }
 
 }

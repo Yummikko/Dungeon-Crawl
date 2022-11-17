@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MapLoader {
-    private static List<GameMap> maps = new ArrayList<>();
+    public static List<GameMap> maps = new ArrayList<>();
     public static GameMap loadMap(String mapname) {
         InputStream is = MapLoader.class.getResourceAsStream(mapname);
 
@@ -30,7 +30,6 @@ public class MapLoader {
         scanner.nextLine(); // empty line
 
         GameMap map = new GameMap(width, height, CellType.EMPTY);
-        maps.add(map);
         for (int y = 0; y < height; y++) {
             String line = scanner.nextLine();
             for (int x = 0; x < width; x++) {
@@ -73,7 +72,20 @@ public class MapLoader {
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
-                            map.setPlayer(new Player(cell));
+                            Player nextPlayer = new Player(cell);
+                            map.setPlayer(nextPlayer);
+                            for (int i = 0; i < maps.size(); i++) {
+                                for (int j = 1; j < maps.size()+j; j++) {
+                                    if(maps.size() == j) {
+                                        nextPlayer.setName(maps.get(i).getPlayer().getName());
+                                        nextPlayer.setInventory(maps.get(i).getPlayer().getInventory());
+                                        nextPlayer.setHealth(maps.get(i).getPlayer().getHealth());
+                                        nextPlayer.setStrength(maps.get(i).getPlayer().getStrength());
+                                        break;
+                                    }
+                                }
+                            }
+
                             break;
                         case 'f':
                             cell.setType(CellType.FLOOR);
@@ -116,5 +128,4 @@ public class MapLoader {
         }
         return map;
     }
-
 }
