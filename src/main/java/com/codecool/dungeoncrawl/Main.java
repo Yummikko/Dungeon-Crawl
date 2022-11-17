@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.graphics.GameCamera;
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
@@ -391,9 +392,25 @@ public class Main extends Application {
         playerInventory.setText("" + map.getPlayer().inventoryToString());
     }
 
+    public static String getNextMap(List maps) {
+        int mapsSize = maps.size();
+        String mapName = "";
+        switch (mapsSize) {
+            case 1:
+                mapName = "/map2.txt";
+                break;
+            case 2:
+                mapName = "/map3.txt";
+                break;
+        }
+        return mapName;
+    }
+
     public static void setMap(){
         MapLoader.maps.add(map);
-        GameMap map2 = MapLoader.loadMap("/map2.txt");
+        List maps = MapLoader.maps;
+        String mapName = getNextMap(maps);
+        GameMap map2 = MapLoader.loadMap(mapName);
         map = map2;
     }
 
