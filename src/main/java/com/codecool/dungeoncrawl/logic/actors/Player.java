@@ -39,7 +39,7 @@ public class Player extends Actor {
         if (nextCell == null) return;
         String smallName = name.toLowerCase();
         if(nextCell.getType() == CellType.STAIRS) {
-            GameMap map2 = MapLoader.loadMap("/map1.txt");
+            GameMap map2 = MapLoader.loadMap("/map2.txt");
             Main.setMap(map2);
 
         }
