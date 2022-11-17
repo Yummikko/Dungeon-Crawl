@@ -45,22 +45,27 @@ public class Lich extends Actor {
         int x = player.getX();
         int y = player.getY();
         Cell currentCell = map.getCell(x, y);
-        Cell nextCell = map.getCell(x+randomPosNext, y+randomPosNext);
+        Cell nextCell = map.getCell(x + randomPosNext, y + randomPosNext);
         if (x + randomPosNext < map.getWidth() || y + randomPosNext < map.getHeight()) {
-            if (currentCell.getNeighbor(randomPos, randomPosNext) == null || currentCell.getNeighbor(randomPos, randomPosNext).getSkeleton() != null) {
+            if (currentCell.getNeighbor(randomPos, randomPosNext) == null
+            || currentCell.getNeighbor(randomPos, randomPosNext).getSkeleton() != null
+            || currentCell.getNeighbor(randomPos, randomPosNext).getPlayer() != null
+            || nextCell.getNeighbor(randomPos, randomPosNext).getPlayer() != null)
+            {
                 return;
-            }
-            else if (nextCell == null || nextCell.getNeighbor(randomPos, randomPosNext) == null || nextCell.getNeighbor(randomPos, randomPosNext).getType().equals(CellType.WALL) || nextCell.getType().equals(CellType.WALL)) {
+            } else if (nextCell == null || nextCell.getNeighbor(randomPos, randomPosNext) == null
+            || nextCell.getNeighbor(randomPos, randomPosNext).getType().equals(CellType.WALL)
+            || nextCell.getType().equals(CellType.WALL)) {
                 return;
-            }
-            else {
+            } else if (randomPosNext == 0 || randomPos == 0) {
+                return;
+            } else
                 lich.newMove(nextCell, lich);
-            }
-            if (isEnemy(nextCell.getNeighbor(randomPos, randomPosNext))) {
-                if (nextCell.getActor() instanceof Player) {
-                    nextCell.getActor().fightWithMonster(lich);
+                if (isEnemy(nextCell.getNeighbor(randomPos, randomPosNext))) {
+                    if (nextCell.getActor() instanceof Player) {
+                        nextCell.getActor().fightWithMonster(lich);
+                    }
                 }
-            }
         } else
             return;
     }
