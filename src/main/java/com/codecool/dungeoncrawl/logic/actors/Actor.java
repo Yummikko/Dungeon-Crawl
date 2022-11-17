@@ -96,6 +96,14 @@ public abstract class Actor implements Drawable {
         return nextCell.getType().equals(CellType.WALL);
     }
 
+    protected static boolean isWater(Cell nextCell) {
+        return nextCell.getType().equals(CellType.WATER);
+    }
+
+    protected static boolean isSkull(Cell nextCell) {
+        return nextCell.getType().equals(CellType.SKULL);
+    }
+
     protected static boolean isEnemy(Cell nextCell) {
         return nextCell.getActor() != null;
     }
