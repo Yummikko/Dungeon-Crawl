@@ -16,8 +16,8 @@ public class GameCamera {
 
     public void centerOnPlayer(Player player) {
         if (map.getWidth() == 28) {
-            xOffset = 0;
-            yOffset = 0;
+            xOffset = player.getX() - map.getWidth() / 2;
+            yOffset = player.getY() - map.getHeight() / 2;
         } else if (map.getWidth() == 89) {
             xOffset = player.getX() - map.getWidth() / 2 + 20;
             yOffset = player.getY() - map.getHeight() / 2;
