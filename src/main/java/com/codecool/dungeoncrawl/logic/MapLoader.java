@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MapLoader {
-    private static List<GameMap> maps = new ArrayList<>();
+    public static List<GameMap> maps = new ArrayList<>();
     public static GameMap loadMap(String mapname) {
         InputStream is = MapLoader.class.getResourceAsStream(mapname);
 
@@ -29,7 +29,6 @@ public class MapLoader {
         scanner.nextLine(); // empty line
 
         GameMap map = new GameMap(width, height, CellType.EMPTY);
-        maps.add(map);
         for (int y = 0; y < height; y++) {
             String line = scanner.nextLine();
             for (int x = 0; x < width; x++) {
@@ -72,7 +71,12 @@ public class MapLoader {
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
-                            map.setPlayer(new Player(cell));
+                            Player nextPlayer = new Player(cell);
+                            map.setPlayer(nextPlayer);
+                            if(maps.size() >= 1) {
+                                nextPlayer.setName(maps.get(0).getPlayer().getName());
+                                nextPlayer.setInventory(maps.get(0).getPlayer().getInventory());
+                            }
                             break;
                         case 'f':
                             cell.setType(CellType.FLOOR);
@@ -111,5 +115,4 @@ public class MapLoader {
         }
         return map;
     }
-
 }

@@ -34,8 +34,8 @@ public class Main extends Application {
     public final List<Lich> lichs = new ArrayList<>();
 
     Stage stage;
-    GameMap map1;
-    GameCamera gameCamera = new GameCamera(0, 0, map);
+    static GameMap map1;
+    static GameCamera gameCamera = new GameCamera(0, 0, map);
     Canvas canvas = new Canvas(
             25 * Tiles.TILE_WIDTH,
             21 * Tiles.TILE_WIDTH);
@@ -391,8 +391,10 @@ public class Main extends Application {
         playerInventory.setText("" + map.getPlayer().inventoryToString());
     }
 
-    public static void setMap(GameMap map){
-        Main.map = map;
+    public static void setMap(){
+        MapLoader.maps.add(map);
+        GameMap map2 = MapLoader.loadMap("/map2.txt");
+        map = map2;
     }
 
 }
