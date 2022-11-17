@@ -3,8 +3,6 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
-import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.items.Food;
@@ -53,7 +51,7 @@ public class Player extends Actor {
                 return;
             }
         }
-        if (isWall(nextCell) && !developerNames.contains(smallName)) {
+        if (isNotWalkable(nextCell) && !developerNames.contains(smallName)) {
             return;
         }
         if (nextCell.getActor() == null) {

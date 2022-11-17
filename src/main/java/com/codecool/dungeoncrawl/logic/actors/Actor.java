@@ -1,15 +1,14 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
-import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
-import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
 
 import java.util.List;
+import java.util.Set;
 
 public abstract class Actor implements Drawable {
     protected String name;
@@ -36,7 +35,7 @@ public abstract class Actor implements Drawable {
                 door.setCell(new OpenDoor(door.getCell()).getCell());
             }
         }
-        if (isWall(nextCell)) {
+        if (isNotWalkable(nextCell)) {
             return;
         } else if (nextCell.getActor() == null) {
             cell.setActor(null);
@@ -92,12 +91,9 @@ public abstract class Actor implements Drawable {
 
     public void setName(String name) { this.name = name; }
 
-    protected static boolean isWall(Cell nextCell) {
-        return nextCell.getType().equals(CellType.WALL);
-    }
-
-    protected static boolean isWater(Cell nextCell) {
-        return nextCell.getType().equals(CellType.WATER);
+    protected static boolean isNotWalkable(Cell nextCell) {
+        Set<CellType> walkableCells = Set.of(CellType.FLOOR, CellType.STAIRS, CellType.CROWN);
+        return !walkableCells.contains(nextCell.getType());
     }
 
     protected static boolean isSkull(Cell nextCell) {
