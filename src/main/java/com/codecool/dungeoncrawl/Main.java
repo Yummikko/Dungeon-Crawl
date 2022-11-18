@@ -339,7 +339,7 @@ public class Main extends Application {
 
     private void refresh() {
         gameCamera.centerOnPlayer(map.getPlayer());
-        if (map.getPlayer().isAlive() == false) {
+        if (!map.getPlayer().isAlive()) {
             try {
                 SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);
                 gameOver(stage);
@@ -349,8 +349,12 @@ public class Main extends Application {
         }
 
         checkIfOnItem();
-        context.setFill(Color.BLACK);
+
+        context.setFill(Color.rgb(32, 62, 84));
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
+        float xOffset = gameCamera.getxOffset();
+        float yOffset = gameCamera.getyOffset();
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
                 Cell cell = map.getCell(x, y);
@@ -361,17 +365,17 @@ public class Main extends Application {
                     if (cell.getLich() != null)
                         if (lichs.size() < map.getLichs().size())
                             lichs.add(cell.getLich());
-                    Tiles.drawTile(context, cell.getActor(), (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
+                    Tiles.drawTile(context, cell.getActor(), (int) (x - xOffset), (int) (y - yOffset));
                 } else if (cell.getDoor() != null) {
                     if (cell.getDoor() instanceof NormalDoor)
                         map.getPlayer().openClosedDoor(cell.getNormalDoor());
-                    Tiles.drawTile(context, cell.getDoor(), (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
+                    Tiles.drawTile(context, cell.getDoor(), (int) (x - xOffset), (int) (y - yOffset));
                 } else if (cell.getItem() != null) {
-                    Tiles.drawTile(context, cell.getItem(), (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
+                    Tiles.drawTile(context, cell.getItem(), (int) (x - xOffset), (int) (y - yOffset));
                 } else if (cell.getEnviroment() != null) {
-                    Tiles.drawTile(context, cell.getEnviroment(), (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
+                    Tiles.drawTile(context, cell.getEnviroment(), (int) (x - xOffset), (int) (y - yOffset));
                 } else {
-                    Tiles.drawTile(context, cell, (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
+                    Tiles.drawTile(context, cell, (int) (x - xOffset), (int) (y - yOffset));
                 }
             }
         }
