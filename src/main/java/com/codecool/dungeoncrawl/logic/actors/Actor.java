@@ -92,7 +92,7 @@ public abstract class Actor implements Drawable {
     public void setName(String name) { this.name = name; }
 
     protected static boolean isNotWalkable(Cell nextCell) {
-        Set<CellType> walkableCells = Set.of(CellType.FLOOR, CellType.STAIRS, CellType.CROWN);
+        Set<CellType> walkableCells = Set.of(CellType.FLOOR, CellType.STAIRS, CellType.CROWN, CellType.WATER);
         return !walkableCells.contains(nextCell.getType());
     }
 
