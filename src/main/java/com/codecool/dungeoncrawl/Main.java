@@ -53,6 +53,7 @@ public class Main extends Application {
     Button rulesButton = new Button("Show game rules");
     Button exitGameButton = new Button("Exit Game");
 
+
     public static void main(String[] args) { launch(args); }
 
     public void hideButton() { pickUpButton.setVisible(false); }
@@ -152,12 +153,13 @@ public class Main extends Application {
     }
 
     public void mainMenu(Stage primaryStage) throws FileNotFoundException, RuntimeException {
+        Button startGameButton = new Button("Start the Game");
 
-        startButton.setId("buttons");
+        startGameButton.setId("buttons");
         rulesButton.setId("buttons");
         exitGameButton.setId("buttons");
 
-        startButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
+        startGameButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
             try {
                 gameSettings(primaryStage);
             } catch (FileNotFoundException fileNotFoundException) {
@@ -177,7 +179,7 @@ public class Main extends Application {
             System.exit(0);
         });
 
-        VBox buttons = new VBox(startButton, rulesButton, exitGameButton);
+        VBox buttons = new VBox(startGameButton, rulesButton, exitGameButton);
 
         buttons.setAlignment(Pos.CENTER);
         buttons.setSpacing(10);
@@ -313,9 +315,7 @@ public class Main extends Application {
 
 
         HBox buttons = new HBox(backToMenu, exitGameButton);
-
         VBox menu = new VBox(buttons);
-
 
         BorderPane menuLayout = new BorderPane();
         menuLayout.setPrefWidth(1084);
@@ -323,10 +323,7 @@ public class Main extends Application {
         menuLayout.setCenter(menu);
         buttons.setAlignment(Pos.CENTER);
         buttons.setPadding(new Insets(350,5,15,5));
-
         buttons.setSpacing(25);
-
-
 
         Scene scene = new Scene(menuLayout);
         scene.getStylesheets().add("game-over.css");
