@@ -1,22 +1,14 @@
 package com.codecool.dungeoncrawl.logic;
 
-import com.codecool.dungeoncrawl.graphics.GameCamera;
 import com.codecool.dungeoncrawl.logic.actors.*;
-import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
-import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
-import com.codecool.dungeoncrawl.logic.enviroment.Bridge;
-import com.codecool.dungeoncrawl.logic.enviroment.Skull;
-import com.codecool.dungeoncrawl.logic.enviroment.Water;
-import com.codecool.dungeoncrawl.logic.items.Crown;
-import com.codecool.dungeoncrawl.logic.items.Food;
-import com.codecool.dungeoncrawl.logic.items.Key;
-import com.codecool.dungeoncrawl.logic.enviroment.Stairs;
-import com.codecool.dungeoncrawl.logic.items.Weapon;
-
+import com.codecool.dungeoncrawl.logic.doors.*;
+import com.codecool.dungeoncrawl.logic.enviroment.*;
+import com.codecool.dungeoncrawl.logic.items.*;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
 
 public class MapLoader {
     public static List<GameMap> maps = new ArrayList<>();

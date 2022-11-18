@@ -13,7 +13,6 @@ public abstract class Door implements Drawable {
         this.cell.setDoor(this);
     }
 
-
     public Cell getCell() {
         return cell;
     }
@@ -22,7 +21,4 @@ public abstract class Door implements Drawable {
         this.cell = cell;
     }
 
-    public void makeDoorOpen(Door og, Door closed, Door open) {
-        this.cell.switchItem(og, closed, open);
-    }
 }

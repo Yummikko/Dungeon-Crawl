@@ -9,29 +9,22 @@ import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.enviroment.Enviroment;
 import com.codecool.dungeoncrawl.logic.items.Item;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
+
 
 public class Cell<T> implements Drawable {
     private CellType type;
     private Actor actor;
     private Door door;
     private NormalDoor normalDoor;
-
     private OpenDoor openDoor;
-
     private Skeleton skeleton;
     private Lich lich;
-
-    private T t;
-
     private Player player;
     private Item item;
-    private GameMap gameMap;
+    private final GameMap gameMap;
     private Enviroment enviroment;
-    private int x, y;
+    private final int x, y;
 
     Cell(GameMap gameMap, int x, int y, CellType type) {
         this.gameMap = gameMap;

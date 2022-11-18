@@ -28,6 +28,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Main extends Application {
     public final List<Skeleton> skeletons = new ArrayList<>();
     public final List<Lich> lichs = new ArrayList<>();
@@ -52,17 +53,11 @@ public class Main extends Application {
     Button rulesButton = new Button("Show game rules");
     Button exitGameButton = new Button("Exit Game");
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+    public static void main(String[] args) { launch(args); }
 
-    public void hideButton() {
-        pickUpButton.setVisible(false);
-    }
+    public void hideButton() { pickUpButton.setVisible(false); }
 
-    public void showButton() {
-        pickUpButton.setVisible(true);
-    }
+    public void showButton() { pickUpButton.setVisible(true); }
 
     public void gameSettings(Stage primaryStage) throws FileNotFoundException {
 
