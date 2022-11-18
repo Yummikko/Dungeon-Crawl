@@ -108,7 +108,7 @@ public class Main extends Application {
     protected void refreshGameLop() {
         try {
             run();
-            Thread.sleep(100);
+            Thread.sleep(5000);
             stop();
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
@@ -308,7 +308,6 @@ public class Main extends Application {
         primaryStage.show();
         canvas.setScaleX(1.2);
         canvas.setScaleY(1.2);
-        refreshGameLop();
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
