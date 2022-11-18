@@ -54,6 +54,14 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             new Key(cell);
                             break;
+                        case 'p':
+                            cell.setType(CellType.FLOOR);
+                            new Poison(cell);
+                            break;
+                        case 'z':
+                            cell.setType(CellType.FLOOR);
+                            new Shield(cell);
+                            break;
                         case 'o':
                             cell.setType(CellType.FLOOR);
                             new Octopus(cell);

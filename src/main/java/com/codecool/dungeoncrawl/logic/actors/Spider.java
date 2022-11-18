@@ -6,7 +6,7 @@ public class Spider extends Actor{
     public Spider(Cell cell) {
         super(cell);
         this.setStrength(3);
-        this.setHealth(30);
+        this.setHealth(15);
     }
 
     @Override
