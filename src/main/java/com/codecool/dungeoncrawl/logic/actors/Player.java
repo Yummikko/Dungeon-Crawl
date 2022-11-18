@@ -10,11 +10,10 @@ import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.Key;
 import com.codecool.dungeoncrawl.logic.items.Weapon;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Set;
 import java.util.StringJoiner;
+
 
 public class Player extends Actor {
     private ArrayList<Item> inventory;
@@ -27,8 +26,8 @@ public class Player extends Actor {
         this.setHealth(HEALTH);
         this.setStrength(ATTACK_STRENGTH);
         this.inventory = new ArrayList<>();
-//        setPlayerOnMap(1);
     }
+
 
     @Override
     public void move(int dx, int dy) {
@@ -63,6 +62,7 @@ public class Player extends Actor {
         }
     }
 
+
     private void moveActor(Cell nextCell) {
         SoundUtils.playSound(SoundUtils.STEP, 0.7f);
         cell.setActor(null);
@@ -74,17 +74,11 @@ public class Player extends Actor {
         return "player";
     }
 
-    public void addToInventory(Item item) {
-        inventory.add(item);
-    }
 
     public void setInventory(ArrayList<Item> inventory) {
         this.inventory = inventory;
     }
 
-    public void removeFromInventory(Item item) {
-        inventory.remove(item);
-    }
 
     public ArrayList getInventory() {
         return inventory;
@@ -113,30 +107,6 @@ public class Player extends Actor {
             if (item != null) s.add(item.getTileName());
         }
         return s.toString();
-    }
-    public String displayInventory() {
-        StringBuilder display = new StringBuilder();
-        int keyCount = 0;
-        int swordCount = 0;
-        int shieldCount = 0;
-
-        HashMap<String, Integer> inventory_dict = new HashMap<String, Integer>();
-        for (Item item : inventory) {
-            if (item instanceof Key) {
-                keyCount += 1;
-                if (keyCount <= 1) {
-                    inventory_dict.put(item.getTileName(), keyCount);
-                } else {
-                    inventory_dict.put("Key", keyCount);
-                }
-            }
-            for (HashMap.Entry<String, Integer> element : inventory_dict.entrySet()) {
-                display.append(element.getKey() + ": " + element.getValue());
-                display.append("\n");
-            }
-
-        }
-        return display.toString();
     }
 
     public void openClosedDoor(NormalDoor door) {

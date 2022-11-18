@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.graphics.GameCamera;
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
@@ -33,10 +34,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+
 public class Main extends Application {
-    static GameMap map = MapLoader.loadMap("/map1.txt");
     public final List<Skeleton> skeletons = new ArrayList<>();
     public final List<Lich> lichs = new ArrayList<>();
+
+    static GameMap map = MapLoader.loadMap("/map1.txt");
     Stage stage;
     static GameMap map1;
     static GameCamera gameCamera = new GameCamera(0, 0, map);
@@ -149,13 +152,8 @@ public class Main extends Application {
             }
         });
 
-        backButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
-            try {
-                mainMenu(primaryStage);
-            } catch (FileNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
-        });
+        goBack(primaryStage);
+
 
         BorderPane menu = new BorderPane();
 
@@ -174,12 +172,7 @@ public class Main extends Application {
     }
 
     public void gameRules(Stage primaryStage) throws FileNotFoundException {
-        Button startButton = new Button("Start the Game");
-        Button backButton = new Button("Back to Menu");
-
         startButton.setId("buttons");
-        backButton.setId("buttons");
-
 
         startButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
             try {
@@ -216,9 +209,7 @@ public class Main extends Application {
     }
 
     public void mainMenu(Stage primaryStage) throws FileNotFoundException, RuntimeException {
-        Button startGameButton = new Button("Start new game");
-        Button rulesButton = new Button("Show game rules");
-        Button exitGameButton = new Button("Exit Game");
+        Button startGameButton = new Button("Start the Game");
 
         startGameButton.setId("buttons");
         rulesButton.setId("buttons");
@@ -380,9 +371,7 @@ public class Main extends Application {
 
 
         HBox buttons = new HBox(backToMenu, exitGameButton);
-
         VBox menu = new VBox(buttons);
-
 
         BorderPane menuLayout = new BorderPane();
         menuLayout.setPrefWidth(1084);
@@ -390,10 +379,7 @@ public class Main extends Application {
         menuLayout.setCenter(menu);
         buttons.setAlignment(Pos.CENTER);
         buttons.setPadding(new Insets(350,5,15,5));
-
         buttons.setSpacing(25);
-
-
 
         Scene scene = new Scene(menuLayout);
         scene.getStylesheets().add("game-over.css");
@@ -407,9 +393,9 @@ public class Main extends Application {
     }
 
 
-    public void refresh() {
-        gameCamera.centerOnPlayer(map.getPlayer(), map);
-        if (map.getPlayer().isAlive() == false) {
+    private void refresh() {
+        gameCamera.centerOnPlayer(map.getPlayer());
+        if (!map.getPlayer().isAlive()) {
             try {
                 SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);
                 gameOver(stage);
@@ -431,17 +417,17 @@ public class Main extends Application {
                     if (cell.getLich() != null)
                         if (lichs.size() < map.getLichs().size())
                             lichs.add(cell.getLich());
-                    Tiles.drawTile(context, cell.getActor(), (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
+                    Tiles.drawTile(context, cell.getActor(), (int) (x - xOffset), (int) (y - yOffset));
                 } else if (cell.getDoor() != null) {
                     if (cell.getDoor() instanceof NormalDoor)
                         map.getPlayer().openClosedDoor(cell.getNormalDoor());
-                    Tiles.drawTile(context, cell.getDoor(), (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
+                    Tiles.drawTile(context, cell.getDoor(), (int) (x - xOffset), (int) (y - yOffset));
                 } else if (cell.getItem() != null) {
-                    Tiles.drawTile(context, cell.getItem(), (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
+                    Tiles.drawTile(context, cell.getItem(), (int) (x - xOffset), (int) (y - yOffset));
                 } else if (cell.getEnviroment() != null) {
-                    Tiles.drawTile(context, cell.getEnviroment(), (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
+                    Tiles.drawTile(context, cell.getEnviroment(), (int) (x - xOffset), (int) (y - yOffset));
                 } else {
-                    Tiles.drawTile(context, cell, (int) (x - gameCamera.getxOffset()), (int) (y - gameCamera.getyOffset()));
+                    Tiles.drawTile(context, cell, (int) (x - xOffset), (int) (y - yOffset));
                 }
             }
         }

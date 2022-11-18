@@ -3,9 +3,9 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.logic.Drawable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class Tiles {
     public static int TILE_WIDTH = 32;
