@@ -4,10 +4,7 @@ import com.codecool.dungeoncrawl.graphics.GameCamera;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.logic.actors.Actor;
-import com.codecool.dungeoncrawl.logic.actors.DarkLord;
-import com.codecool.dungeoncrawl.logic.actors.Lich;
-import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.logic.actors.*;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
 import javafx.application.Application;
@@ -34,6 +31,7 @@ public class Main extends Application {
     public final List<Skeleton> skeletons = new ArrayList<>();
     public final List<Lich> lichs = new ArrayList<>();
     public final List<DarkLord> darkLords = new ArrayList<>();
+    public final List<Phantom> phantoms = new ArrayList<>();
 
     static GameMap map = MapLoader.loadMap("/map1.txt");
     Stage stage;
@@ -258,25 +256,21 @@ public class Main extends Application {
             case W:
             case UP:
                 map.getPlayer().move(0, -1);
-                Actor.checkIfMonstersHealth(skeletons, lichs);
                 refresh();
                 break;
             case S:
             case DOWN:
                 map.getPlayer().move(0, 1);
-                Actor.checkIfMonstersHealth(skeletons, lichs);
                 refresh();
                 break;
             case A:
             case LEFT:
                 map.getPlayer().move(-1, 0);
-                Actor.checkIfMonstersHealth(skeletons, lichs);
                 refresh();
                 break;
             case D:
             case RIGHT:
                 map.getPlayer().move(1, 0);
-                Actor.checkIfMonstersHealth(skeletons, lichs);
                 refresh();
                 break;
         }
@@ -332,16 +326,29 @@ public class Main extends Application {
         primaryStage.show();
         skeletons.clear();
         lichs.clear();
+        darkLords.clear();
+        phantoms.clear();
         map.getSkeletons().clear();
         map.getLichs().clear();
+        map.getPhantoms().clear();
+        map.getDarkLords().clear();
     }
 
 
     private void refresh() {
+        System.out.println("Skeletons: " + skeletons.size());
+        System.out.println("Skeletons on the map :" + map.getSkeletons().size());
+        System.out.println("Liches on the map :" + map.getLichs().size());
+        System.out.println("Boss on the map :" + map.getDarkLords().size());
+        System.out.println(darkLords.size() < map.getDarkLords().size());
+        System.out.println("Phantoms on the map :" + map.getPhantoms().size());
+        System.out.println(phantoms.size() < map.getPhantoms().size());
         gameCamera.centerOnPlayer(map.getPlayer(), map);
         Skeleton.monsterMove(map.getSkeletons(), map);
         Lich.magicMovement(map.getLichs(), map, map.getPlayer());
-        DarkLord.bossMoves(map.getDarkLords(), map, map.getPlayer());
+        DarkLord.bossMoves(map.getDarkLords(), map.getPhantoms(), map, map.getPlayer());
+        Phantom.movements(map.getPhantoms(), map);
+        Actor.checkIfMonstersHealth(skeletons, lichs, darkLords, phantoms, map);
         if (!map.getPlayer().isAlive()) {
             try {
                 SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);
@@ -349,6 +356,10 @@ public class Main extends Application {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+        }
+        if (map.getDarkLord() != null && map.getDarkLord().getHealth() <= 0) {
+            map.getPhantoms().removeAll(map.getPhantoms());
+            phantoms.removeAll(phantoms);
         }
         float xOffset = gameCamera.getxOffset();
         float yOffset = gameCamera.getyOffset();
@@ -359,15 +370,24 @@ public class Main extends Application {
             for (int y = 0; y < map.getHeight(); y++) {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
-                    if (cell.getSkeleton() != null)
-                        if (skeletons.size() < map.getSkeletons().size())
+                    if (cell.getSkeleton() != null) {
+                        if (skeletons.size() < map.getSkeletons().size()) {
                             skeletons.add(cell.getSkeleton());
-                    if (cell.getLich() != null)
-                        if (lichs.size() < map.getLichs().size())
+                        }
+                    }
+                    if (cell.getLich() != null) {
+                        if (lichs.size() < map.getLichs().size()) {
                             lichs.add(cell.getLich());
-                    if (cell.getDarkLord() != null)
+                        }
+                    }
+                    if (cell.getDarkLord() != null) {
                         if (darkLords.size() < map.getDarkLords().size())
                             darkLords.add(cell.getDarkLord());
+                    }
+                    if (cell.getPhantom() != null) {
+                        if (phantoms.size() < map.getPhantoms().size())
+                            phantoms.add(cell.getPhantom());
+                    }
                     Tiles.drawTile(context, cell.getActor(), (int) (x - xOffset), (int) (y - yOffset));
                 } else if (cell.getDoor() != null) {
                     if (cell.getDoor() instanceof NormalDoor)

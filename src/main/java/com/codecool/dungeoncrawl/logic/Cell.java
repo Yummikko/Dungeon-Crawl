@@ -22,6 +22,7 @@ public class Cell<T> implements Drawable {
     private final GameMap gameMap;
     private Enviroment enviroment;
     private DarkLord darkLord;
+    private Phantom phantom;
     private final int x, y;
 
     Cell(GameMap gameMap, int x, int y, CellType type) {
@@ -73,6 +74,14 @@ public class Cell<T> implements Drawable {
 
     public void setDarkLord(DarkLord darkLord) {
         this.darkLord = darkLord;
+    }
+
+    public Phantom getPhantom() {
+        return phantom;
+    }
+
+    public void setPhantom(Phantom phantom) {
+        this.phantom = phantom;
     }
 
     public void setDoor(Door door) {

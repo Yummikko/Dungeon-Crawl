@@ -117,6 +117,11 @@ public class MapLoader {
                             map.setDarkLord(new DarkLord(cell));
                             map.getDarkLords().add(map.getDarkLord());
                             break;
+                        case 'p':
+                            cell.setType(CellType.FLOOR);
+                            map.setPhantom(new Phantom(cell));
+                            map.getPhantoms().add(map.getPhantom());
+                            break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
                     }
