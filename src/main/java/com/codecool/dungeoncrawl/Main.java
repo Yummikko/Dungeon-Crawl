@@ -60,17 +60,6 @@ public class Main extends Application {
 
     public void showButton() { pickUpButton.setVisible(true); }
 
-    public void goBack(Stage primaryStage) {
-        backButton.setId("buttons");
-        backButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
-            try {
-                mainMenu(primaryStage);
-            } catch (FileNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
-        });
-    }
-
 
     public void gameSettings(Stage primaryStage) throws FileNotFoundException {
 
@@ -291,27 +280,11 @@ public class Main extends Application {
         SoundUtils.stopAll();
         SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);
 
-        Button backToMenu = new Button("Back to Menu");
-        Button exitGameButton = new Button("Exit Game");
+        goBack(primaryStage);
+        exitGame();
 
 
-        backToMenu.setId("buttons");
-        exitGameButton.setId("buttons");
-
-        backToMenu.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
-            try {
-                map.getPlayer().setHealth(10);
-                mainMenu(primaryStage);
-            } catch (FileNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
-        });
-        exitGameButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
-            System.exit(0);
-        });
-
-
-        HBox buttons = new HBox(backToMenu, exitGameButton);
+        HBox buttons = new HBox(backButton, exitGameButton);
         VBox menu = new VBox(buttons);
 
         BorderPane menuLayout = new BorderPane();
@@ -335,15 +308,8 @@ public class Main extends Application {
 
     public void youWon(Stage primaryStage) {
 
-        backButton.setId("buttons");
-        exitGameButton.setId("buttons");
-
         goBack(primaryStage);
-
-        exitGameButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
-            System.exit(0);
-        });
-
+        exitGame();
 
         HBox buttons = new HBox(backButton, exitGameButton);
         VBox menu = new VBox(buttons);
@@ -420,6 +386,25 @@ public class Main extends Application {
         if (map.getPlayer().inventoryToString().contains("crown")) {
             youWon(primaryStage);
         }
+    }
+
+    public void exitGame(){
+        exitGameButton.setId("buttons");
+        exitGameButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
+            System.exit(0);
+        });
+    }
+
+    public void goBack(Stage primaryStage) {
+        backButton.setId("buttons");
+        backButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
+            try {
+                map.getPlayer().setHealth(10);
+                mainMenu(primaryStage);
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
     }
 
 
