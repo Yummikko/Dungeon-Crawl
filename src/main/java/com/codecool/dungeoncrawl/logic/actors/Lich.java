@@ -18,7 +18,6 @@ public class Lich extends Actor {
         return "lich";
     }
 
-    /* think about refactoring this as it's not working perfectly */
     public static void magicMovement(List<Lich> lichs, GameMap map, Player player) {
         Random rand = new Random();
         int max = 4;

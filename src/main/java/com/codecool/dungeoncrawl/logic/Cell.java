@@ -1,9 +1,6 @@
 package com.codecool.dungeoncrawl.logic;
 
-import com.codecool.dungeoncrawl.logic.actors.Actor;
-import com.codecool.dungeoncrawl.logic.actors.Lich;
-import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.logic.actors.*;
 import com.codecool.dungeoncrawl.logic.doors.Door;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
@@ -24,6 +21,7 @@ public class Cell<T> implements Drawable {
     private Item item;
     private final GameMap gameMap;
     private Enviroment enviroment;
+    private DarkLord darkLord;
     private final int x, y;
 
     Cell(GameMap gameMap, int x, int y, CellType type) {
@@ -67,6 +65,14 @@ public class Cell<T> implements Drawable {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public DarkLord getDarkLord() {
+        return darkLord;
+    }
+
+    public void setDarkLord(DarkLord darkLord) {
+        this.darkLord = darkLord;
     }
 
     public void setDoor(Door door) {
@@ -123,12 +129,7 @@ public class Cell<T> implements Drawable {
         return y;
     }
 
-//    public T switchItem(T original, T a, T b) {
-//        if (original == a)
-//            return b;
-//        else
-//            return a;
-//    }
+
 
     public Enviroment getEnviroment() {
         return enviroment;

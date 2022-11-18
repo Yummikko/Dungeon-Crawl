@@ -2,14 +2,13 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.graphics.GameCamera;
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.DarkLord;
 import com.codecool.dungeoncrawl.logic.actors.Lich;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
-import com.codecool.dungeoncrawl.logic.util.GameStatus;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -26,31 +25,20 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 
 public class Main extends Application {
     public final List<Skeleton> skeletons = new ArrayList<>();
     public final List<Lich> lichs = new ArrayList<>();
+    public final List<DarkLord> darkLords = new ArrayList<>();
 
     static GameMap map = MapLoader.loadMap("/map1.txt");
     Stage stage;
     static GameMap map1;
     static GameCamera gameCamera = new GameCamera(0, 0, map);
-
-    public void showButton() {
-        pickUpButton.setVisible(true);
-    }
-
-    public final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    protected volatile GameStatus status;
 
 
     private Thread gameThread;
@@ -63,63 +51,27 @@ public class Main extends Application {
     Label strengthLabel = new Label();
     Label playerInventory = new Label("INVENTORY: ");
     Button pickUpButton = new Button("Pick up item");
+    Button startButton = new Button("Start the Game");
+    Button backButton = new Button("Back to Menu");
+    Button rulesButton = new Button("Show game rules");
+    Button exitGameButton = new Button("Exit Game");
 
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+    public static void main(String[] args) { launch(args); }
 
-    public void hideButton() {
-        pickUpButton.setVisible(false);
-    }
+    public void hideButton() { pickUpButton.setVisible(false); }
 
+    public void showButton() { pickUpButton.setVisible(true); }
 
-
-    public void run() {
-        status = GameStatus.RUNNING;
-        gameThread = new Thread(this::processGameLoop);
-        gameThread.start();
-    }
-
-    public void stop() {
-        status = GameStatus.STOPPED;
-    }
-
-    public boolean isGameRunning() {
-        return status == GameStatus.RUNNING;
-    }
-
-    public void processInput() {
-        try {
-            var lag = new Random().nextInt(200) + 50;
-            Thread.sleep(lag);
-        } catch (InterruptedException e) {
-            logger.error(e.getMessage());
-        }
-    }
-
-    protected void processGameLoop() {
-        while (isGameRunning()) {
-            processInput();
-            Skeleton.monsterMove(map.getSkeletons(), map);
-            Lich.magicMovement(map.getLichs(), map, map.getPlayer());
-            refresh();
-            update();
-        }
-    }
-
-    protected void refreshGameLop() {
-        try {
-            run();
-            Thread.sleep(5000);
-            stop();
-        } catch (InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    protected void update() {
-        System.out.println("Refresh");
+    public void goBack(Stage primaryStage) {
+        backButton.setId("buttons");
+        backButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
+            try {
+                mainMenu(primaryStage);
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
     }
 
     public void gameSettings(Stage primaryStage) throws FileNotFoundException {
@@ -306,32 +258,24 @@ public class Main extends Application {
             case W:
             case UP:
                 map.getPlayer().move(0, -1);
-                Skeleton.monsterMove(skeletons, map);
-                Lich.magicMovement(lichs, map, map.getPlayer());
                 Actor.checkIfMonstersHealth(skeletons, lichs);
                 refresh();
                 break;
             case S:
             case DOWN:
                 map.getPlayer().move(0, 1);
-                Skeleton.monsterMove(skeletons, map);
-                Lich.magicMovement(lichs, map, map.getPlayer());
                 Actor.checkIfMonstersHealth(skeletons, lichs);
                 refresh();
                 break;
             case A:
             case LEFT:
                 map.getPlayer().move(-1, 0);
-                Skeleton.monsterMove(skeletons, map);
-                Lich.magicMovement(lichs, map, map.getPlayer());
                 Actor.checkIfMonstersHealth(skeletons, lichs);
                 refresh();
                 break;
             case D:
             case RIGHT:
                 map.getPlayer().move(1, 0);
-                Skeleton.monsterMove(skeletons, map);
-                Lich.magicMovement(lichs, map, map.getPlayer());
                 Actor.checkIfMonstersHealth(skeletons, lichs);
                 refresh();
                 break;
@@ -394,7 +338,10 @@ public class Main extends Application {
 
 
     private void refresh() {
-        gameCamera.centerOnPlayer(map.getPlayer());
+        gameCamera.centerOnPlayer(map.getPlayer(), map);
+        Skeleton.monsterMove(map.getSkeletons(), map);
+        Lich.magicMovement(map.getLichs(), map, map.getPlayer());
+        DarkLord.bossMoves(map.getDarkLords(), map, map.getPlayer());
         if (!map.getPlayer().isAlive()) {
             try {
                 SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);
@@ -403,7 +350,8 @@ public class Main extends Application {
                 throw new RuntimeException(e);
             }
         }
-
+        float xOffset = gameCamera.getxOffset();
+        float yOffset = gameCamera.getyOffset();
         checkIfOnItem();
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -417,6 +365,9 @@ public class Main extends Application {
                     if (cell.getLich() != null)
                         if (lichs.size() < map.getLichs().size())
                             lichs.add(cell.getLich());
+                    if (cell.getDarkLord() != null)
+                        if (darkLords.size() < map.getDarkLords().size())
+                            darkLords.add(cell.getDarkLord());
                     Tiles.drawTile(context, cell.getActor(), (int) (x - xOffset), (int) (y - yOffset));
                 } else if (cell.getDoor() != null) {
                     if (cell.getDoor() instanceof NormalDoor)
