@@ -60,10 +60,21 @@ public class Main extends Application {
 
     public void showButton() { pickUpButton.setVisible(true); }
 
+    public void goBack(Stage primaryStage) {
+        backButton.setId("buttons");
+        backButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
+            try {
+                mainMenu(primaryStage);
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
+    }
+
+
     public void gameSettings(Stage primaryStage) throws FileNotFoundException {
 
         startButton.setId("buttons");
-        backButton.setId("buttons");
 
         HBox buttons = new HBox(startButton, backButton);
         buttons.setSpacing(25);
@@ -88,13 +99,8 @@ public class Main extends Application {
             }
         });
 
-        backButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
-            try {
-                mainMenu(primaryStage);
-            } catch (FileNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
-        });
+        goBack(primaryStage);
+
 
         BorderPane menu = new BorderPane();
 
@@ -113,10 +119,7 @@ public class Main extends Application {
     }
 
     public void gameRules(Stage primaryStage) throws FileNotFoundException {
-
         startButton.setId("buttons");
-        backButton.setId("buttons");
-
 
         startButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
             try {
@@ -126,13 +129,7 @@ public class Main extends Application {
             }
         });
 
-        backButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
-            try {
-                mainMenu(primaryStage);
-            } catch (FileNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
-        });
+        goBack(primaryStage);
 
         VBox buttons = new VBox(startButton, backButton);
 
