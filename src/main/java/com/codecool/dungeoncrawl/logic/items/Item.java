@@ -7,7 +7,7 @@ public abstract class Item implements Drawable {
 
     private Cell cell;
 
-    public Item(Cell cell) {
+    protected Item(Cell cell) {
         this.cell = cell;
         this.cell.setItem(this);
     }

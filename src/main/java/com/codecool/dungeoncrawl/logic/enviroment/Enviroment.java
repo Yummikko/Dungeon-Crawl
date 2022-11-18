@@ -8,7 +8,7 @@ public abstract class Enviroment implements Drawable {
 
     private Cell cell;
 
-    public Enviroment(Cell cell) {
+    protected Enviroment(Cell cell) {
         this.cell = cell;
         this.cell.setEnviroment(this);
     }

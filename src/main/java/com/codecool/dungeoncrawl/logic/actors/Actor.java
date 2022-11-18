@@ -96,10 +96,6 @@ public abstract class Actor implements Drawable {
         return !walkableCells.contains(nextCell.getType());
     }
 
-    protected static boolean isSkull(Cell nextCell) {
-        return nextCell.getType().equals(CellType.SKULL);
-    }
-
     protected static boolean isEnemy(Cell nextCell) {
         return nextCell.getActor() != null;
     }
@@ -121,7 +117,6 @@ public abstract class Actor implements Drawable {
     public void setHasKey(boolean hasKey) { this.hasKey = hasKey; }
 
     public void setHasWeapon(boolean hasWeapon) { this.hasWeapon = hasWeapon; }
-    //public boolean isHasKey() { return hasKey; }
 
     public Cell getCell() {
         return cell;
