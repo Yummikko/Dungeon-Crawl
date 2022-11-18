@@ -2,13 +2,13 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.graphics.GameCamera;
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Lich;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
+import com.codecool.dungeoncrawl.logic.util.GameStatus;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -25,18 +25,32 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Main extends Application {
     static GameMap map = MapLoader.loadMap("/map1.txt");
     public final List<Skeleton> skeletons = new ArrayList<>();
     public final List<Lich> lichs = new ArrayList<>();
-
     Stage stage;
     static GameMap map1;
     static GameCamera gameCamera = new GameCamera(0, 0, map);
+
+    public void showButton() {
+        pickUpButton.setVisible(true);
+    }
+
+    public final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    protected volatile GameStatus status;
+
+
+    private Thread gameThread;
     Canvas canvas = new Canvas(
             25 * Tiles.TILE_WIDTH,
             21 * Tiles.TILE_WIDTH);
@@ -56,8 +70,53 @@ public class Main extends Application {
         pickUpButton.setVisible(false);
     }
 
-    public void showButton() {
-        pickUpButton.setVisible(true);
+
+
+    public void run() {
+        status = GameStatus.RUNNING;
+        gameThread = new Thread(this::processGameLoop);
+        gameThread.start();
+    }
+
+    public void stop() {
+        status = GameStatus.STOPPED;
+    }
+
+    public boolean isGameRunning() {
+        return status == GameStatus.RUNNING;
+    }
+
+    public void processInput() {
+        try {
+            var lag = new Random().nextInt(200) + 50;
+            Thread.sleep(lag);
+        } catch (InterruptedException e) {
+            logger.error(e.getMessage());
+        }
+    }
+
+    protected void processGameLoop() {
+        while (isGameRunning()) {
+            processInput();
+            Skeleton.monsterMove(map.getSkeletons(), map);
+            Lich.magicMovement(map.getLichs(), map, map.getPlayer());
+            refresh();
+            update();
+        }
+    }
+
+    protected void refreshGameLop() {
+        try {
+            run();
+            Thread.sleep(100);
+            stop();
+        } catch (InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    protected void update() {
+        System.out.println("Refresh");
     }
 
     public void gameSettings(Stage primaryStage) throws FileNotFoundException {
@@ -249,6 +308,7 @@ public class Main extends Application {
         primaryStage.show();
         canvas.setScaleX(1.2);
         canvas.setScaleY(1.2);
+        refreshGameLop();
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
@@ -348,8 +408,8 @@ public class Main extends Application {
     }
 
 
-    private void refresh() {
-        gameCamera.centerOnPlayer(map.getPlayer());
+    public void refresh() {
+        gameCamera.centerOnPlayer(map.getPlayer(), map);
         if (map.getPlayer().isAlive() == false) {
             try {
                 SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);

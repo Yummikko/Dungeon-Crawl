@@ -130,12 +130,12 @@ public class Cell<T> implements Drawable {
         return y;
     }
 
-    public T switchItem(T original, T a, T b) {
-        if (original == a)
-            return b;
-        else
-            return a;
-    }
+//    public T switchItem(T original, T a, T b) {
+//        if (original == a)
+//            return b;
+//        else
+//            return a;
+//    }
 
     public Enviroment getEnviroment() {
         return enviroment;

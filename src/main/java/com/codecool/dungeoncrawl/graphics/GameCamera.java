@@ -14,18 +14,13 @@ public class GameCamera {
         this.yOffset = yOffset;
     }
 
-    public void centerOnPlayer(Player player) {
-        if (map.getWidth() == 28) {
-            System.out.println(map.getWidth());
-            xOffset = player.getX() - map.getWidth() / 2;
-            yOffset = player.getY() - map.getHeight() / 2;
-        } else if (map.getWidth() == 89) {
-            System.out.println(map.getWidth());
-            xOffset = player.getX() - map.getWidth() / 2 + 20;
-            yOffset = player.getY() - map.getHeight() / 2;
+    public void centerOnPlayer(Player player, GameMap map) {
+         if (map.getWidth() == 89) {
+            xOffset = player.getX() - map.getWidth() / 2 + 32;
+            yOffset = player.getY() - map.getHeight() / 2 + 4;
         } else {
-            xOffset = player.getX() - map.getWidth() / 2;
-            yOffset = player.getY() - map.getHeight() / 2;
+            xOffset = player.getX() - map.getWidth() / 2 + 2;
+            yOffset = player.getY() - map.getHeight() / 2 + 2;
         }
     }
 

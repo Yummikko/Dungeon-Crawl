@@ -55,7 +55,11 @@ public class Lich extends Actor {
                 return;
             } else if (nextCell == null || nextCell.getNeighbor(randomPos, randomPosNext) == null
             || nextCell.getNeighbor(randomPos, randomPosNext).getType().equals(CellType.WALL)
-            || nextCell.getType().equals(CellType.WALL)) {
+            || nextCell.getType().equals(CellType.WALL)
+            || nextCell.getNeighbor(randomPos, randomPosNext).getType().equals(CellType.SKULL)
+            || nextCell.getType().equals(CellType.SKULL)
+            || nextCell.getNeighbor(randomPos, randomPosNext).getType().equals(CellType.WATER)
+            || nextCell.getType().equals(CellType.WATER)) {
                 return;
             } else if (randomPosNext == 0 || randomPos == 0) {
                 return;

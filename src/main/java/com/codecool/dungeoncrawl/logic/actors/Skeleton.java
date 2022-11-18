@@ -41,7 +41,9 @@ public class Skeleton extends Actor {
 
     public void randomMove(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
-        if (nextCell.getOpenDoor() != null || nextCell.getType().equals(CellType.WALL)) {
+        if (nextCell.getOpenDoor() != null || nextCell.getType().equals(CellType.WALL)
+        || nextCell.getType().equals(CellType.SKULL)
+        || nextCell.getType().equals(CellType.WATER)) {
             return;
         }
         else if (nextCell.getActor() == null) {
