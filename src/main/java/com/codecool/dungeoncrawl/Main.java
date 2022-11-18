@@ -2,7 +2,6 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.graphics.GameCamera;
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
@@ -30,23 +29,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main extends Application {
-    static GameMap map = MapLoader.loadMap("/map1.txt");
     public final List<Skeleton> skeletons = new ArrayList<>();
     public final List<Lich> lichs = new ArrayList<>();
 
-    Stage stage;
+    static GameMap map = MapLoader.loadMap("/map1.txt");
     static GameMap map1;
     static GameCamera gameCamera = new GameCamera(0, 0, map);
     Canvas canvas = new Canvas(
             25 * Tiles.TILE_WIDTH,
             21 * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
+    Stage stage;
+
     Label nameLabel = new Label();
     Label healthLabel = new Label();
     Label strengthLabel = new Label();
     Label playerInventory = new Label("INVENTORY: ");
-    Button pickUpButton = new Button("Pick up item");
 
+    Button pickUpButton = new Button("Pick up item");
+    Button startButton = new Button("Start the Game");
+    Button backButton = new Button("Back to Menu");
+    Button rulesButton = new Button("Show game rules");
+    Button exitGameButton = new Button("Exit Game");
 
     public static void main(String[] args) {
         launch(args);
@@ -61,8 +65,6 @@ public class Main extends Application {
     }
 
     public void gameSettings(Stage primaryStage) throws FileNotFoundException {
-        Button startButton = new Button("Start the Game");
-        Button backButton = new Button("Back to Menu");
 
         startButton.setId("buttons");
         backButton.setId("buttons");
@@ -115,8 +117,6 @@ public class Main extends Application {
     }
 
     public void gameRules(Stage primaryStage) throws FileNotFoundException {
-        Button startButton = new Button("Start the Game");
-        Button backButton = new Button("Back to Menu");
 
         startButton.setId("buttons");
         backButton.setId("buttons");
@@ -157,15 +157,12 @@ public class Main extends Application {
     }
 
     public void mainMenu(Stage primaryStage) throws FileNotFoundException, RuntimeException {
-        Button startGameButton = new Button("Start new game");
-        Button rulesButton = new Button("Show game rules");
-        Button exitGameButton = new Button("Exit Game");
 
-        startGameButton.setId("buttons");
+        startButton.setId("buttons");
         rulesButton.setId("buttons");
         exitGameButton.setId("buttons");
 
-        startGameButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
+        startButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
             try {
                 gameSettings(primaryStage);
             } catch (FileNotFoundException fileNotFoundException) {
@@ -185,7 +182,7 @@ public class Main extends Application {
             System.exit(0);
         });
 
-        VBox buttons = new VBox(startGameButton, rulesButton, exitGameButton);
+        VBox buttons = new VBox(startButton, rulesButton, exitGameButton);
 
         buttons.setAlignment(Pos.CENTER);
         buttons.setSpacing(10);
