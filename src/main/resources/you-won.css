@@ -1,0 +1,29 @@
+.root{
+    -fx-background-image: url("you-won.jpeg");
+    }
+
+    #buttons {
+        -fx-background-color: #081828;
+        -fx-opacity: .7;
+        -fx-background-size: 300px 35px;
+        -fx-pref-width: 300px;
+        -fx-padding: 5 4 5 4;
+        -fx-font-family: "Monospaced";
+        -fx-font-size: 24px;
+        -fx-text-fill: white;
+        -fx-alignment: center;
+    }
+
+    #buttons:hover{
+        -fx-background-size: 300px 35px;
+        -fx-background-color: transparent;
+        -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+        -fx-pref-width: 300px;
+
+        -fx-padding: 5 10 5 10;
+        -fx-font-family: "Monospaced";
+        -fx-font-weight: bold;
+        -fx-font-size: 20px;
+        -fx-text-fill: white;
+    }
+

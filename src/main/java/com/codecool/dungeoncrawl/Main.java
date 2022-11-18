@@ -333,6 +333,39 @@ public class Main extends Application {
         map.getLichs().clear();
     }
 
+    public void youWon(Stage primaryStage) {
+
+        backButton.setId("buttons");
+        exitGameButton.setId("buttons");
+
+        goBack(primaryStage);
+
+        exitGameButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
+            System.exit(0);
+        });
+
+
+        HBox buttons = new HBox(backButton, exitGameButton);
+        VBox menu = new VBox(buttons);
+
+        BorderPane menuLayout = new BorderPane();
+        menuLayout.setPrefWidth(1084);
+        menuLayout.setPrefHeight(768);
+        menuLayout.setCenter(menu);
+        buttons.setAlignment(Pos.CENTER);
+        buttons.setPadding(new Insets(350,5,15,5));
+        buttons.setSpacing(25);
+
+        Scene scene = new Scene(menuLayout);
+        scene.getStylesheets().add("you-won.css");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+        skeletons.clear();
+        lichs.clear();
+        map.getSkeletons().clear();
+        map.getLichs().clear();
+    }
+
 
     private void refresh() {
         gameCamera.centerOnPlayer(map.getPlayer());
@@ -346,6 +379,7 @@ public class Main extends Application {
         }
 
         checkIfOnItem();
+        checkForWin(stage);
 
         context.setFill(Color.rgb(32, 62, 84));
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -381,6 +415,13 @@ public class Main extends Application {
         strengthLabel.setText("" + map.getPlayer().getStrength());
         playerInventory.setText("" + map.getPlayer().inventoryToString());
     }
+
+    public void checkForWin(Stage primaryStage) {
+        if (map.getPlayer().inventoryToString().contains("crown")) {
+            youWon(primaryStage);
+        }
+    }
+
 
     public static String getNextMap(List maps) {
         int mapsSize = maps.size();
