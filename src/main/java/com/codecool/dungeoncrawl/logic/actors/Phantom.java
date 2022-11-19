@@ -35,7 +35,6 @@ public class Phantom extends Skeleton{
     }
 
     public void dissapear() {
-        System.out.println("Change phantom to null");
         cell.setActor(null);
     }
 

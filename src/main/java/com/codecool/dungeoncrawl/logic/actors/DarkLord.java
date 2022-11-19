@@ -21,7 +21,6 @@ public class DarkLord extends Skeleton {
         int max = 6;
         for (int i = 0; i < darkLords.size(); i++) {
             int randomPos = rand.nextInt(max - min) + min;
-            System.out.println(randomPos);
             DarkLord a = darkLords.get(i);
             map.setDarkLord(a);
             if (randomPos == 1) {
