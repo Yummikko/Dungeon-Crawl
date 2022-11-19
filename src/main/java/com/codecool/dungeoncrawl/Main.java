@@ -140,10 +140,7 @@ public class Main extends Application {
 
     public void mainMenu(Stage primaryStage) throws FileNotFoundException, RuntimeException {
         Button startGameButton = new Button("Start the Game");
-
         startGameButton.setId("buttons");
-        rulesButton.setId("buttons");
-        exitGameButton.setId("buttons");
 
         startGameButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
             try {
@@ -153,17 +150,8 @@ public class Main extends Application {
             }
         });
 
-        rulesButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
-            try {
-                gameRules(primaryStage);
-            } catch (FileNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
-        });
-
-        exitGameButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
-            System.exit(0);
-        });
+        showRules(primaryStage);
+        exitGame();
 
         VBox buttons = new VBox(startGameButton, rulesButton, exitGameButton);
 
@@ -298,12 +286,8 @@ public class Main extends Application {
         Scene scene = new Scene(menuLayout);
         scene.getStylesheets().add("game-over.css");
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
-        skeletons.clear();
-        lichs.clear();
-        map.getSkeletons().clear();
-        map.getLichs().clear();
+        clearMap();
     }
 
     public void youWon(Stage primaryStage) {
@@ -326,10 +310,7 @@ public class Main extends Application {
         scene.getStylesheets().add("you-won.css");
         primaryStage.setScene(scene);
         primaryStage.show();
-        skeletons.clear();
-        lichs.clear();
-        map.getSkeletons().clear();
-        map.getLichs().clear();
+        clearMap();
     }
 
 
@@ -388,12 +369,17 @@ public class Main extends Application {
         }
     }
 
-    public void exitGame(){
-        exitGameButton.setId("buttons");
-        exitGameButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
-            System.exit(0);
+    public void showRules(Stage primaryStage) {
+        rulesButton.setId("buttons");
+        rulesButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
+            try {
+                gameRules(primaryStage);
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
         });
     }
+
 
     public void goBack(Stage primaryStage) {
         backButton.setId("buttons");
@@ -405,6 +391,21 @@ public class Main extends Application {
                 fileNotFoundException.printStackTrace();
             }
         });
+    }
+
+    public void exitGame(){
+        exitGameButton.setId("buttons");
+        exitGameButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
+            System.exit(0);
+        });
+    }
+
+
+    public void clearMap(){
+        skeletons.clear();
+        lichs.clear();
+        map.getSkeletons().clear();
+        map.getLichs().clear();
     }
 
 
