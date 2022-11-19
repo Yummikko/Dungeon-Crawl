@@ -114,7 +114,7 @@ public class Main extends Application {
 
         startButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
             try {
-                gameStart(primaryStage);
+                gameSettings(primaryStage);
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
