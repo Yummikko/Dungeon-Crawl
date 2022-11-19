@@ -63,7 +63,7 @@ public class Lich extends Actor {
 
                 }
             } catch (NullPointerException e) {
-                System.out.println(e);
+                System.out.println("getPlayer() is null, cannot move there");
             }
         }
     }
