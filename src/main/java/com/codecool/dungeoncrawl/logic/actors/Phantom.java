@@ -36,6 +36,7 @@ public class Phantom extends Skeleton {
 
     public void dissapear() {
         cell.setActor(null);
+        cell.setPhantom(null);
     }
 
     @Override
