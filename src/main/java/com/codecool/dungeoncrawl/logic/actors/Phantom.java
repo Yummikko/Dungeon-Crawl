@@ -35,8 +35,8 @@ public class Phantom extends Skeleton{
     }
 
     public void dissapear() {
-        this.getCell().setActor(null);
-        this.setAlive(false);
+        System.out.println("Change phantom to null");
+        cell.setActor(null);
     }
 
     @Override
