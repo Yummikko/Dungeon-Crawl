@@ -50,6 +50,8 @@ public class DarkLord extends Skeleton {
         Cell bossCell = darkLord.getCell();
         int bossX = bossCell.getX();
         int bossY = bossCell.getY();
+        System.out.println("Hero x: " + posX + "Hero y: " + posY);
+        System.out.println("Boss x: " + bossX + "Boss y: " + bossY);
         Cell cell = map.getCell(posX+randomPosNext, posY+randomPos);
         Cell nextCell = map.getCell(posX+randomPos, posY+randomPosNext);
         if (map.getPhantoms().size() < 3) {
@@ -65,7 +67,7 @@ public class DarkLord extends Skeleton {
                     || cell.getType().equals(CellType.SKULL)
                     || cell.getActor() != null)
                 return;
-            else if ((bossX - posX >= -5) && (bossX - posX < -1) || (bossY - posY < -1) || (bossY - posY >= -5)) {
+            else if ((bossX - posX <= 5) || (posY - bossY <= 5)) {
                 Phantom phantom = new Phantom(cell);
                 cell.setActor(phantom);
                 map.getPhantoms().add(phantom);
@@ -78,7 +80,6 @@ public class DarkLord extends Skeleton {
         if (this.getHealth() <= 0) {
             for (int i = 0; i < phantoms.size(); i++) {
                 Phantom phantom = phantoms.get(i);
-                System.out.println("Change phantoms to null");
                 phantom.dissapear();
             }
             phantoms.removeAll(phantoms);
