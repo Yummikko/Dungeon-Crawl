@@ -58,7 +58,6 @@ public abstract class Actor implements Drawable {
                 skeleton.getCell().setActor(null);
             }
         }
-        System.out.println("Skeleton left: " + map.getSkeletons().size());
         for (int j = 0; j < liches.size(); j++) {
             Lich lich = liches.get(j);
             if (lich.getHealth() <= 0) {
@@ -67,7 +66,6 @@ public abstract class Actor implements Drawable {
                 lich.getCell().setActor(null);
             }
         }
-        System.out.println("liches left: " + liches.size());
         for (int y = 0; y < darkLords.size(); y++) {
             DarkLord darkLord = darkLords.get(y);
             if (darkLord.getHealth() <= 0) {
@@ -77,7 +75,6 @@ public abstract class Actor implements Drawable {
                 darkLord.getCell().setActor(null);
             }
         }
-        System.out.println("Darklords left: " + darkLords.size());
         for (int y = 0; y < phantoms.size(); y++) {
             Phantom phantom = phantoms.get(y);
             if (phantom.getHealth() <= 0) {
@@ -86,7 +83,6 @@ public abstract class Actor implements Drawable {
                 phantom.getCell().setActor(null);
             }
         }
-        System.out.println("Phantoms left: " + phantoms.size());
     }
 
     protected void fightWithMonster(Actor actor) {

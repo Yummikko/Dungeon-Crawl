@@ -3,8 +3,6 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -13,8 +11,8 @@ public class DarkLord extends Skeleton {
     public DarkLord(Cell cell) {
         super(cell);
         cell.setDarkLord(this);
-        this.setHealth(25);
-        this.setStrength(7);
+        this.setHealth(35);
+        this.setStrength(10);
     }
 
     public static void bossMoves(List<DarkLord> darkLords, List<Phantom> phantoms, GameMap map, Player player) {
@@ -50,8 +48,6 @@ public class DarkLord extends Skeleton {
         Cell bossCell = darkLord.getCell();
         int bossX = bossCell.getX();
         int bossY = bossCell.getY();
-        System.out.println("Hero x: " + posX + "Hero y: " + posY);
-        System.out.println("Boss x: " + bossX + "Boss y: " + bossY);
         Cell cell = map.getCell(posX+randomPosNext, posY+randomPos);
         Cell nextCell = map.getCell(posX+randomPos, posY+randomPosNext);
         if (map.getPhantoms().size() < 3) {
