@@ -6,7 +6,7 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import java.util.List;
 import java.util.Random;
 
-public class Phantom extends Skeleton{
+public class Phantom extends Skeleton {
     public Phantom(Cell cell) {
         super(cell);
         cell.setPhantom(this);
