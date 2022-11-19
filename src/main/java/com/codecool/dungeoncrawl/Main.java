@@ -90,7 +90,13 @@ public class Main extends Application {
             }
         });
 
-        goBack(primaryStage);
+        backButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
+            try {
+                mainMenu(primaryStage);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        });
 
 
         BorderPane menu = new BorderPane();
