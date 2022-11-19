@@ -122,6 +122,7 @@ public class Player extends Actor {
         }
     }
     public void removeKey() {
+        //TODO: iterator
         for (Item item : inventory) {
             if (item instanceof Key) {
                 this.inventory.remove(item);
