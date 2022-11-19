@@ -8,8 +8,9 @@ import com.codecool.dungeoncrawl.logic.enviroment.Enviroment;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import java.util.Objects;
 
-
-public class Cell<T> implements Drawable {
+public class Cell implements Drawable {
+    private final GameMap gameMap;
+    private final int x, y;
     private CellType type;
     private Actor actor;
     private Door door;
@@ -19,11 +20,9 @@ public class Cell<T> implements Drawable {
     private Lich lich;
     private Player player;
     private Item item;
-    private final GameMap gameMap;
     private Enviroment enviroment;
     private DarkLord darkLord;
     private Phantom phantom;
-    private final int x, y;
 
     Cell(GameMap gameMap, int x, int y, CellType type) {
         this.gameMap = gameMap;
@@ -40,12 +39,12 @@ public class Cell<T> implements Drawable {
         this.type = type;
     }
 
-    public void setActor(Actor actor) {
-        this.actor = actor;
-    }
-
     public Actor getActor() {
         return actor;
+    }
+
+    public void setActor(Actor actor) {
+        this.actor = actor;
     }
 
     public Door getDoor() {
@@ -148,12 +147,4 @@ public class Cell<T> implements Drawable {
         this.enviroment = enviroment;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        T t = (T) o;
-        return this == actor.getCell() && Objects.equals(this, actor.getCell());
-    }
 }

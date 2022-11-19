@@ -37,9 +37,7 @@ public class Main extends Application {
     Stage stage;
     static GameMap map1;
     static GameCamera gameCamera = new GameCamera(0, 0, map);
-
-
-    private Thread gameThread;
+    
     Canvas canvas = new Canvas(
             25 * Tiles.TILE_WIDTH,
             21 * Tiles.TILE_WIDTH);
@@ -61,16 +59,6 @@ public class Main extends Application {
 
     public void showButton() { pickUpButton.setVisible(true); }
 
-    public void goBack(Stage primaryStage) {
-        backButton.setId("buttons");
-        backButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
-            try {
-                mainMenu(primaryStage);
-            } catch (FileNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
-        });
-    }
 
     public void gameSettings(Stage primaryStage) throws FileNotFoundException {
         Button startButton = new Button("Start the Game");
@@ -132,13 +120,7 @@ public class Main extends Application {
             }
         });
 
-        backButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
-            try {
-                mainMenu(primaryStage);
-            } catch (FileNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
-        });
+        goBack(primaryStage);
 
         VBox buttons = new VBox(startButton, backButton);
 
@@ -160,10 +142,7 @@ public class Main extends Application {
 
     public void mainMenu(Stage primaryStage) throws FileNotFoundException, RuntimeException {
         Button startGameButton = new Button("Start the Game");
-
         startGameButton.setId("buttons");
-        rulesButton.setId("buttons");
-        exitGameButton.setId("buttons");
 
         startGameButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
             try {
@@ -173,17 +152,8 @@ public class Main extends Application {
             }
         });
 
-        rulesButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
-            try {
-                gameRules(primaryStage);
-            } catch (FileNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
-        });
-
-        exitGameButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
-            System.exit(0);
-        });
+        showRules(primaryStage);
+        exitGame();
 
         VBox buttons = new VBox(startGameButton, rulesButton, exitGameButton);
 
@@ -288,27 +258,11 @@ public class Main extends Application {
         SoundUtils.stopAll();
         SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);
 
-        Button backToMenu = new Button("Back to Menu");
-        Button exitGameButton = new Button("Exit Game");
+        goBack(primaryStage);
+        exitGame();
 
 
-        backToMenu.setId("buttons");
-        exitGameButton.setId("buttons");
-
-        backToMenu.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
-            try {
-                map.getPlayer().setHealth(10);
-                mainMenu(primaryStage);
-            } catch (FileNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
-        });
-        exitGameButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
-            System.exit(0);
-        });
-
-
-        HBox buttons = new HBox(backToMenu, exitGameButton);
+        HBox buttons = new HBox(backButton, exitGameButton);
         VBox menu = new VBox(buttons);
 
         BorderPane menuLayout = new BorderPane();
@@ -322,16 +276,31 @@ public class Main extends Application {
         Scene scene = new Scene(menuLayout);
         scene.getStylesheets().add("game-over.css");
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
-        skeletons.clear();
-        lichs.clear();
-        darkLords.clear();
-        phantoms.clear();
-        map.getSkeletons().clear();
-        map.getLichs().clear();
-        map.getPhantoms().clear();
-        map.getDarkLords().clear();
+        clearMap();
+    }
+
+    public void youWon(Stage primaryStage) {
+
+        goBack(primaryStage);
+        exitGame();
+
+        HBox buttons = new HBox(backButton, exitGameButton);
+        VBox menu = new VBox(buttons);
+
+        BorderPane menuLayout = new BorderPane();
+        menuLayout.setPrefWidth(1084);
+        menuLayout.setPrefHeight(768);
+        menuLayout.setCenter(menu);
+        buttons.setAlignment(Pos.CENTER);
+        buttons.setPadding(new Insets(350,5,15,5));
+        buttons.setSpacing(25);
+
+        Scene scene = new Scene(menuLayout);
+        scene.getStylesheets().add("you-won.css");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+        clearMap();
     }
 
 
@@ -340,10 +309,7 @@ public class Main extends Application {
         System.out.println(darkLords.size() < map.getDarkLords().size());
         System.out.println("Phantoms on the map :" + map.getPhantoms().size());
         gameCamera.centerOnPlayer(map.getPlayer(), map);
-        Skeleton.monsterMove(map.getSkeletons(), map);
-        Lich.magicMovement(map.getLichs(), map, map.getPlayer());
-        DarkLord.bossMoves(map.getDarkLords(), map.getPhantoms(), map, map.getPlayer());
-        Phantom.movements(map.getPhantoms(), map);
+        moveMonsters();
         Actor.checkIfMonstersHealth(skeletons, lichs, darkLords, phantoms, map);
         if (!map.getPlayer().isAlive()) {
             try {
@@ -353,10 +319,12 @@ public class Main extends Application {
                 throw new RuntimeException(e);
             }
         }
+
+        checkIfOnItem();
+        checkForWin(stage);
         float xOffset = gameCamera.getxOffset();
         float yOffset = gameCamera.getyOffset();
-        checkIfOnItem();
-        context.setFill(Color.BLACK);
+        context.setFill(Color.rgb(32, 62, 84));
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
@@ -396,6 +364,61 @@ public class Main extends Application {
         playerInventory.setText("" + map.getPlayer().inventoryToString());
     }
 
+    public void checkForWin(Stage primaryStage) {
+        if (map.getPlayer().inventoryToString().contains("crown")) {
+            youWon(primaryStage);
+        }
+    }
+
+    public void showRules(Stage primaryStage) {
+        rulesButton.setId("buttons");
+        rulesButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
+            try {
+                gameRules(primaryStage);
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
+    }
+
+
+    public void goBack(Stage primaryStage) {
+        backButton.setId("buttons");
+        backButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
+            try {
+                map.getPlayer().setHealth(10);
+                mainMenu(primaryStage);
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
+    }
+
+    public void exitGame(){
+        exitGameButton.setId("buttons");
+        exitGameButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
+            System.exit(0);
+        });
+    }
+
+
+    public void clearMap(){
+        skeletons.clear();
+        lichs.clear();
+        darkLords.clear();
+        phantoms.clear();
+        map.getSkeletons().clear();
+        map.getLichs().clear();
+        map.getPhantoms().clear();
+        map.getDarkLords().clear();
+    }
+
+    public void moveMonsters() {
+        Skeleton.monsterMove(map.getSkeletons(), map);
+        Lich.magicMovement(map.getLichs(), map, map.getPlayer());
+        DarkLord.bossMoves(map.getDarkLords(), map.getPhantoms(), map, map.getPlayer());
+        Phantom.movements(map.getPhantoms(), map);
+    }
     public static String getNextMap(List maps) {
         int mapsSize = maps.size();
         String mapName = "";

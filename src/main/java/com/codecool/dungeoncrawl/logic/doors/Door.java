@@ -7,7 +7,7 @@ public abstract class Door implements Drawable {
     private Cell cell;
     protected boolean isOpen;
 
-    public Door(Cell cell) {
+    protected Door(Cell cell) {
         this.cell = cell;
         this.isOpen = false;
         this.cell.setDoor(this);

@@ -5,10 +5,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
-import com.codecool.dungeoncrawl.logic.items.Food;
-import com.codecool.dungeoncrawl.logic.items.Item;
-import com.codecool.dungeoncrawl.logic.items.Key;
-import com.codecool.dungeoncrawl.logic.items.Weapon;
+import com.codecool.dungeoncrawl.logic.items.*;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
 import java.util.ArrayList;
 import java.util.Set;
@@ -92,9 +89,14 @@ public class Player extends Actor {
         } else if (this.getCell().getItem() instanceof Weapon) {
             this.setStrength(getStrength() + 2);
             this.setHasWeapon(true);
+        } else if (this.getCell().getItem() instanceof Shield) {
+            this.setStrength(getStrength() + 10);
         } else if (this.getCell().getItem() instanceof Food) {
             SoundUtils.playSound(SoundUtils.EAT, 0.5f);
             this.setHealth(getHealth() + 3);
+        } else if (this.getCell().getItem() instanceof Poison) {
+            SoundUtils.playSound(SoundUtils.EAT, 0.5f);
+            this.setHealth(getHealth() - 3);
         } else if (this.getCell().getItem() instanceof Key) {
             this.setHasKey(true);
         }

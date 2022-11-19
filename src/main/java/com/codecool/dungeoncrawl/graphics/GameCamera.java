@@ -5,8 +5,9 @@ import com.codecool.dungeoncrawl.logic.actors.Player;
 
 public class GameCamera {
 
-    private GameMap map;
-    private float xOffset, yOffset;
+    private final GameMap map;
+    private float xOffset;
+    private float yOffset;
 
     public GameCamera(float xOffset, float yOffset, GameMap map) {
         this.map = map;

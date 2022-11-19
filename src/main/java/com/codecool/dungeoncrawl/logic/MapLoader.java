@@ -54,6 +54,14 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             new Key(cell);
                             break;
+                        case 'p':
+                            cell.setType(CellType.FLOOR);
+                            new Poison(cell);
+                            break;
+                        case 'z':
+                            cell.setType(CellType.FLOOR);
+                            new Shield(cell);
+                            break;
                         case 'o':
                             cell.setType(CellType.FLOOR);
                             new Octopus(cell);
@@ -117,7 +125,7 @@ public class MapLoader {
                             map.setDarkLord(new DarkLord(cell));
                             map.getDarkLords().add(map.getDarkLord());
                             break;
-                        case 'p':
+                        case 'g':
                             cell.setType(CellType.FLOOR);
                             map.setPhantom(new Phantom(cell));
                             map.getPhantoms().add(map.getPhantom());
