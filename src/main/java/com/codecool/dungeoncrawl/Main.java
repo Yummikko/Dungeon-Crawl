@@ -305,8 +305,6 @@ public class Main extends Application {
 
 
     private void refresh() {
-        System.out.println("Boss on the map :" + map.getDarkLords().size());
-        System.out.println("Phantoms on the map :" + map.getPhantoms().size());
         gameCamera.centerOnPlayer(map.getPlayer(), map);
         moveMonsters();
         Actor.checkIfMonstersHealth(skeletons, lichs, darkLords, phantoms, map);
