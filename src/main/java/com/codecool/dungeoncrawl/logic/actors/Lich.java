@@ -43,23 +43,27 @@ public class Lich extends Actor {
         Cell currentCell = map.getCell(x, y);
         Cell nextCell = map.getCell(x + randomPosNext, y + randomPosNext);
         if (x + randomPosNext < map.getWidth() || y + randomPosNext < map.getHeight()) {
-            if (currentCell.getNeighbor(randomPos, randomPosNext) == null
-                    || currentCell.getNeighbor(randomPos, randomPosNext).getSkeleton() != null
-                    || currentCell.getNeighbor(randomPos, randomPosNext).getPlayer() != null
-                    || nextCell.getNeighbor(randomPos, randomPosNext).getPlayer() != null) {
-                return;
-            } else if (nextCell.getNeighbor(randomPos, randomPosNext) == null
-                    || nextCell.getNeighbor(randomPos, randomPosNext).getType().equals(CellType.WALL)
-                    || nextCell.getType().equals(CellType.WALL)) {
-                return;
-            } else if (randomPosNext == 0 || randomPos == 0) {
-                return;
-            } else
-                lich.newMove(nextCell, lich);
-            if (isEnemy(nextCell.getNeighbor(randomPos, randomPosNext))
-                    && nextCell.getActor() instanceof Player) {
-                nextCell.getActor().fightWithMonster(lich);
+            try {
+                if (currentCell.getNeighbor(randomPos, randomPosNext) == null
+                        || currentCell.getNeighbor(randomPos, randomPosNext).getSkeleton() != null
+                        || currentCell.getNeighbor(randomPos, randomPosNext).getPlayer() != null
+                        || nextCell.getNeighbor(randomPos, randomPosNext).getPlayer() != null) {
+                    return;
+                } else if (nextCell.getNeighbor(randomPos, randomPosNext) == null
+                        || nextCell.getNeighbor(randomPos, randomPosNext).getType().equals(CellType.WALL)
+                        || nextCell.getType().equals(CellType.WALL)) {
+                    return;
+                } else if (randomPosNext == 0 || randomPos == 0) {
+                    return;
+                } else
+                    lich.newMove(nextCell, lich);
+                if (isEnemy(nextCell.getNeighbor(randomPos, randomPosNext))
+                        && nextCell.getActor() instanceof Player) {
+                    nextCell.getActor().fightWithMonster(lich);
 
+                }
+            } catch (NullPointerException e) {
+                System.out.println(e);
             }
         }
     }

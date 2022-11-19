@@ -11,7 +11,7 @@ public class DarkLord extends Skeleton {
     public DarkLord(Cell cell) {
         super(cell);
         cell.setDarkLord(this);
-        this.setHealth(35);
+        this.setHealth(50);
         this.setStrength(10);
     }
 
