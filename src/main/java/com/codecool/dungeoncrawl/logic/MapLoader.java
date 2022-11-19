@@ -96,7 +96,7 @@ public class MapLoader {
                             new Weapon(cell);
                             break;
                         case 'r':
-                            cell.setType(CellType.WATER);
+                            cell.setType(CellType.WALL);
                             new Water(cell);
                             break;
                         case 't':

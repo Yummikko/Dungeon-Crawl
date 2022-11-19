@@ -39,6 +39,7 @@ public class Player extends Actor {
             NormalDoor door = nextCell.getNormalDoor();
             if(door.getIsOpen()) {
                 door.setCell(new OpenDoor(door.getCell()).getCell());
+                removeKey();
                 moveActor(nextCell);
                 return;
             }
@@ -117,6 +118,13 @@ public class Player extends Actor {
             if (item instanceof Key) {
                 if(!door.getIsOpen())
                     door.setIsOpen();
+            }
+        }
+    }
+    public void removeKey() {
+        for (Item item : inventory) {
+            if (item instanceof Key) {
+                this.inventory.remove(item);
             }
         }
     }
