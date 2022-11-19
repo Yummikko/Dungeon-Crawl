@@ -12,6 +12,7 @@ public class DarkLord extends Skeleton {
 
     public DarkLord(Cell cell) {
         super(cell);
+        cell.setDarkLord(this);
         this.setHealth(25);
         this.setStrength(7);
     }
@@ -40,8 +41,8 @@ public class DarkLord extends Skeleton {
     }
 
     public static void summonPhantoms(Player player, GameMap map, DarkLord darkLord, Random rand, List<Phantom> phantoms) {
-        int min = -5;
-        int max = 5;
+        int min = -2;
+        int max = 2;
         int randomPos = rand.nextInt(max - min) + min;
         int randomPosNext = rand.nextInt(max - min) + min;
         int posX = player.getX();
@@ -64,12 +65,24 @@ public class DarkLord extends Skeleton {
                     || cell.getType().equals(CellType.SKULL)
                     || cell.getActor() != null)
                 return;
-            else if ((bossX - posX <= 5) && (bossX - posX > -1) || (bossY - posY > -1) || (bossY - posY <= 5)) {
+            else if ((bossX - posX >= -5) && (bossX - posX < -1) || (bossY - posY < -1) || (bossY - posY >= -5)) {
                 Phantom phantom = new Phantom(cell);
                 cell.setActor(phantom);
                 map.getPhantoms().add(phantom);
                 phantoms.add(phantom);
             }
+        }
+    }
+
+    public void removePhantoms(List<Phantom> phantoms, GameMap map) {
+        if (this.getHealth() <= 0) {
+            for (int i = 0; i < phantoms.size(); i++) {
+                Phantom phantom = phantoms.get(i);
+                System.out.println("Change phantoms to null");
+                phantom.dissapear();
+            }
+            phantoms.removeAll(phantoms);
+            map.getPhantoms().removeAll(map.getPhantoms());
         }
     }
 

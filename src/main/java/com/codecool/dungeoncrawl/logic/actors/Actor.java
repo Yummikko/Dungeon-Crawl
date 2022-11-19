@@ -74,6 +74,7 @@ public abstract class Actor implements Drawable {
                 darkLords.remove(darkLord);
                 map.getDarkLords().remove(darkLord);
                 darkLord.getCell().setActor(null);
+                darkLord.removePhantoms(phantoms, map);
             }
         }
         System.out.println("Darklords left: " + darkLords.size());

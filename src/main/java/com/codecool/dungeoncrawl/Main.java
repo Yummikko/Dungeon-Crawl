@@ -336,13 +336,9 @@ public class Main extends Application {
 
 
     private void refresh() {
-        System.out.println("Skeletons: " + skeletons.size());
-        System.out.println("Skeletons on the map :" + map.getSkeletons().size());
-        System.out.println("Liches on the map :" + map.getLichs().size());
         System.out.println("Boss on the map :" + map.getDarkLords().size());
         System.out.println(darkLords.size() < map.getDarkLords().size());
         System.out.println("Phantoms on the map :" + map.getPhantoms().size());
-        System.out.println(phantoms.size() < map.getPhantoms().size());
         gameCamera.centerOnPlayer(map.getPlayer(), map);
         Skeleton.monsterMove(map.getSkeletons(), map);
         Lich.magicMovement(map.getLichs(), map, map.getPlayer());
@@ -356,10 +352,6 @@ public class Main extends Application {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        }
-        if (map.getDarkLord() != null && map.getDarkLord().getHealth() <= 0) {
-            map.getPhantoms().removeAll(map.getPhantoms());
-            phantoms.removeAll(phantoms);
         }
         float xOffset = gameCamera.getxOffset();
         float yOffset = gameCamera.getyOffset();
@@ -383,10 +375,6 @@ public class Main extends Application {
                     if (cell.getDarkLord() != null) {
                         if (darkLords.size() < map.getDarkLords().size())
                             darkLords.add(cell.getDarkLord());
-                    }
-                    if (cell.getPhantom() != null) {
-                        if (phantoms.size() < map.getPhantoms().size())
-                            phantoms.add(cell.getPhantom());
                     }
                     Tiles.drawTile(context, cell.getActor(), (int) (x - xOffset), (int) (y - yOffset));
                 } else if (cell.getDoor() != null) {

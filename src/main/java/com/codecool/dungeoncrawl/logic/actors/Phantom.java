@@ -9,6 +9,7 @@ import java.util.Random;
 public class Phantom extends Skeleton{
     public Phantom(Cell cell) {
         super(cell);
+        cell.setPhantom(this);
         this.setHealth(8);
         this.setStrength(3);
     }
@@ -31,6 +32,11 @@ public class Phantom extends Skeleton{
                 map.getPhantom().randomMove(-1, 0);
             }
         }
+    }
+
+    public void dissapear() {
+        this.getCell().setActor(null);
+        this.setAlive(false);
     }
 
     @Override
