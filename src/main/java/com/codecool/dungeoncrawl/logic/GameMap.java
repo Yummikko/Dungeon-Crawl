@@ -1,8 +1,7 @@
 package com.codecool.dungeoncrawl.logic;
 
-import com.codecool.dungeoncrawl.logic.actors.Lich;
-import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.logic.actors.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +12,13 @@ public class GameMap {
     private final Cell[][] cells;
     private final List<Skeleton> skeletons = new ArrayList<>();
     private final List<Lich> lichs = new ArrayList<>();
+    private final List<DarkLord> bosses = new ArrayList<>();
+    private final List<Phantom> phantoms = new ArrayList<>();
     private Player player;
     private Skeleton skeleton;
     private Lich lich;
+    private DarkLord darkLord;
+    private Phantom phantom;
 
 
     public GameMap(int width, int height, CellType defaultCellType) {
@@ -61,6 +64,22 @@ public class GameMap {
         return skeleton;
     }
 
+    public DarkLord getDarkLord() {
+        return darkLord;
+    }
+
+    public void setDarkLord(DarkLord darkLord) {
+        this.darkLord = darkLord;
+    }
+
+    public Phantom getPhantom() {
+        return phantom;
+    }
+
+    public void setPhantom(Phantom phantom) {
+        this.phantom = phantom;
+    }
+
     public int getWidth() {
         return width;
     }
@@ -75,5 +94,13 @@ public class GameMap {
 
     public List<Lich> getLichs() {
         return lichs;
+    }
+
+    public List<DarkLord> getDarkLords() {
+        return bosses;
+    }
+
+    public List<Phantom> getPhantoms() {
+        return phantoms;
     }
 }

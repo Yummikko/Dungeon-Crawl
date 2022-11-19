@@ -41,6 +41,8 @@ public class Tiles {
         tileMap.put("skull", new Tile(0, 15));
         tileMap.put("stairs", new Tile(2, 6));
         tileMap.put("crown", new Tile(11, 24));
+        tileMap.put("darkLord", new Tile(24, 7));
+        tileMap.put("phantom", new Tile(26, 6));
         tileMap.put("poison", new Tile(15, 29));
         tileMap.put("shield", new Tile(2, 23));
     }

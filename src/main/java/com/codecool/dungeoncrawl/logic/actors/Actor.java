@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
+import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
@@ -48,21 +49,44 @@ public abstract class Actor implements Drawable {
         }
     }
 
-    public static void checkIfMonstersHealth(List<Skeleton> skeletons, List<Lich> liches) {
+    public static void checkIfMonstersHealth(List<Skeleton> skeletons, List<Lich> liches, List<DarkLord> darkLords, List<Phantom> phantoms, GameMap map) {
         for (int i = 0; i < skeletons.size(); i++) {
             Skeleton skeleton = skeletons.get(i);
             if (skeleton.getHealth() <= 0) {
                 skeletons.remove(skeleton);
+                map.getSkeletons().remove(skeleton);
                 skeleton.getCell().setActor(null);
             }
         }
+        System.out.println("Skeleton left: " + map.getSkeletons().size());
         for (int j = 0; j < liches.size(); j++) {
             Lich lich = liches.get(j);
             if (lich.getHealth() <= 0) {
                 liches.remove(lich);
+                map.getLichs().remove(lich);
                 lich.getCell().setActor(null);
             }
         }
+        System.out.println("liches left: " + liches.size());
+        for (int y = 0; y < darkLords.size(); y++) {
+            DarkLord darkLord = darkLords.get(y);
+            if (darkLord.getHealth() <= 0) {
+                darkLords.remove(darkLord);
+                map.getDarkLords().remove(darkLord);
+                darkLord.getCell().setActor(null);
+                darkLord.removePhantoms(phantoms, map);
+            }
+        }
+        System.out.println("Darklords left: " + darkLords.size());
+        for (int y = 0; y < phantoms.size(); y++) {
+            Phantom phantom = phantoms.get(y);
+            if (phantom.getHealth() <= 0) {
+                phantoms.remove(phantoms);
+                map.getPhantoms().remove(phantom);
+                phantom.getCell().setActor(null);
+            }
+        }
+        System.out.println("Phantoms left: " + phantoms.size());
     }
 
     protected void fightWithMonster(Actor actor) {
@@ -92,7 +116,7 @@ public abstract class Actor implements Drawable {
     public void setName(String name) { this.name = name; }
 
     protected static boolean isNotWalkable(Cell nextCell) {
-        Set<CellType> walkableCells = Set.of(CellType.FLOOR, CellType.STAIRS, CellType.CROWN);
+        Set<CellType> walkableCells = Set.of(CellType.FLOOR, CellType.STAIRS, CellType.CROWN, CellType.WATER);
         return !walkableCells.contains(nextCell.getType());
     }
 

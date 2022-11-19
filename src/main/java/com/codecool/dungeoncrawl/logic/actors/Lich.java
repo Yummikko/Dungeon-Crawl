@@ -18,7 +18,6 @@ public class Lich extends Actor {
         this.setHealth(22);
     }
 
-    /* think about refactoring this as it's not working perfectly */
     public static void magicMovement(List<Lich> lichs, GameMap map, Player player) {
         int max = 4;
         int randomMove = rand.nextInt(max);
@@ -95,5 +94,4 @@ public class Lich extends Actor {
         nextCell.setActor(lich);
         cell = nextCell;
     }
-
 }
