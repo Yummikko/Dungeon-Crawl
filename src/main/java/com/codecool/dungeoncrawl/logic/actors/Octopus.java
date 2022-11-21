@@ -1,8 +1,10 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.GameMap;
 
-public class Octopus extends Actor{
+public class Octopus extends Enemy {
+
     public Octopus(Cell cell) {
         super(cell);
         this.setStrength(5);
@@ -10,7 +12,13 @@ public class Octopus extends Actor{
     }
 
     @Override
+    public void move(GameMap map) {
+        // octopus doesn't move
+    }
+
+    @Override
     public String getTileName() {
         return "octopus";
     }
+
 }

@@ -1,90 +1,57 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
+import com.codecool.dungeoncrawl.logic.util.SoundUtils;
 
-import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class Lich extends Actor {
+public class Lich extends Enemy {
 
-    private static final Random rand = new Random();
+    private static final ThreadLocalRandom rand = ThreadLocalRandom.current();
 
     public Lich(Cell cell) {
         super(cell);
-        cell.setLich(this);
-        this.setStrength(6);
-        this.setHealth(22);
+        this.setStrength(4);
+        this.setHealth(20);
     }
 
-    public static void magicMovement(List<Lich> lichs, GameMap map, Player player) {
-        int max = 4;
-        int randomMove = rand.nextInt(max);
-        for (Lich lich : lichs) {
-            int randomNum = rand.nextInt(100);
-            map.setLich(lich);
-            if (randomNum < 75) {
-                map.getLich().moveRandomly(randomMove, map.getLich(), rand);
-            } else {
-                if (player.getX() + 1 < map.getWidth())
-                    teleportMonster(player, map, map.getLich(), rand);
-            }
+    @Override
+    public void move(GameMap map) {
+        int randomNum = rand.nextInt(100);
+        if (randomNum < 75) {
+            super.move(map);
+        } else if (map.getPlayer().getX() + 1 < map.getWidth()) {
+            teleportMonster(map.getPlayer(), map);
         }
     }
 
-    public static void teleportMonster(Player player, GameMap map, Lich lich, Random rand) {
+    public void teleportMonster(Player player, GameMap map) {
         int min = -1;
         int max = 1;
-        int randomPos = rand.nextInt(max - min) + min;
-        int randomPosNext = rand.nextInt(max - min) + min;
+        int randomY = rand.nextInt(min, max);
+        int randomX = rand.nextInt(min, max);
         int x = player.getX();
         int y = player.getY();
-        Cell currentCell = map.getCell(x, y);
-        Cell nextCell = map.getCell(x + randomPosNext, y + randomPosNext);
-        if (x + randomPosNext < map.getWidth() || y + randomPosNext < map.getHeight()) {
+        Cell nextCell = map.getCell(x + randomX, y + randomX);
+        if (x + randomX < map.getWidth() || y + randomX < map.getHeight()) {
             try {
-                if (currentCell.getNeighbor(randomPos, randomPosNext) == null
-                        || currentCell.getNeighbor(randomPos, randomPosNext).getSkeleton() != null
-                        || currentCell.getNeighbor(randomPos, randomPosNext).getPlayer() != null
-                        || nextCell.getNeighbor(randomPos, randomPosNext).getPlayer() != null) {
+                if (isNotWalkable(nextCell) || randomX == 0 || randomY == 0) {
                     return;
-                } else if (nextCell.getNeighbor(randomPos, randomPosNext) == null
-                        || nextCell.getNeighbor(randomPos, randomPosNext).getType().equals(CellType.WALL)
-                        || nextCell.getType().equals(CellType.WALL)) {
+                } else if (nextCell.getNeighbour(randomY, randomX).getActor() != null) {
                     return;
-                } else if (randomPosNext == 0 || randomPos == 0) {
-                    return;
-                } else
-                    lich.newMove(nextCell, lich);
-                if (isEnemy(nextCell.getNeighbor(randomPos, randomPosNext))
+                }
+                else {
+                    SoundUtils.playSound(SoundUtils.TELEPORT, 0.8f);
+                    moveActor(nextCell);
+                }
+                if (isEnemy(nextCell.getNeighbour(randomY, randomX))
                         && nextCell.getActor() instanceof Player) {
-                    nextCell.getActor().fightWithMonster(lich);
-
+                    nextCell.getActor().fightWithMonster(this);
                 }
             } catch (NullPointerException e) {
                 System.out.println("getPlayer() is null, cannot move there");
             }
-        }
-    }
-
-    public static void moveRandomly(int randomPos, Lich lich, Random rand) {
-        int min = -1;
-        int max = 1;
-        int randomX = rand.nextInt(max - min) + min;
-        int randomY = rand.nextInt(max - min) + min;
-        Cell lichNextPos = lich.getCell().getNeighbor(randomX, randomY);
-        if (lichNextPos.getType().equals(CellType.WALL) || lichNextPos.getActor() != null) {
-            return;
-        }
-        if (randomPos == 1) {
-            lich.move(0, 1);
-        } else if (randomPos == 2) {
-            lich.move(0, -1);
-        } else if (randomPos == 3) {
-            lich.move(1, 0);
-        } else {
-            lich.move(-1, 0);
         }
     }
 
@@ -93,9 +60,4 @@ public class Lich extends Actor {
         return "lich";
     }
 
-    public void newMove(Cell nextCell, Lich lich) {
-        cell.setActor(null);
-        nextCell.setActor(lich);
-        cell = nextCell;
-    }
 }

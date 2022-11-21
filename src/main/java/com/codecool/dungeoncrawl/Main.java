@@ -1,7 +1,9 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.graphics.GameCamera;
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.Direction;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.*;
@@ -16,22 +18,20 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
-
+import com.codecool.dungeoncrawl.logic.actors.DarkLord;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
 public class Main extends Application {
-    public final List<Skeleton> skeletons = new ArrayList<>();
-    public final List<Lich> lichs = new ArrayList<>();
-    public final List<DarkLord> darkLords = new ArrayList<>();
-    public final List<Phantom> phantoms = new ArrayList<>();
+    GameDatabaseManager dbManager;
 
     static GameMap map = MapLoader.loadMap("/map1.txt");
     Stage stage;
@@ -189,6 +189,7 @@ public class Main extends Application {
     }
 
     public void gameStart(Stage primaryStage) {
+        setupDbManager();
         SoundUtils.playContinuously(SoundUtils.BACKGROUND, 0.5f);
         GridPane ui = new GridPane();
         ui.setPrefWidth(200);
@@ -224,6 +225,8 @@ public class Main extends Application {
 
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
+        canvas.setScaleX(1.2);
+        canvas.setScaleY(1.2);
     }
 
     
@@ -235,42 +238,40 @@ public class Main extends Application {
                 || keyEvent.getCode() == KeyCode.ESCAPE) {
             exit();
         }
-
-        primaryStage.setTitle("Dungeon Crawl");
-        primaryStage.show();
-        canvas.setScaleX(1.2);
-        canvas.setScaleY(1.2);
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case W:
             case UP:
-                map.getPlayer().move(0, -1);
+                map.getPlayer().move(Direction.NORTH);
                 refresh();
                 break;
             case S:
             case DOWN:
-                map.getPlayer().move(0, 1);
+                map.getPlayer().move(Direction.SOUTH);
                 refresh();
                 break;
             case A:
             case LEFT:
-                map.getPlayer().move(-1, 0);
+                map.getPlayer().move(Direction.WEST);
                 refresh();
                 break;
             case D:
             case RIGHT:
-                map.getPlayer().move(1, 0);
+                map.getPlayer().move(Direction.EAST);
                 refresh();
-                break;
-            case Q:
-                Player player = map.getPlayer();
-                dbManager.savePlayer(player);
                 break;
         }
     }
-
+    private void setupDbManager() {
+        dbManager = new GameDatabaseManager();
+        try {
+            dbManager.setup();
+        } catch (SQLException ex) {
+            System.out.println("Cannot connect to database.");
+        }
+    }
     private void checkIfOnItem() {
         if (map.getPlayer().getCell().getItem() != null) {
             showButton();
@@ -302,11 +303,16 @@ public class Main extends Application {
         scene.getStylesheets().add("game-over.css");
         primaryStage.setScene(scene);
         primaryStage.show();
-        clearMap();
     }
 
     public void youWon(Stage primaryStage) {
+        SoundUtils.stopAll();
+        SoundUtils.playSound(SoundUtils.GAME_WON, 0.6f);
+        showEndGameScreen(primaryStage, "you-won.css");
+    }
 
+    private void showEndGameScreen(Stage primaryStage, String css) {
+        MapLoader.maps.clear();
         goBack(primaryStage);
         exitGame();
 
@@ -318,21 +324,19 @@ public class Main extends Application {
         menuLayout.setPrefHeight(768);
         menuLayout.setCenter(menu);
         buttons.setAlignment(Pos.CENTER);
-        buttons.setPadding(new Insets(350,5,15,5));
+        buttons.setPadding(new Insets(350, 5, 15, 5));
         buttons.setSpacing(25);
 
         Scene scene = new Scene(menuLayout);
-        scene.getStylesheets().add("you-won.css");
+        scene.getStylesheets().add(css);
         primaryStage.setScene(scene);
         primaryStage.show();
-        clearMap();
     }
-
 
     private void refresh() {
         gameCamera.centerOnPlayer(map.getPlayer(), map);
         moveMonsters();
-        Actor.checkIfMonstersHealth(skeletons, lichs, darkLords, phantoms, map);
+        checkIfMonstersHealth(map.getEnemies());
         if (!map.getPlayer().isAlive()) {
             try {
                 SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);
@@ -352,50 +356,6 @@ public class Main extends Application {
             for (int y = 0; y < map.getHeight(); y++) {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
-                    Tiles.drawTile(context, cell.getActor(), x, y);
-                } else {
-                    Tiles.drawTile(context, cell, x, y);
-                }
-            }
-        }
-        healthLabel.setText("" + map.getPlayer().getHealth());
-    }
-
-    private void setupDbManager() {
-        dbManager = new GameDatabaseManager();
-        try {
-            dbManager.setup();
-        } catch (SQLException ex) {
-            System.out.println("Cannot connect to database.");
-        }
-    }
-
-    private void exit() {
-        try {
-            stop();
-        } catch (Exception e) {
-            System.exit(1);
-        }
-        System.exit(0);
-    }
-                    if (cell.getSkeleton() != null) {
-                        if (skeletons.size() < map.getSkeletons().size()) {
-                            skeletons.add(cell.getSkeleton());
-                        }
-                    }
-                    if (cell.getLich() != null) {
-                        if (lichs.size() < map.getLichs().size()) {
-                            lichs.add(cell.getLich());
-                        }
-                    }
-                    if (cell.getDarkLord() != null) {
-                        if (darkLords.size() < map.getDarkLords().size())
-                            darkLords.add(cell.getDarkLord());
-                    }
-                    if (cell.getPhantom() != null) {
-                        if (phantoms.size() < map.getPhantoms().size())
-                            phantoms.add(cell.getPhantom());
-                    }
                     Tiles.drawTile(context, cell.getActor(), (int) (x - xOffset), (int) (y - yOffset));
                 } else if (cell.getDoor() != null) {
                     if (cell.getDoor() instanceof NormalDoor)
@@ -414,6 +374,20 @@ public class Main extends Application {
         healthLabel.setText("" + map.getPlayer().getHealth());
         strengthLabel.setText("" + map.getPlayer().getStrength());
         playerInventory.setText("" + map.getPlayer().inventoryToString());
+    }
+
+    private static void checkIfMonstersHealth(List<Enemy> enemies) {
+        // loop backwards to avoid ConcurrentModificationException
+        for (int i = enemies.size() - 1; i >= 0; i--) {
+            Enemy enemy = enemies.get(i);
+            if (enemy.isDead()) {
+                enemies.remove(enemy);
+                enemy.getCell().setActor(null);
+                if (enemy instanceof DarkLord) {
+                    ((DarkLord) enemy).removePhantoms(map);
+                }
+            }
+        }
     }
 
     public void checkForWin(Stage primaryStage) {
@@ -453,23 +427,11 @@ public class Main extends Application {
         });
     }
 
-
-    public void clearMap(){
-        skeletons.clear();
-        lichs.clear();
-        darkLords.clear();
-        phantoms.clear();
-        map.getSkeletons().clear();
-        map.getLichs().clear();
-        map.getPhantoms().clear();
-        map.getDarkLords().clear();
-    }
-
     public void moveMonsters() {
-        Skeleton.monsterMove(map.getSkeletons(), map);
-        Lich.magicMovement(map.getLichs(), map, map.getPlayer());
-        DarkLord.bossMoves(map.getDarkLords(), map.getPhantoms(), map, map.getPlayer());
-        Phantom.movements(map.getPhantoms(), map);
+        List<Enemy> enemies = map.getEnemies();
+        for (int i = 0; i < enemies.size(); i++) {
+            enemies.get(i).move(map);
+        }
     }
     public static String getNextMap(List maps) {
         int mapsSize = maps.size();
@@ -491,6 +453,15 @@ public class Main extends Application {
         String mapName = getNextMap(maps);
         GameMap map2 = MapLoader.loadMap(mapName);
         map = map2;
+    }
+
+    private void exit() {
+        try {
+            stop();
+        } catch (Exception e) {
+            System.exit(1);
+        }
+        System.exit(0);
     }
 
 }

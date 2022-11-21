@@ -18,6 +18,10 @@ public class SoundUtils {
     public static final String GAME_OVER = "/sounds/game_over.wav";
     public static final String BACKGROUND = "/sounds/background.wav";
     public static final String STEP = "/sounds/step.wav";
+    public static final String OPEN_DOOR = "/sounds/door-1-open.wav";
+    public static final String TELEPORT = "/sounds/teleport.wav";
+    public static final String SUMMON = "/sounds/darkness.wav";
+    public static final String GAME_WON = "/sounds/mixkit-medieval-show-fanfare-announcement-226.wav";
     private static final List<Clip> playingClips = new ArrayList<>();
 
     private SoundUtils() {

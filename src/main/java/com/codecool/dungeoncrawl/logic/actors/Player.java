@@ -3,44 +3,47 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
+import com.codecool.dungeoncrawl.logic.Direction;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.items.*;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.StringJoiner;
 
 
 public class Player extends Actor {
-    private ArrayList<Item> inventory;
-    public static final int HEALTH = 35;
+
+    public static final int INITIAL_HEALTH = 35;
     public static final int ATTACK_STRENGTH = 5;
+    private List<Item> inventory;
 
     public Player(Cell cell) {
         super(cell);
-        cell.setPlayer(this);
-        this.setHealth(HEALTH);
+        this.setHealth(INITIAL_HEALTH);
         this.setStrength(ATTACK_STRENGTH);
         this.inventory = new ArrayList<>();
     }
 
-
     @Override
-    public void move(int dx, int dy) {
+    public void move(Direction direction) {
         Set<String> developerNames = Set.of("natalia", "duc", "ola", "dawid");
-        Cell nextCell = cell.getNeighbor(dx, dy);
+        Cell nextCell = cell.getNeighbour(direction);
         if (nextCell == null) return;
         String smallName = name.toLowerCase();
-        if(nextCell.getType() == CellType.STAIRS) {
+        if (nextCell.getType() == CellType.STAIRS) {
             Main.setMap();
         }
         if (nextCell.getNormalDoor() != null) {
             NormalDoor door = nextCell.getNormalDoor();
-            if(door.getIsOpen()) {
+            if (door.getIsOpen()) {
                 door.setCell(new OpenDoor(door.getCell()).getCell());
                 removeKey();
                 moveActor(nextCell);
+                SoundUtils.playSound(SoundUtils.OPEN_DOOR, 0.7f);
                 return;
             }
             if (developerNames.contains(smallName)) {
@@ -60,8 +63,8 @@ public class Player extends Actor {
         }
     }
 
-
-    private void moveActor(Cell nextCell) {
+    @Override
+    void moveActor(Cell nextCell) {
         SoundUtils.playSound(SoundUtils.STEP, 0.7f);
         cell.setActor(null);
         nextCell.setActor(this);
@@ -72,36 +75,33 @@ public class Player extends Actor {
         return "player";
     }
 
-
-    public void setInventory(ArrayList<Item> inventory) {
-        this.inventory = inventory;
-    }
-
-
-    public ArrayList getInventory() {
+    public List<Item> getInventory() {
         return inventory;
     }
 
+    public void setInventory(List<Item> inventory) {
+        this.inventory = inventory;
+    }
 
     public void pickUpItem() {
-        inventory.add(this.getCell().getItem());
-        if (this.getCell().getItem() == null) {
+        inventory.add(cell.getItem());
+        if (cell.getItem() == null) {
             return;
-        } else if (this.getCell().getItem() instanceof Weapon) {
+        } else if (cell.getItem() instanceof Weapon) {
             this.setStrength(getStrength() + 2);
             this.setHasWeapon(true);
-        } else if (this.getCell().getItem() instanceof Shield) {
+        } else if (cell.getItem() instanceof Shield) {
             this.setStrength(getStrength() + 10);
-        } else if (this.getCell().getItem() instanceof Food) {
+        } else if (cell.getItem() instanceof Food) {
             SoundUtils.playSound(SoundUtils.EAT, 0.5f);
             this.setHealth(getHealth() + 3);
-        } else if (this.getCell().getItem() instanceof Poison) {
+        } else if (cell.getItem() instanceof Poison) {
             SoundUtils.playSound(SoundUtils.EAT, 0.5f);
             this.setHealth(getHealth() - 3);
-        } else if (this.getCell().getItem() instanceof Key) {
+        } else if (cell.getItem() instanceof Key) {
             this.setHasKey(true);
         }
-        this.getCell().setItem(null);
+        cell.setItem(null);
     }
 
     public String inventoryToString() {
@@ -113,14 +113,13 @@ public class Player extends Actor {
     }
 
     public void openClosedDoor(NormalDoor door) {
-        ArrayList<Item> inventory = this.getInventory();
         for (Item item : inventory) {
             if (item instanceof Key) {
-                if(!door.getIsOpen())
-                    door.setIsOpen();
+                door.setIsOpen();
             }
         }
     }
+
     public void removeKey() {
         //TODO: iterator
         for (int i = 0; i < inventory.size(); i++) {
@@ -129,4 +128,5 @@ public class Player extends Actor {
             }
         }
     }
+
 }

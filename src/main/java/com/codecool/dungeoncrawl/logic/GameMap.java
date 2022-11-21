@@ -1,25 +1,20 @@
 package com.codecool.dungeoncrawl.logic;
 
-import com.codecool.dungeoncrawl.logic.actors.*;
+import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.Enemy;
+import com.codecool.dungeoncrawl.logic.actors.Phantom;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 public class GameMap {
     private final int width;
     private final int height;
     private final Cell[][] cells;
-    private final List<Skeleton> skeletons = new ArrayList<>();
-    private final List<Lich> lichs = new ArrayList<>();
-    private final List<DarkLord> bosses = new ArrayList<>();
-    private final List<Phantom> phantoms = new ArrayList<>();
+    private final List<Enemy> enemies;
     private Player player;
-    private Skeleton skeleton;
-    private Lich lich;
-    private DarkLord darkLord;
-    private Phantom phantom;
-
 
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
@@ -30,6 +25,7 @@ public class GameMap {
                 cells[x][y] = new Cell(this, x, y, defaultCellType);
             }
         }
+        this.enemies = new ArrayList<>();
     }
 
     public Cell getCell(int x, int y) {
@@ -40,44 +36,12 @@ public class GameMap {
         }
     }
 
-    public Lich getLich() {
-        return lich;
-    }
-
-    public void setLich(Lich lich) {
-        this.lich = lich;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
     public Player getPlayer() {
         return player;
     }
 
-    public void setSkeleton(Skeleton skeleton) {
-        this.skeleton = skeleton;
-    }
-
-    public Skeleton getSkeleton() {
-        return skeleton;
-    }
-
-    public DarkLord getDarkLord() {
-        return darkLord;
-    }
-
-    public void setDarkLord(DarkLord darkLord) {
-        this.darkLord = darkLord;
-    }
-
-    public Phantom getPhantom() {
-        return phantom;
-    }
-
-    public void setPhantom(Phantom phantom) {
-        this.phantom = phantom;
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public int getWidth() {
@@ -88,19 +52,18 @@ public class GameMap {
         return height;
     }
 
-    public List<Skeleton> getSkeletons() {
-        return skeletons;
+    public void addEnemy(Enemy enemy) {
+        enemies.add(enemy);
     }
 
-    public List<Lich> getLichs() {
-        return lichs;
+    public List<Enemy> getEnemies() {
+        return enemies;
     }
 
-    public List<DarkLord> getDarkLords() {
-        return bosses;
+    public List<Enemy> getPhantoms() {
+        return enemies.stream()
+                .filter(Phantom.class::isInstance)
+                .collect(Collectors.toList());
     }
 
-    public List<Phantom> getPhantoms() {
-        return phantoms;
-    }
 }

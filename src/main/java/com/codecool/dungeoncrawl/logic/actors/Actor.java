@@ -1,23 +1,12 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.Drawable;
 import com.codecool.dungeoncrawl.logic.CellType;
+import com.codecool.dungeoncrawl.logic.Direction;
 import com.codecool.dungeoncrawl.logic.Drawable;
-import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
-import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
 
-import java.util.List;
 import java.util.Set;
-
-public abstract class Actor implements Drawable {
-    private Cell cell;
-    private int health = 10;
-
-    public Actor(Cell cell) {
-
 
 public abstract class Actor implements Drawable {
     protected String name;
@@ -33,72 +22,37 @@ public abstract class Actor implements Drawable {
         this.cell.setActor(this);
     }
 
-    public void move(int dx, int dy) {
-        Cell nextCell = cell.getNeighbor(dx, dy);
-        if (nextCell.getNormalDoor() != null) {
-            NormalDoor door = nextCell.getNormalDoor();
-            if(door.getIsOpen()) {
-                cell.setActor(null);
-                nextCell.setActor(this);
-                cell = nextCell;
-                door.setCell(new OpenDoor(door.getCell()).getCell());
-            }
-        }
-        if (isNotWalkable(nextCell)) {
-            return;
-        } else if (nextCell.getActor() == null) {
-            cell.setActor(null);
-            nextCell.setActor(this);
-            cell = nextCell;
-        } else if (isEnemy(nextCell)) {
-            if (cell.getActor() instanceof Player) {
-                this.fightWithMonster(nextCell.getActor());
-            }
-        }
+    protected static boolean isNotWalkable(Cell nextCell) {
+        Set<CellType> walkableCells = Set.of(CellType.FLOOR, CellType.STAIRS, CellType.CROWN);
+        return !walkableCells.contains(nextCell.getType());
     }
 
-    public static void checkIfMonstersHealth(List<Skeleton> skeletons, List<Lich> liches, List<DarkLord> darkLords, List<Phantom> phantoms, GameMap map) {
-        for (int i = 0; i < skeletons.size(); i++) {
-            Skeleton skeleton = skeletons.get(i);
-            if (skeleton.getHealth() <= 0) {
-                skeletons.remove(skeleton);
-                map.getSkeletons().remove(skeleton);
-                skeleton.getCell().setActor(null);
-            }
+    protected static boolean isEnemy(Cell nextCell) {
+        return nextCell.getActor() != null;
+    }
+
+    public void move(Direction direction) {
+        Cell nextCell = cell.getNeighbour(direction);
+        if (nextCell == null || isNotWalkable(nextCell)) return;
+        if (nextCell.getActor() instanceof Player) {
+            nextCell.getActor().fightWithMonster(this);
+            return;
         }
-        for (int j = 0; j < liches.size(); j++) {
-            Lich lich = liches.get(j);
-            if (lich.getHealth() <= 0) {
-                liches.remove(lich);
-                map.getLichs().remove(lich);
-                lich.getCell().setActor(null);
-            }
-        }
-        for (int y = 0; y < darkLords.size(); y++) {
-            DarkLord darkLord = darkLords.get(y);
-            if (darkLord.getHealth() <= 0) {
-                darkLords.remove(darkLord);
-                map.getDarkLords().remove(darkLord);
-                darkLord.removePhantoms(phantoms, map);
-                darkLord.getCell().setActor(null);
-            }
-        }
-        for (int y = 0; y < phantoms.size(); y++) {
-            Phantom phantom = phantoms.get(y);
-            if (phantom.getHealth() <= 0) {
-                phantoms.remove(phantoms);
-                map.getPhantoms().remove(phantom);
-                phantom.getCell().setActor(null);
-            }
-        }
+        moveActor(nextCell);
+    }
+
+    void moveActor(Cell nextCell) {
+        cell.setActor(null);
+        nextCell.setActor(this);
+        cell = nextCell;
     }
 
     protected void fightWithMonster(Actor actor) {
         actor.setHealth(actor.getHealth() - this.getStrength());
-        if (actor.getHealth() > 0) {
+        playHitSound();
+        if (actor.isAlive()) {
             this.setHealth(this.getHealth() - actor.getStrength());
-            playHitSound();
-            if (this.getHealth() < 1) this.setAlive(false);
+            if (this.isDead()) this.setAlive(false);
         } else {
             actor.getCell().setActor(null);
         }
@@ -113,17 +67,11 @@ public abstract class Actor implements Drawable {
     }
 
     public String getName() {
-        return name; }
-
-    public void setName(String name) { this.name = name; }
-
-    protected static boolean isNotWalkable(Cell nextCell) {
-        Set<CellType> walkableCells = Set.of(CellType.FLOOR, CellType.STAIRS, CellType.CROWN, CellType.WATER);
-        return !walkableCells.contains(nextCell.getType());
+        return name;
     }
 
-    protected static boolean isEnemy(Cell nextCell) {
-        return nextCell.getActor() != null;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getHealth() {
@@ -132,17 +80,30 @@ public abstract class Actor implements Drawable {
 
     public void setHealth(int health) {
         this.health = health;
+        if (isDead()) {
+            setAlive(false);
+        }
     }
 
-    public void setAlive(boolean alive) { isAlive = alive; }
+    public boolean isDead() {
+        return health <= 0;
+    }
 
-    public int getStrength() { return strength; }
+    public int getStrength() {
+        return strength;
+    }
 
-    public void setStrength(int strength) { this.strength = strength;}
+    public void setStrength(int strength) {
+        this.strength = strength;
+    }
 
-    public void setHasKey(boolean hasKey) { this.hasKey = hasKey; }
+    public void setHasKey(boolean hasKey) {
+        this.hasKey = hasKey;
+    }
 
-    public void setHasWeapon(boolean hasWeapon) { this.hasWeapon = hasWeapon; }
+    public void setHasWeapon(boolean hasWeapon) {
+        this.hasWeapon = hasWeapon;
+    }
 
     public Cell getCell() {
         return cell;
@@ -156,6 +117,12 @@ public abstract class Actor implements Drawable {
         return cell.getY();
     }
 
-    public boolean isAlive() { return isAlive; }
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
 
 }
