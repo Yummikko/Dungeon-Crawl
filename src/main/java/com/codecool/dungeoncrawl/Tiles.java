@@ -3,9 +3,9 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.logic.Drawable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class Tiles {
     public static int TILE_WIDTH = 32;
@@ -26,8 +26,25 @@ public class Tiles {
         tileMap.put("empty", new Tile(0, 0));
         tileMap.put("wall", new Tile(10, 17));
         tileMap.put("floor", new Tile(2, 0));
-        tileMap.put("player", new Tile(27, 0));
+        tileMap.put("player", new Tile(30, 0));
         tileMap.put("skeleton", new Tile(29, 6));
+        tileMap.put("lich", new Tile(29, 1));
+        tileMap.put("openDoor", new Tile(9, 16));
+        tileMap.put("key", new Tile(16, 23));
+        tileMap.put("weapon", new Tile(1, 30));
+        tileMap.put("food", new Tile(17, 28));
+        tileMap.put("water", new Tile(8, 4));
+        tileMap.put("bridge", new Tile(3, 3));
+        tileMap.put("octopus", new Tile(25, 8));
+        tileMap.put("door", new Tile(10, 9));
+        tileMap.put("spider", new Tile(30, 5));
+        tileMap.put("skull", new Tile(0, 15));
+        tileMap.put("stairs", new Tile(2, 6));
+        tileMap.put("crown", new Tile(11, 24));
+        tileMap.put("darkLord", new Tile(24, 7));
+        tileMap.put("phantom", new Tile(26, 6));
+        tileMap.put("poison", new Tile(15, 29));
+        tileMap.put("shield", new Tile(2, 23));
     }
 
     public static void drawTile(GraphicsContext context, Drawable d, int x, int y) {
