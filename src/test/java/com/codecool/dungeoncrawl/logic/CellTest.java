@@ -24,14 +24,6 @@ class CellTest {
         assertEquals(1, neighbor.getY());
     }
 
-//    @Test
-//    void getNeighbor() {
-//        Cell cell = map.getCell(1, 1);
-//        Cell neighbor = cell.getNeighbour(-1, 0);
-//        assertEquals(0, neighbor.getX());
-//        assertEquals(1, neighbor.getY());
-//    }
-
     @Test
     void cellOnEdgeHasNoNeighbor() {
         Cell cell = map.getCell(1, 0);
@@ -51,18 +43,5 @@ class CellTest {
         Item item = new Weapon(cell);
         cell.setItem(item);
         assertEquals(item, cell.getItem());
-    }
-
-    @Test
-    void shouldReturnFloor() {
-        String expectedTileName = "floor";
-        assertEquals(expectedTileName, cell.getTileName());
-    }
-
-    @Test
-    void shouldReturnWall() {
-        cell.setType(CellType.WALL);
-        String expectedTileName = "wall";
-        assertEquals(expectedTileName, cell.getTileName());
     }
 }
