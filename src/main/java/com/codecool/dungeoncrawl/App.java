@@ -6,6 +6,6 @@ public class App {
     public static void main(String[] args) {
         GameDatabaseManager manager = new GameDatabaseManager();
         manager.dbConnect();
-        Main.main(args);
+//        Main.main(args);
     }
 }
