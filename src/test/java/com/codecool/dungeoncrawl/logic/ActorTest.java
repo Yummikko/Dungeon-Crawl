@@ -12,7 +12,7 @@ class ActorTest {
     @Test
     void moveUpdatesCells() {
         Player player = new Player(gameMap.getCell(1, 1));
-        player.move(Direction.SOUTH);
+//        player.move(Direction.SOUTH);
 
         assertEquals(2, player.getX());
         assertEquals(1, player.getY());
