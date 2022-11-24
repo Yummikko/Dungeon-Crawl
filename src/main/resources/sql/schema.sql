@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS GAME_ITEMS (
 
 CREATE TABLE IF NOT EXISTS PLAYER_ITEM (
     id   serial primary key,
+    type char    not null,
     name varchar not null
 );
 
