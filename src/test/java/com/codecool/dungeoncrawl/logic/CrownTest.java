@@ -11,27 +11,27 @@ public class CrownTest {
 
     @Test
     void constructorTestPositive(){
-        Crown keyUnderTest = new Crown(new Cell(map, 1, 1, CellType.KEY));
-        CellType expectedCellType = CellType.KEY;
-        assertEquals(expectedCellType, keyUnderTest.getCell().getType());
+        Crown crownUnderTest = new Crown(new Cell(map, 1, 1, CellType.CROWN));
+        CellType expectedCellType = CellType.CROWN;
+        assertEquals(expectedCellType, crownUnderTest.getCell().getType());
     }
 
     @Test
     void constructorTestNegative(){
-        Crown keyUnderTest = new Crown(new Cell(map, 1, 1, CellType.WALL));
-        CellType expectedCellType = CellType.KEY;
-        assertNotEquals(expectedCellType, keyUnderTest.getCell().getType());
+        Crown crownUnderTest = new Crown(new Cell(map, 1, 1, CellType.WALL));
+        CellType expectedCellType = CellType.CROWN;
+        assertNotEquals(expectedCellType, crownUnderTest.getCell().getType());
     }
 
     @Test
     void testGetTileNamePositive(){
-        Crown keyUnderTest = new Crown(new Cell(map, 1, 1, CellType.KEY));
-        assertEquals("crown", keyUnderTest.getTileName());
+        Crown crownUnderTest = new Crown(new Cell(map, 1, 1, CellType.CROWN));
+        assertEquals("crown", crownUnderTest.getTileName());
     }
 
     @Test
     void testGetTileNameNegative(){
-        Crown keyUnderTest = new Crown(new Cell(map, 1, 1, CellType.KEY));
-        assertNotEquals("sword", keyUnderTest.getTileName());
+        Crown crownUnderTest = new Crown(new Cell(map, 1, 1, CellType.CROWN));
+        assertNotEquals("sword", crownUnderTest.getTileName());
     }
 }

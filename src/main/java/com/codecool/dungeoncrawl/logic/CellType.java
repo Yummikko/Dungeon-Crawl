@@ -8,6 +8,7 @@ public enum CellType {
     SKULL("skull"),
     CROWN("crown"),
     KEY("key"),
+    FOOD("food"),
     WALL("wall");
 
     private final String tileName;
