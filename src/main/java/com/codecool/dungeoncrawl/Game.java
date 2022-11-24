@@ -1,23 +1,34 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.graphics.GameCamera;
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.Direction;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.DarkLord;
-import com.codecool.dungeoncrawl.logic.actors.Enemy;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class Game {
+    GameDatabaseManager dbManager;
     private static GameMap map;
     private GameCamera gameCamera;
     private Stage stage;
@@ -41,6 +52,89 @@ public class Game {
         pickUpButton.setVisible(true);
     }
 
+    private void onKeyReleased(KeyEvent keyEvent) {
+        KeyCombination exitCombinationMac = new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN);
+        KeyCombination exitCombinationWin = new KeyCodeCombination(KeyCode.F4, KeyCombination.ALT_DOWN);
+        if (exitCombinationMac.match(keyEvent)
+                || exitCombinationWin.match(keyEvent)
+                || keyEvent.getCode() == KeyCode.ESCAPE) {
+            exit();
+        }
+    }
+
+    private void onKeyPressed(KeyEvent keyEvent) {
+        switch (keyEvent.getCode()) {
+            case W:
+            case UP:
+                map.getPlayer().move(Direction.NORTH);
+                refresh();
+                break;
+            case S:
+            case DOWN:
+                map.getPlayer().move(Direction.SOUTH);
+                refresh();
+                break;
+            case A:
+            case LEFT:
+                map.getPlayer().move(Direction.WEST);
+                refresh();
+                break;
+            case D:
+            case RIGHT:
+                map.getPlayer().move(Direction.EAST);
+                refresh();
+                break;
+        }
+    }
+
+    private void setupDbManager() {
+        dbManager = new GameDatabaseManager();
+        try {
+            dbManager.setup();
+        } catch (SQLException ex) {
+            System.out.println("Cannot connect to database.");
+        }
+    }
+    public void gameStart(Stage primaryStage) {
+        setupDbManager();
+        SoundUtils.playContinuously(SoundUtils.BACKGROUND, 0.5f);
+        GridPane ui = new GridPane();
+        ui.setPrefWidth(200);
+        ui.setPadding(new Insets(10));
+        ui.setStyle("-fx-background-color: #6C8D9E; -fx-font-size: 18px; -fx-text-fill: #6B8D9E;");
+
+        ui.add(new Label("Name: "),0, 0 );
+        ui.add(nameLabel, 1, 0);
+        ui.add(new Label("Health: "), 0, 1);
+        ui.add(healthLabel, 1, 1);
+        ui.add(new Label("Strength: "), 0, 2);
+        ui.add(strengthLabel, 1, 2);
+
+        ui.add(pickUpButton, 0, 5);
+        pickUpButton.setOnAction(mousedown -> {
+            map.getPlayer().pickUpItem();
+            refresh();
+        });
+        pickUpButton.setFocusTraversable(false);
+        ui.add(new Label("INVENTORY:"), 0, 7);
+        ui.add(playerInventory, 0, 8);
+
+        BorderPane borderPane = new BorderPane();
+
+        borderPane.setCenter(canvas);
+        borderPane.setRight(ui);
+
+        Scene scene = new Scene(borderPane);
+        primaryStage.setScene(scene);
+        refresh();
+        scene.setOnKeyPressed(this::onKeyPressed);
+        scene.setOnKeyReleased(this::onKeyReleased);
+
+        primaryStage.setTitle("Dungeon Crawl");
+        primaryStage.show();
+        canvas.setScaleX(1.2);
+        canvas.setScaleY(1.2);
+    }
     void refresh() {
         gameCamera.centerOnPlayer(map.getPlayer(), map);
         moveMonsters();
@@ -53,7 +147,6 @@ public class Game {
                 throw new RuntimeException(e);
             }
         }
-
         checkIfOnItem();
         checkForWin(stage);
         float xOffset = gameCamera.getxOffset();
@@ -127,4 +220,9 @@ public class Game {
         SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);
         main.showEndGameScreen(primaryStage, "game-over.css");
     }
+
+    private void exit() {
+        System.exit(0);
+    }
+
 }
