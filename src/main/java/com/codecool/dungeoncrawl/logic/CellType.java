@@ -11,6 +11,7 @@ public enum CellType {
     FOOD("food"),
     SHIELD("shield"),
     POISON("poison"),
+    WEAPON("weapon"),
     WALL("wall");
 
     private final String tileName;
