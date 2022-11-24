@@ -4,7 +4,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.Direction;
 import com.codecool.dungeoncrawl.logic.GameMap;
 
-public class Phantom extends Enemy {
+public class Phantom extends Actor implements Enemy {
 
     public Phantom(Cell cell) {
         super(cell);

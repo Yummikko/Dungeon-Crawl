@@ -1,12 +1,13 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.Direction;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Lich extends Enemy {
+public class Lich extends Actor implements Enemy{
 
     private static final ThreadLocalRandom rand = ThreadLocalRandom.current();
 
@@ -20,7 +21,7 @@ public class Lich extends Enemy {
     public void move(GameMap map) {
         int randomNum = rand.nextInt(100);
         if (randomNum < 75) {
-            super.move(map);
+            moveRandomly();
         } else if (map.getPlayer().getX() + 1 < map.getWidth()) {
             teleportMonster(map.getPlayer(), map);
         }
@@ -60,4 +61,8 @@ public class Lich extends Enemy {
         return "lich";
     }
 
+    public void moveRandomly() {
+        Direction direction = Direction.getRandomDirection();
+        super.move(direction);
+    }
 }

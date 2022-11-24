@@ -1,14 +1,11 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
-import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.CellType;
-import com.codecool.dungeoncrawl.logic.Direction;
-import com.codecool.dungeoncrawl.logic.Drawable;
+import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
 
 import java.util.Set;
 
-public abstract class Actor implements Drawable {
+public abstract class Actor<T> implements Drawable {
     protected String name;
     protected Cell cell;
     protected int health = 10;
@@ -29,6 +26,11 @@ public abstract class Actor implements Drawable {
 
     protected static boolean isEnemy(Cell nextCell) {
         return nextCell.getActor() != null;
+    }
+
+    public void move(GameMap map) {
+        Direction direction = Direction.getRandomDirection();
+        move(direction);
     }
 
     public void move(Direction direction) {

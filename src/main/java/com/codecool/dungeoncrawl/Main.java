@@ -311,7 +311,7 @@ public class Main extends Application {
         showEndGameScreen(primaryStage, "you-won.css");
     }
 
-    private void showEndGameScreen(Stage primaryStage, String css) {
+    void showEndGameScreen(Stage primaryStage, String css) {
         MapLoader.maps.clear();
         goBack(primaryStage);
         exitGame();
@@ -376,15 +376,15 @@ public class Main extends Application {
         playerInventory.setText("" + map.getPlayer().inventoryToString());
     }
 
-    private static void checkIfMonstersHealth(List<Enemy> enemies) {
+    private static void checkIfMonstersHealth(List<Actor> enemies) {
         // loop backwards to avoid ConcurrentModificationException
         for (int i = enemies.size() - 1; i >= 0; i--) {
-            Enemy enemy = enemies.get(i);
-            if (enemy.isDead()) {
-                enemies.remove(enemy);
-                enemy.getCell().setActor(null);
-                if (enemy instanceof DarkLord) {
-                    ((DarkLord) enemy).removePhantoms(map);
+            Actor Actor = enemies.get(i);
+            if (Actor.isDead()) {
+                enemies.remove(Actor);
+                Actor.getCell().setActor(null);
+                if (Actor instanceof DarkLord) {
+                    ((DarkLord) Actor).removePhantoms(map);
                 }
             }
         }
@@ -428,7 +428,7 @@ public class Main extends Application {
     }
 
     public void moveMonsters() {
-        List<Enemy> enemies = map.getEnemies();
+        List<Actor> enemies = map.getEnemies();
         for (int i = 0; i < enemies.size(); i++) {
             enemies.get(i).move(map);
         }
