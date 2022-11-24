@@ -11,7 +11,7 @@ class ShieldTest {
 
     @Test
     void testGetTileName() {
-        var shieldUnderTest = new Shield(new Cell(map, 1, 1, CellType.SHIELD));
+        var shieldUnderTest = new Shield(new Cell(map, 1, 1, CellType.FLOOR));
         assertEquals("shield", shieldUnderTest.getTileName());
     }
 }

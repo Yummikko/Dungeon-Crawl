@@ -12,7 +12,7 @@ class PoisonTest {
 
     @Test
     void testGetTileName(){
-        var poisonUnderTest = new Poison(new Cell(map, 1, 1, CellType.POISON));
+        var poisonUnderTest = new Poison(new Cell(map, 1, 1, CellType.FLOOR));
         assertEquals("poison", poisonUnderTest.getTileName());
     }
 }
