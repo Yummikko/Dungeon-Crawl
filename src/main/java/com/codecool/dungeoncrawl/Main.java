@@ -33,7 +33,7 @@ import javafx.scene.input.MouseEvent;
 public class Main extends Application {
     GameDatabaseManager dbManager;
 
-    static GameMap map = MapLoader.loadMap("/map1.txt");
+    public static GameMap map = MapLoader.loadMap("/map1.txt");
     Stage stage;
     static GameMap map1;
     static GameCamera gameCamera = new GameCamera(0, 0, map);

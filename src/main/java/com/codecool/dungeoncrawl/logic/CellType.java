@@ -14,6 +14,7 @@ public enum CellType {
     WEAPON("weapon"),
     WALL("wall");
 
+
     private final String tileName;
 
     CellType(String tileName) {
