@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
+import com.codecool.dungeoncrawl.Game;
 import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
@@ -35,7 +36,7 @@ public class Player extends Actor {
         if (nextCell == null) return;
         String smallName = name.toLowerCase();
         if (nextCell.getType() == CellType.STAIRS) {
-            Main.setMap();
+            Game.setMap();
         }
         if (nextCell.getNormalDoor() != null) {
             NormalDoor door = nextCell.getNormalDoor();
@@ -84,6 +85,7 @@ public class Player extends Actor {
     }
 
     public void pickUpItem() {
+        System.out.println("Picking the " + cell.getItem());
         inventory.add(cell.getItem());
         if (cell.getItem() == null) {
             return;

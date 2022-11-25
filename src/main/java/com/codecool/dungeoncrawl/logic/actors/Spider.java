@@ -3,7 +3,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 
-public class Spider extends Enemy {
+public class Spider extends Actor implements Enemy {
 
     public Spider(Cell cell) {
         super(cell);

@@ -3,7 +3,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 
-public class Octopus extends Enemy {
+public class Octopus extends Actor implements Enemy {
 
     public Octopus(Cell cell) {
         super(cell);
