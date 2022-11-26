@@ -395,9 +395,12 @@ public class Game {
     }
 
     public void gameOver(Stage primaryStage) {
-        SoundUtils.stopAll();
-        SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);
-        showEndGameScreen(primaryStage, "game-over.css");
+        synchronized (this) {
+            Movements.stop();
+            SoundUtils.stopAll();
+            SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);
+            showEndGameScreen(primaryStage, "game-over.css");
+        }
     }
 
 }

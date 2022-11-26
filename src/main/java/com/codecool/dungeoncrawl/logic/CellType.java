@@ -4,6 +4,8 @@ public enum CellType {
     EMPTY("empty"),
     FLOOR("floor"),
     STAIRS("stairs"),
+
+    DOWN_STAIRS("stairs"),
     WATER("water"),
     SKULL("skull"),
     CROWN("crown"),
