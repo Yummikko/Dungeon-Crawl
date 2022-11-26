@@ -5,6 +5,7 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Enemy;
 import com.codecool.dungeoncrawl.logic.actors.Lich;
+import com.codecool.dungeoncrawl.logic.util.SoundUtils;
 import javafx.application.Platform;
 
 public class Movements implements Runnable {
@@ -25,16 +26,19 @@ public class Movements implements Runnable {
                     Thread.sleep(500);
                     for (Actor enemy : map.getEnemies()) {
                             if(enemy instanceof Lich)
-                                Platform.runLater(() -> enemy.move(map));
+                                if(index % 8 == 0)
+                                    Platform.runLater(() -> enemy.move(map));
                     }
                     Platform.runLater(() -> game.refresh());
                     Thread.sleep(500);
                     for (Actor enemy : map.getEnemies()) {
-                        Platform.runLater(() -> enemy.move(map));
+                        if(index % 4 == 0)
+                            Platform.runLater(() -> enemy.move(map));
                     }
                     Platform.runLater(() -> game.refresh());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                    break;
                 }
                 index++;
             }

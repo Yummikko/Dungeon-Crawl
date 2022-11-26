@@ -37,6 +37,7 @@ public class Player extends Actor {
         String smallName = name.toLowerCase();
         if (nextCell.getType() == CellType.STAIRS) {
             Game.setMap();
+            Game.updatePlayerUI();
         }
         if (nextCell.getNormalDoor() != null) {
             NormalDoor door = nextCell.getNormalDoor();

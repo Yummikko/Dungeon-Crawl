@@ -8,15 +8,16 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.DarkLord;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
@@ -35,7 +36,7 @@ public class Game {
     private GameCamera gameCamera = new GameCamera(0, 0, map);
     private Stage stage;
     private Movements movements;
-    private RightUiPanel rightUI;
+    private static RightUiPanel rightUI = new RightUiPanel(map.getPlayer());
     Canvas canvas = new Canvas(
             25 * Tiles.TILE_WIDTH,
             21 * Tiles.TILE_WIDTH);
@@ -49,7 +50,6 @@ public class Game {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-
     public void mainMenu(Stage primaryStage) throws FileNotFoundException, RuntimeException {
         Button startGameButton = new Button("Start the Game");
         startGameButton.setId("buttons");
@@ -190,7 +190,7 @@ public class Game {
         }
     }
     public void gameStart(Stage primaryStage) {
-        rightUI = new RightUiPanel(map);
+        rightUI = new RightUiPanel(map.getPlayer());
         setupDbManager();
         SoundUtils.playContinuously(SoundUtils.BACKGROUND, 0.5f);
         GridPane ui = rightUI;
@@ -335,12 +335,8 @@ public class Game {
         int mapsSize = maps.size();
         String mapName = "";
         switch (mapsSize) {
-            case 1:
-                mapName = "/map2.txt";
-                break;
-            case 2:
-                mapName = "/map3.txt";
-                break;
+            case 1 -> mapName = "/map2.txt";
+            case 2 -> mapName = "/map3.txt";
         }
         return mapName;
     }
@@ -351,6 +347,12 @@ public class Game {
         GameMap map2 = MapLoader.loadMap(mapName);
         map = map2;
     }
+
+    public static void updatePlayerUI() {
+        Player player = map.getPlayer();
+        rightUI = new RightUiPanel(player);
+    }
+
     public void exitGame(){
         exitGameButton.setId("buttons");
         exitGameButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {

@@ -20,7 +20,7 @@ public class Lich extends Actor implements Enemy{
     @Override
     public void move(GameMap map) {
         int randomNum = rand.nextInt(100);
-        if (randomNum < 75) {
+        if (randomNum < 85) {
             moveRandomly();
         } else if (map.getPlayer().getX() + 1 < map.getWidth()) {
             teleportMonster(map.getPlayer(), map);
