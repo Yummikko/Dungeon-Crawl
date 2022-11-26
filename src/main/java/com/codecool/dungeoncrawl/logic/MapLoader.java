@@ -35,42 +35,48 @@ public class MapLoader {
             for (int x = 0; x < line.length(); x++) {
                 Cell cell = map.getCell(x, y);
                 switch (line.charAt(x)) {
-                    case ' ' -> cell.setType(CellType.EMPTY);
-                    case '#' -> cell.setType(CellType.WALL);
-                    case '.' -> cell.setType(CellType.FLOOR);
-                    case 's' -> {
+                    case ' ':
+                        cell.setType(CellType.EMPTY);
+                        break;
+                    case '#':
+                        cell.setType(CellType.WALL);
+                        break;
+                    case '.':
+                        cell.setType(CellType.FLOOR);
+                        break;
+                    case 's':
                         cell.setType(CellType.FLOOR);
                         map.addActor(new Skeleton(cell));
-                    }
-                    case 'd' -> {
+                        break;
+                    case 'd':
                         cell.setType(CellType.WALL);
                         new NormalDoor(cell);
-                    }
-                    case 'q' -> {
+                        break;
+                    case 'q':
                         cell.setType(CellType.FLOOR);
                         new OpenDoor(cell);
-                    }
-                    case 'k' -> {
+                        break;
+                    case 'k':
                         cell.setType(CellType.FLOOR);
                         new Key(cell);
-                    }
-                    case 'p' -> {
+                        break;
+                    case 'p':
                         cell.setType(CellType.FLOOR);
                         new Poison(cell);
-                    }
-                    case 'z' -> {
+                        break;
+                    case 'z':
                         cell.setType(CellType.FLOOR);
                         new Shield(cell);
-                    }
-                    case 'o' -> {
+                        break;
+                    case 'o':
                         cell.setType(CellType.FLOOR);
                         map.addActor(new Octopus(cell));
-                    }
-                    case 'a' -> {
+                        break;
+                    case 'a':
                         cell.setType(CellType.FLOOR);
                         map.addActor(new Spider(cell));
-                    }
-                    case '@' -> {
+                        break;
+                    case '@':
                         cell.setType(CellType.FLOOR);
                         Player nextPlayer = new Player(cell);
                         map.setPlayer(nextPlayer);
@@ -81,51 +87,54 @@ public class MapLoader {
                                     nextPlayer.setInventory(maps.get(i).getPlayer().getInventory());
                                     nextPlayer.setHealth(maps.get(i).getPlayer().getHealth());
                                     nextPlayer.setStrength(maps.get(i).getPlayer().getStrength());
+                                    break;
                                 }
                             }
                         }
-                    }
-                    case 'f' -> {
+
+                        break;
+                    case 'f':
                         cell.setType(CellType.FLOOR);
                         new Food(cell);
-                    }
-                    case 'w' -> {
+                        break;
+                    case 'w':
                         cell.setType(CellType.FLOOR);
                         new Weapon(cell);
-                    }
-                    case 'r' -> {
+                        break;
+                    case 'r':
                         cell.setType(CellType.WALL);
                         new Water(cell);
-                    }
-                    case 't' -> {
+                        break;
+                    case 't':
                         cell.setType(CellType.STAIRS);
                         new Stairs(cell);
-                    }
-                    case 'u' -> {
+                        break;
+                    case 'u':
                         cell.setType(CellType.SKULL);
                         new Skull(cell);
-                    }
-                    case 'c' -> {
+                        break;
+                    case 'c':
                         cell.setType(CellType.FLOOR);
                         new Crown(cell);
-                    }
-                    case 'b' -> {
+                        break;
+                    case 'b':
                         cell.setType(CellType.FLOOR);
                         new Bridge(cell);
-                    }
-                    case 'l' -> {
+                        break;
+                    case 'l':
                         cell.setType(CellType.FLOOR);
                         map.addActor(new Lich(cell));
-                    }
-                    case 'x' -> {
+                        break;
+                    case 'x':
                         cell.setType(CellType.FLOOR);
                         map.addActor(new DarkLord(cell));
-                    }
-                    case 'g' -> {
+                        break;
+                    case 'g':
                         cell.setType(CellType.FLOOR);
                         map.addActor(new Phantom(cell));
-                    }
-                    default -> throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
+                        break;
+                    default:
+                        throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
                 }
             }
         }
