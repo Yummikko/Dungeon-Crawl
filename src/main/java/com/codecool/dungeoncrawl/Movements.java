@@ -36,7 +36,8 @@ public class Movements implements Runnable {
                     }
                     Platform.runLater(() -> game.refresh());
                 } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();;
+                    stop();
+                    Thread.currentThread().interrupt();
                     e.printStackTrace();
                 }
                 index++;
@@ -45,5 +46,9 @@ public class Movements implements Runnable {
     }
     static void stop() {
         running.set(false);
+    }
+
+    static void start() {
+        running.set(true);
     }
 }
