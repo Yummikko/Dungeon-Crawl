@@ -5,11 +5,12 @@ import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Lich;
 import javafx.application.Platform;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class Movements implements Runnable {
     private GameMap map;
     private Game game;
-    private static boolean running = true;
-
+    private final static AtomicBoolean running = new AtomicBoolean(true);
     public Movements(GameMap map, Game game) {
         this.map = map;
         this.game = game;
@@ -19,7 +20,7 @@ public class Movements implements Runnable {
     public void run() {
         synchronized (GameMap.class) {
             int index = 0;
-            while (index < 100_000 && running) {
+            while (index < 100_000 && running.get()) {
                 try {
                     Thread.sleep(500);
                     for (Actor enemy : map.getEnemies()) {
@@ -35,16 +36,14 @@ public class Movements implements Runnable {
                     }
                     Platform.runLater(() -> game.refresh());
                 } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();;
                     e.printStackTrace();
-                    break;
                 }
                 index++;
-                if (index == 100_000)
-                    running = false;
             }
         }
     }
-    static void setRunning() {
-        running = false;
+    static void stop() {
+        running.set(false);
     }
 }

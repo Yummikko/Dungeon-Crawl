@@ -373,10 +373,10 @@ public class Game {
     }
 
     public void youWon(Stage primaryStage) {
-        synchronized (this) {
-            Movements.setRunning();
+        synchronized (GameMap.class) {
+            Movements.stop();
             SoundUtils.stopAll();
-            SoundUtils.playSound(SoundUtils.GAME_WON, 0.6f);
+            SoundUtils.playSound(SoundUtils.GAME_WON, 0.5f);
             showEndGameScreen(primaryStage, "you-won.css");
         }
     }
@@ -389,6 +389,7 @@ public class Game {
 
     public void checkForWin(Stage primaryStage) {
         if (map.getPlayer().inventoryToString().contains("crown")) {
+            Movements.stop();
             youWon(primaryStage);
         }
     }
