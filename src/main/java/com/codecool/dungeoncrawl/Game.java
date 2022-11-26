@@ -31,7 +31,7 @@ import java.util.List;
 
 public class Game {
     GameDatabaseManager dbManager;
-    private static GameMap map = MapLoader.loadMap("/map1.txt");
+    public static GameMap map = MapLoader.loadMap("/map1.txt");
     private static GameMap map1;
     private GameCamera gameCamera = new GameCamera(0, 0, map);
     private Stage stage;
