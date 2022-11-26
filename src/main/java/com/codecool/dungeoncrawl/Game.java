@@ -315,7 +315,6 @@ public class Game {
         checkIfMonstersHealth(map.getEnemies());
         if (!map.getPlayer().isAlive()) {
             try {
-                SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);
                 gameOver(stage);
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -396,13 +395,13 @@ public class Game {
         }
     }
 
-    public void gameOver(Stage primaryStage) {
-        synchronized (this) {
+    public void gameOver(Stage primaryStage) throws InterruptedException {
             Movements.stop();
             SoundUtils.stopAll();
-            SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);
             showEndGameScreen(primaryStage, "game-over.css");
-        }
+            synchronized (GameMap.class) {
+                SoundUtils.playSound(SoundUtils.GAME_OVER, 1f);
+            }
     }
 
 }
