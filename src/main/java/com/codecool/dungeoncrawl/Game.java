@@ -36,7 +36,7 @@ public class Game {
     private GameCamera gameCamera = new GameCamera(0, 0, map);
     private Stage stage;
     private Movements movements;
-    private static RightUiPanel rightUI = new RightUiPanel(map.getPlayer());
+    private static RightUiPanel rightUI = new RightUiPanel(map.getPlayer(), map);
     Canvas canvas = new Canvas(
             25 * Tiles.TILE_WIDTH,
             21 * Tiles.TILE_WIDTH);
@@ -50,6 +50,38 @@ public class Game {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
+
+    private static void checkIfMonstersHealth(List<Actor> enemies) {
+        // loop backwards to avoid ConcurrentModificationException
+        for (int i = enemies.size() - 1; i >= 0; i--) {
+            Actor enemy = enemies.get(i);
+            if (enemy.isDead()) {
+                enemies.remove(enemy);
+                enemy.getCell().setActor(null);
+                if (enemy instanceof DarkLord) {
+                    ((DarkLord) enemy).removePhantoms(map);
+                }
+            }
+        }
+    }
+
+    public static String getNextMap(List maps) {
+        int mapsSize = maps.size();
+        String mapName = "";
+        switch (mapsSize) {
+            case 1 -> mapName = "/map2.txt";
+            case 2 -> mapName = "/map3.txt";
+        }
+        return mapName;
+    }
+    public static void setMap(){
+        MapLoader.maps.add(map);
+        List maps = MapLoader.maps;
+        String mapName = getNextMap(maps);
+        GameMap map2 = MapLoader.loadMap(mapName);
+        map = map2;
+    }
+
     public void mainMenu(Stage primaryStage) throws FileNotFoundException, RuntimeException {
         Button startGameButton = new Button("Start the Game");
         startGameButton.setId("buttons");
@@ -139,11 +171,6 @@ public class Game {
         primaryStage.setScene(scene);
         primaryStage.show();
         setStage(primaryStage);
-        canvas.setScaleX(1.2);
-        canvas.setScaleY(1.2);
-        movements = new Movements(map, this);
-        Thread thread = new Thread(movements);
-        thread.start();
     }
 
     private void onKeyReleased(KeyEvent keyEvent) {
@@ -179,6 +206,7 @@ public class Game {
                 refresh();
                 break;
         }
+        checkIfOnItem();
     }
 
     private void setupDbManager() {
@@ -190,11 +218,14 @@ public class Game {
         }
     }
     public void gameStart(Stage primaryStage) {
-        rightUI = new RightUiPanel(map.getPlayer());
+        rightUI = new RightUiPanel(map.getPlayer(), map);
         setupDbManager();
         SoundUtils.playContinuously(SoundUtils.BACKGROUND, 0.5f);
         GridPane ui = rightUI;
-
+        rightUI.pickUpButton.setOnAction(mousedown -> {
+            map.getPlayer().pickUpItem();
+            rightUI.hideButton();;
+        });
         BorderPane borderPane = new BorderPane();
 
         borderPane.setCenter(canvas);
@@ -208,6 +239,11 @@ public class Game {
 
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
+        canvas.setScaleX(1.2);
+        canvas.setScaleY(1.2);
+        movements = new Movements(map, this);
+        Thread thread = new Thread(movements);
+        thread.start();
     }
 
     public void gameRules(Stage primaryStage) throws FileNotFoundException {
@@ -283,7 +319,6 @@ public class Game {
                 throw new RuntimeException(e);
             }
         }
-        checkIfOnItem();
         checkForWin(stage);
         float xOffset = gameCamera.getxOffset();
         float yOffset = gameCamera.getyOffset();
@@ -317,41 +352,6 @@ public class Game {
         }
     }
 
-    private static void checkIfMonstersHealth(List<Actor> enemies) {
-        // loop backwards to avoid ConcurrentModificationException
-        for (int i = enemies.size() - 1; i >= 0; i--) {
-            Actor enemy = enemies.get(i);
-            if (enemy.isDead()) {
-                enemies.remove(enemy);
-                enemy.getCell().setActor(null);
-                if (enemy instanceof DarkLord) {
-                    ((DarkLord) enemy).removePhantoms(map);
-                }
-            }
-        }
-    }
-
-    public static String getNextMap(List maps) {
-        int mapsSize = maps.size();
-        String mapName = "";
-        switch (mapsSize) {
-            case 1 -> mapName = "/map2.txt";
-            case 2 -> mapName = "/map3.txt";
-        }
-        return mapName;
-    }
-    public static void setMap(){
-        MapLoader.maps.add(map);
-        List maps = MapLoader.maps;
-        String mapName = getNextMap(maps);
-        GameMap map2 = MapLoader.loadMap(mapName);
-        map = map2;
-    }
-
-    public static void updatePlayerUI() {
-        Player player = map.getPlayer();
-        rightUI = new RightUiPanel(player);
-    }
 
     public void exitGame(){
         exitGameButton.setId("buttons");
@@ -373,9 +373,12 @@ public class Game {
     }
 
     public void youWon(Stage primaryStage) {
-        SoundUtils.stopAll();
-        SoundUtils.playSound(SoundUtils.GAME_WON, 0.6f);
-        showEndGameScreen(primaryStage, "you-won.css");
+        synchronized (this) {
+            Movements.setRunning();
+            SoundUtils.stopAll();
+            SoundUtils.playSound(SoundUtils.GAME_WON, 0.6f);
+            showEndGameScreen(primaryStage, "you-won.css");
+        }
     }
     public void moveMonsters() {
         List<Actor> enemies = map.getEnemies();

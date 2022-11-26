@@ -43,8 +43,8 @@ public class Lich extends Actor implements Enemy{
                     return;
                 }
                 else {
-                    SoundUtils.playSound(SoundUtils.TELEPORT, 0.8f);
                     moveActor(nextCell);
+                    SoundUtils.playSound(SoundUtils.TELEPORT, 0.8f);
                 }
                 if (isEnemy(nextCell.getNeighbour(randomY, randomX))
                         && nextCell.getActor() instanceof Player) {

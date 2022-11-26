@@ -36,6 +36,7 @@ public abstract class Actor<T> implements Drawable {
     public void move(Direction direction) {
         Cell nextCell = cell.getNeighbour(direction);
         if (nextCell == null || isNotWalkable(nextCell)) return;
+        else if (nextCell.getActor() != null) return;
         if (nextCell.getActor() instanceof Player) {
             nextCell.getActor().fightWithMonster(this);
             return;

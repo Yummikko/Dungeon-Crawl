@@ -18,12 +18,9 @@ public class RightUiPanel extends GridPane {
     Label strengthLabel = new Label();
     Label playerInventory = new Label("INVENTORY: ");
 
-    private Button pickUpButton = new Button("Pick up item");
-    private Canvas canvas = new Canvas(
-            25 * Tiles.TILE_WIDTH,
-            21 * Tiles.TILE_WIDTH);
+    Button pickUpButton = new Button("Pick up item");
 
-    public RightUiPanel(Player player) {
+    public RightUiPanel(Player player,GameMap map) {
         super();
         this.setPrefWidth(200);
         this.setPadding(new Insets(10));
@@ -37,8 +34,6 @@ public class RightUiPanel extends GridPane {
         this.add(strengthLabel, 1, 2);
         this.add(pickUpButton, 0, 5);
         hideButton();
-        addItemToRightUI(player);
-        pickUpButton.setFocusTraversable(false);
         this.add(new Label("INVENTORY:"), 0, 7);
         this.add(playerInventory, 0, 8);
     }
@@ -55,12 +50,5 @@ public class RightUiPanel extends GridPane {
         healthLabel.setText("" + player.getHealth());
         strengthLabel.setText("" + player.getStrength());
         playerInventory.setText("" + player.inventoryToString());
-    }
-
-    public void addItemToRightUI(Player player) {
-        pickUpButton.setOnAction(mousedown -> {
-            player.pickUpItem();
-            hideButton();;
-        });
     }
 }
