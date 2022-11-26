@@ -47,4 +47,8 @@ public class Movements implements Runnable {
     static void stop() {
         running.set(false);
     }
+
+    static void start() {
+        running.set(true);
+    }
 }

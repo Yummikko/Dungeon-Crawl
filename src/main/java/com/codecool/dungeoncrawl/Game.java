@@ -36,6 +36,7 @@ public class Game {
     private GameCamera gameCamera = new GameCamera(0, 0, map);
     private Stage stage;
     private Movements movements;
+    private Thread thread;
     private static RightUiPanel rightUI = new RightUiPanel(map.getPlayer(), map);
     Canvas canvas = new Canvas(
             25 * Tiles.TILE_WIDTH,
@@ -219,6 +220,7 @@ public class Game {
     }
     public void gameStart(Stage primaryStage) {
         rightUI = new RightUiPanel(map.getPlayer(), map);
+        Movements.start();
         setupDbManager();
         SoundUtils.playContinuously(SoundUtils.BACKGROUND, 0.5f);
         GridPane ui = rightUI;
@@ -242,7 +244,7 @@ public class Game {
         canvas.setScaleX(1.2);
         canvas.setScaleY(1.2);
         movements = new Movements(map, this);
-        Thread thread = new Thread(movements);
+        thread = new Thread(movements);
         thread.start();
     }
 
