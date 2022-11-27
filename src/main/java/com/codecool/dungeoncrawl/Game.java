@@ -217,7 +217,7 @@ public class Game {
             System.out.println("Cannot connect to database.");
         }
     }
-    
+
     public void gameStart(Stage primaryStage) {
         rightUI = new RightUiPanel(map.getPlayer(), map);
         Movements.start();
