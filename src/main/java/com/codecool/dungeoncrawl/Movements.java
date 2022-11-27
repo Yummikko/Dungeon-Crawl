@@ -44,11 +44,11 @@ public class Movements implements Runnable {
             }
         }
     }
-    static void stop() {
+    public static void stop() {
         running.set(false);
     }
 
-    static void start() {
+    public static void start() {
         running.set(true);
     }
 }

@@ -18,7 +18,7 @@ public class RightUiPanel extends GridPane {
     Label strengthLabel = new Label();
     Label playerInventory = new Label("INVENTORY: ");
 
-    Button pickUpButton = new Button("Pick up item");
+    public Button pickUpButton = new Button("Pick up item");
 
     public RightUiPanel(Player player,GameMap map) {
         super();
