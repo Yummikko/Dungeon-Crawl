@@ -217,6 +217,7 @@ public class Game {
             System.out.println("Cannot connect to database.");
         }
     }
+    
     public void gameStart(Stage primaryStage) {
         rightUI = new RightUiPanel(map.getPlayer(), map);
         Movements.start();
@@ -276,6 +277,7 @@ public class Game {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
     public void showRules(Stage primaryStage) {
         rulesButton.setId("buttons");
         rulesButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
@@ -286,6 +288,7 @@ public class Game {
             }
         });
     }
+
     void showEndGameScreen(Stage primaryStage, String css) {
         MapLoader.maps.clear();
         goBack(primaryStage);
@@ -306,6 +309,7 @@ public class Game {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
     void refresh() {
         gameCamera.centerOnPlayer(map.getPlayer(), map);
         moveMonsters();
@@ -342,6 +346,7 @@ public class Game {
         }
         rightUI.setTextForRightUI(map.getPlayer());
     }
+
     private void checkIfOnItem() {
         if (map.getPlayer().getCell().getItem() != null) {
             rightUI.showButton();
@@ -349,7 +354,6 @@ public class Game {
             rightUI.hideButton();
         }
     }
-
 
     public void exitGame(){
         exitGameButton.setId("buttons");
