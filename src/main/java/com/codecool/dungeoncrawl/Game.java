@@ -30,7 +30,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class Game {
-    GameDatabaseManager dbManager;
+    private GameDatabaseManager dbManager;
     public static GameMap map = MapLoader.loadMap("/map1.txt");
     private static GameMap map1;
     private GameCamera gameCamera = new GameCamera(0, 0, map);
@@ -83,6 +83,11 @@ public class Game {
         map = map2;
     }
 
+    public void setWidthAndHeight(BorderPane menu) {
+        menu.setPrefWidth(1084);
+        menu.setPrefHeight(768);
+    }
+
     public void mainMenu(Stage primaryStage) throws FileNotFoundException, RuntimeException {
         Button startGameButton = new Button("Start the Game");
         startGameButton.setId("buttons");
@@ -107,8 +112,7 @@ public class Game {
 
         menuLayout.setCenter(buttons);
         menuLayout.setBackground(new Background(new BackgroundFill(Color.rgb(100, 100, 100), CornerRadii.EMPTY, Insets.EMPTY)));
-        menuLayout.setPrefWidth(1084);
-        menuLayout.setPrefHeight(768);
+        setWidthAndHeight(menuLayout);
 
         Scene scene = new Scene(menuLayout);
         scene.getStylesheets().add("style.css");
@@ -119,9 +123,6 @@ public class Game {
     }
 
     public void gameSettings(Stage primaryStage) throws FileNotFoundException {
-        Button startButton = new Button("Start the Game");
-        Button backButton = new Button("Back to Menu");
-
         startButton.setId("buttons");
         backButton.setId("buttons");
 
@@ -156,11 +157,9 @@ public class Game {
             }
         });
 
-
         BorderPane menu = new BorderPane();
 
-        menu.setPrefWidth(1084);
-        menu.setPrefHeight(768);
+        setWidthAndHeight(menu);
         menu.setCenter(settings);
 
         buttons.setAlignment(Pos.CENTER);
@@ -269,8 +268,7 @@ public class Game {
         BorderPane rulesLayout = new BorderPane();
 
         rulesLayout.setCenter(buttons);
-        rulesLayout.setPrefWidth(1084);
-        rulesLayout.setPrefHeight(768);
+        setWidthAndHeight(rulesLayout);
 
         Scene scene = new Scene(rulesLayout);
         scene.getStylesheets().add("rules.css");
@@ -297,8 +295,7 @@ public class Game {
         VBox menu = new VBox(buttons);
 
         BorderPane menuLayout = new BorderPane();
-        menuLayout.setPrefWidth(1084);
-        menuLayout.setPrefHeight(768);
+        setWidthAndHeight(menuLayout);
         menuLayout.setCenter(menu);
         buttons.setAlignment(Pos.CENTER);
         buttons.setPadding(new Insets(350, 5, 15, 5));
