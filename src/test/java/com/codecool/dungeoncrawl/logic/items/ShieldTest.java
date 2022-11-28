@@ -4,7 +4,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import org.junit.jupiter.api.Test;
 
-import static com.codecool.dungeoncrawl.Main.map;
+import static com.codecool.dungeoncrawl.graphics.GameMenu.map;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ShieldTest {

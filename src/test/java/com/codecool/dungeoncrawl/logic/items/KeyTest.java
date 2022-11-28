@@ -35,6 +35,6 @@ public class KeyTest {
     @Test
     void testGetTileNameNegative(){
         Key keyUnderTest = new Key(new Cell(map, 1, 1, CellType.KEY));
-        assertNotEquals("axe", keyUnderTest.getTileName());
+        assertNotEquals("sword", keyUnderTest.getTileName());
     }
 }

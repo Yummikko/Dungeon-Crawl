@@ -4,12 +4,9 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
-public class DarkLord extends Enemy {
+public class DarkLord extends Actor implements Enemy {
 
     private final Random rand = new Random();
 
@@ -56,7 +53,7 @@ public class DarkLord extends Enemy {
                 SoundUtils.playSound(SoundUtils.SUMMON, 0.7f);
                 Phantom phantom = new Phantom(cell);
                 cell.setActor(phantom);
-                map.addEnemy(phantom);
+                map.addActor(phantom);
             }
         }
     }

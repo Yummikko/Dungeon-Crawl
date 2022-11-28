@@ -1,8 +1,10 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.Direction;
+import com.codecool.dungeoncrawl.logic.GameMap;
 
-public class Skeleton extends Enemy {
+public class Skeleton extends Actor implements Enemy {
 
     public Skeleton(Cell cell) {
         super(cell);
@@ -14,5 +16,4 @@ public class Skeleton extends Enemy {
     public String getTileName() {
         return "skeleton";
     }
-
 }

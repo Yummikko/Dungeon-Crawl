@@ -1,9 +1,11 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
+import com.codecool.dungeoncrawl.Game;
 import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Direction;
+import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.items.*;
@@ -35,7 +37,7 @@ public class Player extends Actor {
         if (nextCell == null) return;
         String smallName = name.toLowerCase();
         if (nextCell.getType() == CellType.STAIRS) {
-            Main.setMap();
+            Game.setMap();
         }
         if (nextCell.getNormalDoor() != null) {
             NormalDoor door = nextCell.getNormalDoor();
@@ -84,21 +86,23 @@ public class Player extends Actor {
     }
 
     public void pickUpItem() {
-        inventory.add(cell.getItem());
-        if (cell.getItem() == null) {
+        Item item = cell.getItem();
+        System.out.println("Picking the " + item);
+        inventory.add(item);
+        if (item == null) {
             return;
-        } else if (cell.getItem() instanceof Weapon) {
+        } else if (item instanceof Weapon) {
             this.setStrength(getStrength() + 2);
             this.setHasWeapon(true);
-        } else if (cell.getItem() instanceof Shield) {
+        } else if (item instanceof Shield) {
             this.setStrength(getStrength() + 10);
-        } else if (cell.getItem() instanceof Food) {
+        } else if (item instanceof Food) {
             SoundUtils.playSound(SoundUtils.EAT, 0.5f);
             this.setHealth(getHealth() + 3);
-        } else if (cell.getItem() instanceof Poison) {
+        } else if (item instanceof Poison) {
             SoundUtils.playSound(SoundUtils.EAT, 0.5f);
             this.setHealth(getHealth() - 3);
-        } else if (cell.getItem() instanceof Key) {
+        } else if (item instanceof Key) {
             this.setHasKey(true);
         }
         cell.setItem(null);

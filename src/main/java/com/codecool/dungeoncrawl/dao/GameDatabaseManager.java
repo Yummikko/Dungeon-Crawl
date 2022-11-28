@@ -42,7 +42,7 @@ public class GameDatabaseManager {
         return dataSource;
     }
 
-    public void dbConnect() {
+    public void dbConnect() throws SQLException {
         try {
             Class.forName("org.postgresql.Driver");
             c = DriverManager
