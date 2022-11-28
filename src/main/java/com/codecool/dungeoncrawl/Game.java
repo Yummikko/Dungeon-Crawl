@@ -62,10 +62,29 @@ public class Game {
         }
         return mapName;
     }
+
+    public static String getPreviousMap(List maps) {
+        int mapsSize = maps.size();
+        String mapName = "";
+        switch (mapsSize) {
+            case 2 -> mapName = "/map1.txt";
+            case 3 -> mapName = "/map2.txt";
+        }
+        return mapName;
+    }
+
     public static void setMap(){
         MapLoader.maps.add(gameMenu.map);
         List maps = MapLoader.maps;
         String mapName = getNextMap(maps);
+        GameMap map2 = MapLoader.loadMap(mapName);
+        gameMenu.map = map2;
+    }
+
+    public static void setPreviousMap(){
+        MapLoader.maps.add(gameMenu.map);
+        List maps = MapLoader.maps;
+        String mapName = getPreviousMap(maps);
         GameMap map2 = MapLoader.loadMap(mapName);
         gameMenu.map = map2;
     }

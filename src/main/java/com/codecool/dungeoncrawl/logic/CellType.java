@@ -5,7 +5,7 @@ public enum CellType {
     FLOOR("floor"),
     STAIRS("stairs"),
 
-    DOWN_STAIRS("stairs"),
+//    DOWN_STAIRS("stairs"),
     WATER("water"),
     SKULL("skull"),
     CROWN("crown"),
@@ -14,6 +14,8 @@ public enum CellType {
     SHIELD("shield"),
     POISON("poison"),
     WEAPON("weapon"),
+    LADDER("ladder"),
+
     WALL("wall");
 
 

@@ -20,7 +20,7 @@ public abstract class Actor<T> implements Drawable {
     }
 
     protected static boolean isNotWalkable(Cell nextCell) {
-        Set<CellType> walkableCells = Set.of(CellType.FLOOR, CellType.STAIRS, CellType.CROWN);
+        Set<CellType> walkableCells = Set.of(CellType.FLOOR, CellType.STAIRS, CellType.CROWN ,CellType.LADDER);
         return !walkableCells.contains(nextCell.getType());
     }
 
