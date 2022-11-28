@@ -36,17 +36,31 @@ public class LichTest {
     }
 
     @Test
-    void cannotMoveOutsideOfMap() {
+    void cannotMoveOnToPlayer() {
         Lich lich = new Lich(gameMap.getCell(1, 1));
         Player player = new Player(gameMap.getCell(3, 2));
         move(gameMap, lich, player);
         for (int x = 0; x < gameMap.getWidth(); x++) {
             for (int y = 0; y < gameMap.getHeight(); y++) {
                 if(gameMap.getCell(1, 1).getActor() == null && gameMap.getCell(x, y).getActor() != null) {
-                    assertTrue(gameMap.getCell(x, y).getActor().getX() <= gameMap.getWidth());
-                    assertTrue(gameMap.getCell(x, y).getActor().getY() <= gameMap.getHeight());
-                    assertFalse(gameMap.getCell(x, y).getActor().getY() > gameMap.getHeight());
-                    assertFalse(gameMap.getCell(x, y).getActor().getX() > gameMap.getWidth());
+                    assertFalse(gameMap.getCell(x, y).getActor().equals(gameMap.getCell(3, 2)));
+                }
+            }
+        }
+    }
+
+    @Test
+    void willTeleportItselfNearPlayer() {
+        Lich lich = new Lich(gameMap.getCell(1, 1));
+        Player player = new Player(gameMap.getCell(3, 2));
+        move(gameMap, lich, player);
+        for (int x = 0; x < gameMap.getWidth(); x++) {
+            for (int y = 0; y < gameMap.getHeight(); y++) {
+                Cell nextCell = gameMap.getCell(x, y).getNeighbour(x, y);
+                if (nextCell == null)
+                    continue;
+                else if (gameMap.getCell(1, 1).getActor() == null && nextCell.getActor() != null) {
+                    assertTrue(nextCell.getActor() == player);
                 }
             }
         }
