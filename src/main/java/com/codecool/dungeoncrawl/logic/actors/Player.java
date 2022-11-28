@@ -6,6 +6,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Direction;
 import com.codecool.dungeoncrawl.logic.GameMap;
+import com.codecool.dungeoncrawl.logic.doors.Door;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.items.*;
@@ -42,10 +43,16 @@ public class Player extends Actor {
         if (nextCell.getNormalDoor() != null) {
             NormalDoor door = nextCell.getNormalDoor();
             if (door.getIsOpen()) {
-                door.setCell(new OpenDoor(door.getCell()).getCell());
-                removeKey();
+                for (Item item : this.getInventory()) {
+                    if (item instanceof Key) {
+                        door.setCell(new OpenDoor(door.getCell()).getCell());
+                        removeKey();
+                        moveActor(nextCell);
+                        SoundUtils.playSound(SoundUtils.OPEN_DOOR, 0.7f);
+                        return;
+                    }
+                }
                 moveActor(nextCell);
-                SoundUtils.playSound(SoundUtils.OPEN_DOOR, 0.7f);
                 return;
             }
             if (developerNames.contains(smallName)) {
@@ -87,7 +94,6 @@ public class Player extends Actor {
 
     public void pickUpItem() {
         Item item = cell.getItem();
-        System.out.println("Picking the " + item);
         inventory.add(item);
         if (item == null) {
             return;
@@ -125,7 +131,6 @@ public class Player extends Actor {
     }
 
     public void removeKey() {
-        //TODO: iterator
         for (int i = 0; i < inventory.size(); i++) {
             if (inventory.get(i) instanceof Key) {
                 this.inventory.remove(i);

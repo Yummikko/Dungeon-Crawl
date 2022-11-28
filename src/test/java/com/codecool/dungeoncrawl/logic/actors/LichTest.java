@@ -34,4 +34,21 @@ public class LichTest {
             }
         }
     }
+
+    @Test
+    void cannotMoveOutsideOfMap() {
+        Lich lich = new Lich(gameMap.getCell(1, 1));
+        Player player = new Player(gameMap.getCell(3, 2));
+        move(gameMap, lich, player);
+        for (int x = 0; x < gameMap.getWidth(); x++) {
+            for (int y = 0; y < gameMap.getHeight(); y++) {
+                if(gameMap.getCell(1, 1).getActor() == null && gameMap.getCell(x, y).getActor() != null) {
+                    assertTrue(gameMap.getCell(x, y).getActor().getX() <= gameMap.getWidth());
+                    assertTrue(gameMap.getCell(x, y).getActor().getY() <= gameMap.getHeight());
+                    assertFalse(gameMap.getCell(x, y).getActor().getY() > gameMap.getHeight());
+                    assertFalse(gameMap.getCell(x, y).getActor().getX() > gameMap.getWidth());
+                }
+            }
+        }
+    }
 }
