@@ -1,7 +1,7 @@
 package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Actor;
-import com.codecool.dungeoncrawl.logic.actors.Enemy;
+import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Phantom;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 
@@ -13,7 +13,7 @@ public class GameMap {
     private final int width;
     private final int height;
     private final Cell[][] cells;
-    private final List<Enemy> enemies;
+    private final List<Actor> enemies;
     private Player player;
 
     public GameMap(int width, int height, CellType defaultCellType) {
@@ -52,18 +52,17 @@ public class GameMap {
         return height;
     }
 
-    public void addEnemy(Enemy enemy) {
-        enemies.add(enemy);
+    public void addActor(Actor Actor) {
+        enemies.add(Actor);
     }
 
-    public List<Enemy> getEnemies() {
+    public List<Actor> getEnemies() {
         return enemies;
     }
 
-    public List<Enemy> getPhantoms() {
+    public List<Actor> getPhantoms() {
         return enemies.stream()
                 .filter(Phantom.class::isInstance)
                 .collect(Collectors.toList());
     }
-
 }

@@ -1,14 +1,11 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
-import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.CellType;
-import com.codecool.dungeoncrawl.logic.Direction;
-import com.codecool.dungeoncrawl.logic.Drawable;
+import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
 
 import java.util.Set;
 
-public abstract class Actor implements Drawable {
+public abstract class Actor<T> implements Drawable {
     protected String name;
     protected Cell cell;
     protected int health = 10;
@@ -31,9 +28,15 @@ public abstract class Actor implements Drawable {
         return nextCell.getActor() != null;
     }
 
+    public void move(GameMap map) {
+        Direction direction = Direction.getRandomDirection();
+        move(direction);
+    }
+
     public void move(Direction direction) {
         Cell nextCell = cell.getNeighbour(direction);
         if (nextCell == null || isNotWalkable(nextCell)) return;
+        else if (nextCell.getActor() != null) return;
         if (nextCell.getActor() instanceof Player) {
             nextCell.getActor().fightWithMonster(this);
             return;
