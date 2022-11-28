@@ -11,6 +11,9 @@ public enum CellType {
     CROWN("crown"),
     KEY("key"),
     FOOD("food"),
+    SHIELD("shield"),
+    POISON("poison"),
+    WEAPON("weapon"),
     WALL("wall");
 
 
