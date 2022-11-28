@@ -9,7 +9,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Lich extends Actor implements Enemy{
 
-    private static final ThreadLocalRandom rand = ThreadLocalRandom.current();
+    static final ThreadLocalRandom rand = ThreadLocalRandom.current();
 
     public Lich(Cell cell) {
         super(cell);

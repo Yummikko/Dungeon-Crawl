@@ -162,7 +162,6 @@ public class Game {
         }
     }
 
-
     public static void moveMonsters() {
         List<Actor> enemies = gameMenu.map.getEnemies();
         for (int i = 0; i < enemies.size(); i++) {
