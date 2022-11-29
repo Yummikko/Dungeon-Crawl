@@ -98,6 +98,10 @@ public class MapLoader {
                         cell.setType(CellType.FLOOR);
                         new Weapon(cell);
                         break;
+                    case 'v':
+                        cell.setType(CellType.FLOOR);
+                        new Axe(cell);
+                        break;
                     case 'r':
                         cell.setType(CellType.WALL);
                         new Water(cell);
