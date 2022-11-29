@@ -111,6 +111,9 @@ public class Player extends Actor {
         } else if (item instanceof Weapon) {
             this.setStrength(getStrength() + 2);
             this.setHasWeapon(true);
+        } else if (item instanceof Axe) {
+            this.setStrength(getStrength() + 4);
+            this.setHasWeapon(true);
         } else if (item instanceof Shield) {
             this.setStrength(getStrength() + 10);
         } else if (item instanceof Food) {

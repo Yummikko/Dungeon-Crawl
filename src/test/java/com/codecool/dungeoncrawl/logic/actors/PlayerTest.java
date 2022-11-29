@@ -36,6 +36,15 @@ public class PlayerTest {
     }
 
     @Test
+    void testIfStrengthIncreaseByFourAfterPickingUpWeapon() {
+        Player player = new Player(gameMap.getCell(1, 1));
+        Item item = new Axe(gameMap.getCell(1, 1));
+        int initialStrength = player.getStrength();
+        player.pickUpItem();
+        assertEquals(initialStrength + 4, player.getStrength());
+    }
+
+    @Test
     void testIfStrengthIncreaseByTenAfterPickingUpShield() {
         Player player = new Player(gameMap.getCell(1, 1));
         Item item = new Shield(gameMap.getCell(1, 1));
