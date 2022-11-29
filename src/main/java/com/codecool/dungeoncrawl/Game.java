@@ -1,7 +1,6 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
-import com.codecool.dungeoncrawl.graphics.GameCamera;
 import com.codecool.dungeoncrawl.graphics.GameMenu;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.Direction;
@@ -9,25 +8,15 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.DarkLord;
-import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
-import com.codecool.dungeoncrawl.logic.util.SoundUtils;
-import javafx.application.Platform;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.input.*;
-import javafx.scene.layout.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.FileNotFoundException;
-import java.sql.SQLException;
 import java.util.List;
 
 public class Game {
@@ -38,6 +27,7 @@ public class Game {
     public Game() {
 
     }
+
     private static void checkIfMonstersHealth(List<Actor> enemies) {
         // loop backwards to avoid ConcurrentModificationException
         for (int i = enemies.size() - 1; i >= 0; i--) {
@@ -78,22 +68,20 @@ public class Game {
         return mapName;
     }
 
-    public static void setMap(){
-        MapLoader.maps.add(gameMenu.map);
-        List maps = MapLoader.maps;
+    public static void setMap() {
+        MapLoader.maps.add(GameMenu.map);
+        List<GameMap> maps = MapLoader.maps;
         String mapName = getNextMap(maps);
-        GameMap map2 = MapLoader.loadMap(mapName);
-        gameMenu.map = map2;
+        GameMenu.map = MapLoader.loadMap(mapName);
     }
 
-    public static void setPreviousMap(){
+    public static void setPreviousMap() {
         MapLoader.maps.add(gameMenu.map);
         List maps = MapLoader.maps;
         String mapName = getPreviousMap(maps);
         GameMap map2 = MapLoader.loadMap(mapName);
         gameMenu.map = map2;
     }
-
 
     public static void onKeyReleased(KeyEvent keyEvent) {
         KeyCombination exitCombinationMac = new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN);
@@ -130,16 +118,6 @@ public class Game {
         }
         checkIfOnItem();
     }
-
-    public static void setupDbManager() {
-        dbManager = new GameDatabaseManager();
-        try {
-            dbManager.setup();
-        } catch (SQLException ex) {
-            System.out.println("Cannot connect to database.");
-        }
-    }
-
 
     public static void refresh() {
         GameMenu.gameCamera.centerOnPlayer(gameMenu.map.getPlayer(), gameMenu.map);

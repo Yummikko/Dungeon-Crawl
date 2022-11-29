@@ -1,14 +1,11 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.Game;
-import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.RightUiPanel;
-import com.codecool.dungeoncrawl.graphics.GameInventory;
+import com.codecool.dungeoncrawl.graphics.GameMenu;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Direction;
-import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.doors.Door;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.items.*;
@@ -18,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.StringJoiner;
-
 
 public class Player extends Actor {
 
@@ -124,6 +120,7 @@ public class Player extends Actor {
         } else if (item instanceof Key) {
             this.setHasKey(true);
         }
+        GameMenu.map.getItems().remove(item);
         cell.setItem(null);
     }
 

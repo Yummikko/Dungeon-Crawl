@@ -1,13 +1,12 @@
 package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Actor;
-import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Phantom;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.items.Item;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GameMap {
     private final int width;
@@ -15,6 +14,7 @@ public class GameMap {
     private final Cell[][] cells;
     private final List<Actor> enemies;
     private Player player;
+    private List<Item> items;
 
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
@@ -52,8 +52,8 @@ public class GameMap {
         return height;
     }
 
-    public void addActor(Actor Actor) {
-        enemies.add(Actor);
+    public void addActor(Actor actor) {
+        enemies.add(actor);
     }
 
     public List<Actor> getEnemies() {
@@ -63,6 +63,15 @@ public class GameMap {
     public List<Actor> getPhantoms() {
         return enemies.stream()
                 .filter(Phantom.class::isInstance)
-                .collect(Collectors.toList());
+                .toList();
     }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
 }

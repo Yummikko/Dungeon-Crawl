@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
 public class MapLoader {
     public static List<GameMap> maps = new ArrayList<>();
 
@@ -27,6 +26,9 @@ public class MapLoader {
         scanner.nextLine(); // empty line
 
         GameMap map = new GameMap(width, height, CellType.EMPTY);
+        List<Item> items = new ArrayList<>();
+        map.setItems(items);
+
         for (int y = 0; y < height; y++) {
             String line = scanner.nextLine();
             for (int x = 0; x < line.length(); x++) {
@@ -55,15 +57,15 @@ public class MapLoader {
                         break;
                     case 'k':
                         cell.setType(CellType.FLOOR);
-                        new Key(cell);
+                        items.add(new Key(cell));
                         break;
                     case 'p':
                         cell.setType(CellType.FLOOR);
-                        new Poison(cell);
+                        items.add(new Poison(cell));
                         break;
                     case 'z':
                         cell.setType(CellType.FLOOR);
-                        new Shield(cell);
+                        items.add(new Shield(cell));
                         break;
                     case 'o':
                         cell.setType(CellType.FLOOR);
@@ -92,11 +94,11 @@ public class MapLoader {
                         break;
                     case 'f':
                         cell.setType(CellType.FLOOR);
-                        new Food(cell);
+                        items.add(new Food(cell));
                         break;
                     case 'w':
                         cell.setType(CellType.FLOOR);
-                        new Weapon(cell);
+                        items.add(new Weapon(cell));
                         break;
                     case 'v':
                         cell.setType(CellType.FLOOR);
@@ -120,7 +122,7 @@ public class MapLoader {
                         break;
                     case 'c':
                         cell.setType(CellType.FLOOR);
-                        new Crown(cell);
+                        items.add(new Crown(cell));
                         break;
                     case 'b':
                         cell.setType(CellType.FLOOR);

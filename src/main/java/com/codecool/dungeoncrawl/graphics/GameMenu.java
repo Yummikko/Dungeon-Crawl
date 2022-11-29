@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl.graphics;
 import com.codecool.dungeoncrawl.*;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.controller.SaveController;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,13 +11,15 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class GameMenu {
     public static GameMap map = MapLoader.loadMap("/map1.txt");
@@ -130,12 +133,11 @@ public class GameMenu {
         Stage saveWindow = new Stage();
         rightUI = new RightUiPanel(map.getPlayer());
         Movements.start();
-        Game.setupDbManager();
         SoundUtils.playContinuously(SoundUtils.BACKGROUND, 0.5f);
         GridPane ui = rightUI;
         rightUI.pickUpButton.setOnAction(mousedown -> {
             map.getPlayer().pickUpItem();
-            rightUI.hideButton();;
+            rightUI.hideButton();
         });
         rightUI.exportButton.setOnAction(mousedown -> {
             try {
@@ -156,6 +158,7 @@ public class GameMenu {
         Game.refresh();
         scene.setOnKeyPressed(Game::onKeyPressed);
         scene.setOnKeyReleased(Game::onKeyReleased);
+        scene.setOnKeyReleased(GameMenu::showSaveGameStage);
 
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
@@ -164,6 +167,22 @@ public class GameMenu {
         movements = new Movements(map, new Game());
         thread = new Thread(movements);
         thread.start();
+    }
+
+    public static void showSaveGameStage(KeyEvent keyEvent) {
+        KeyCombination combination = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
+        if (combination.match(keyEvent)) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(SaveController.class.getResource("save_view.fxml"));
+                Scene scene = new Scene(fxmlLoader.load());
+                Stage stage1 = new Stage();
+                stage1.setTitle("Save game");
+                stage1.setScene(scene);
+                stage1.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void setStage(Stage stage) {

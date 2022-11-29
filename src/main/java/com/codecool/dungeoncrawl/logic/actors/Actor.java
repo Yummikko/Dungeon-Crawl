@@ -5,7 +5,7 @@ import com.codecool.dungeoncrawl.logic.util.SoundUtils;
 
 import java.util.Set;
 
-public abstract class Actor<T> implements Drawable {
+public abstract class Actor implements Drawable {
     protected String name;
     protected Cell cell;
     protected int health = 10;
@@ -126,6 +126,14 @@ public abstract class Actor<T> implements Drawable {
 
     public void setAlive(boolean alive) {
         isAlive = alive;
+    }
+
+    public boolean getHasWeapon() {
+        return hasWeapon;
+    }
+
+    public boolean getHasKey() {
+        return hasKey;
     }
 
 }
