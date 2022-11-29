@@ -65,4 +65,13 @@ public class PlayerTest {
 
     }
 
+    @Test
+    void testIfKeyIsRemoved() {
+        Player player = new Player(gameMap.getCell(1, 1));
+        Item item = new Key(gameMap.getCell(1, 1));
+        player.pickUpItem();
+        player.removeKey();
+        assertFalse(player.getInventory().contains(item));
+    }
+
 }
