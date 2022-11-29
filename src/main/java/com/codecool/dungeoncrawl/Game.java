@@ -171,6 +171,7 @@ public class Game {
             }
         }
         GameMenu.rightUI.setTextForRightUI(gameMenu.map.getPlayer());
+        GameMenu.map.getPlayer().setRightUiPanel(GameMenu.rightUI);
     }
 
     private static void checkIfOnItem() {
@@ -180,7 +181,6 @@ public class Game {
             GameMenu.rightUI.hideButton();
         }
     }
-
 
     public static void moveMonsters() {
         List<Actor> enemies = gameMenu.map.getEnemies();

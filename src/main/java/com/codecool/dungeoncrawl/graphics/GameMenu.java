@@ -32,7 +32,7 @@ public class GameMenu {
     public static Button exitGameButton = new Button("Exit Game");
     private static Movements movements;
     private static Thread thread;
-    public static RightUiPanel rightUI = new RightUiPanel(GameMenu.map.getPlayer(), GameMenu.map);
+    public static RightUiPanel rightUI = new RightUiPanel(GameMenu.map.getPlayer());
     public static Canvas canvas = new Canvas(
             25 * Tiles.TILE_WIDTH,
             21 * Tiles.TILE_WIDTH);
@@ -129,7 +129,7 @@ public class GameMenu {
     }
 
     public static void gameStart(Stage primaryStage) {
-        rightUI = new RightUiPanel(map.getPlayer(), map);
+        rightUI = new RightUiPanel(map.getPlayer());
         Movements.start();
         Game.setupDbManager();
         SoundUtils.playContinuously(SoundUtils.BACKGROUND, 0.5f);
@@ -139,9 +139,11 @@ public class GameMenu {
             rightUI.hideButton();;
         });
         BorderPane borderPane = new BorderPane();
-
+        map.getPlayer().setRightUiPanel(rightUI);
+        rightUI.getInventory().setPlayer(map.getPlayer());
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
+        map.getPlayer().setInventory(rightUI.getInventory().getItems());
 
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);

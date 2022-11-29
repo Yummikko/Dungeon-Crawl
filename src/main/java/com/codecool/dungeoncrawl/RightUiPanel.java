@@ -1,26 +1,22 @@
 package com.codecool.dungeoncrawl;
 
-import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.GameMap;
+import com.codecool.dungeoncrawl.graphics.GameInventory;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import javafx.geometry.Insets;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 
-import java.awt.*;
 
 public class RightUiPanel extends GridPane {
-    Label nameLabel = new Label();
-    Label healthLabel = new Label();
-    Label strengthLabel = new Label();
-    Label playerInventory = new Label("INVENTORY: ");
-
+    private Label nameLabel = new Label();
+    private Label healthLabel = new Label();
+    private Label strengthLabel = new Label();
+    private Label playerInventory = new Label("INVENTORY: ");
+    private GameInventory inventory;
     public Button pickUpButton = new Button("Pick up item");
 
-    public RightUiPanel(Player player,GameMap map) {
+    public RightUiPanel(Player player) {
         super();
         this.setPrefWidth(200);
         this.setPadding(new Insets(10));
@@ -33,9 +29,14 @@ public class RightUiPanel extends GridPane {
         this.add(new Label("Strength: "), 0, 2);
         this.add(strengthLabel, 1, 2);
         this.add(pickUpButton, 0, 5);
+        this.inventory = new GameInventory();
         hideButton();
         this.add(new Label("INVENTORY:"), 0, 7);
-        this.add(playerInventory, 0, 8);
+        this.add(inventory, 0, 8, 3, 1);
+    }
+
+    public GameInventory getInventory() {
+        return inventory;
     }
 
     public void hideButton() {
@@ -51,4 +52,5 @@ public class RightUiPanel extends GridPane {
         strengthLabel.setText("" + player.getStrength());
         playerInventory.setText("" + player.inventoryToString());
     }
+
 }
