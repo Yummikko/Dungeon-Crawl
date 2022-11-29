@@ -56,16 +56,41 @@ public class Game {
     public static String getNextMap(List maps) {
         int mapsSize = maps.size();
         String mapName = "";
-        switch (mapsSize) {
-            case 1 -> mapName = "/map2.txt";
-            case 2 -> mapName = "/map3.txt";
+
+        if (mapsSize % 2 != 0) {
+            mapName = "/map2.txt";
+        } else {
+            mapName = "/map3.txt";
         }
+
         return mapName;
     }
+
+    public static String getPreviousMap(List maps) {
+        int mapsSize = maps.size();
+        String mapName = "";
+
+        if (mapsSize % 2 != 0) {
+            mapName = "/map2.txt";
+        } else {
+            mapName = "/map1.txt";
+        }
+
+        return mapName;
+    }
+
     public static void setMap(){
         MapLoader.maps.add(gameMenu.map);
         List maps = MapLoader.maps;
         String mapName = getNextMap(maps);
+        GameMap map2 = MapLoader.loadMap(mapName);
+        gameMenu.map = map2;
+    }
+
+    public static void setPreviousMap(){
+        MapLoader.maps.add(gameMenu.map);
+        List maps = MapLoader.maps;
+        String mapName = getPreviousMap(maps);
         GameMap map2 = MapLoader.loadMap(mapName);
         gameMenu.map = map2;
     }
@@ -152,6 +177,7 @@ public class Game {
             }
         }
         GameMenu.rightUI.setTextForRightUI(gameMenu.map.getPlayer());
+        GameMenu.map.getPlayer().setRightUiPanel(GameMenu.rightUI);
     }
 
     private static void checkIfOnItem() {
@@ -161,7 +187,6 @@ public class Game {
             GameMenu.rightUI.hideButton();
         }
     }
-
 
     public static void moveMonsters() {
         List<Actor> enemies = gameMenu.map.getEnemies();

@@ -2,10 +2,13 @@ package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.Game;
 import com.codecool.dungeoncrawl.Main;
+import com.codecool.dungeoncrawl.RightUiPanel;
+import com.codecool.dungeoncrawl.graphics.GameInventory;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Direction;
 import com.codecool.dungeoncrawl.logic.GameMap;
+import com.codecool.dungeoncrawl.logic.doors.Door;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.items.*;
@@ -22,6 +25,7 @@ public class Player extends Actor {
     public static final int INITIAL_HEALTH = 35;
     public static final int ATTACK_STRENGTH = 5;
     private List<Item> inventory;
+    private RightUiPanel rightUIInventory;
 
     public Player(Cell cell) {
         super(cell);
@@ -39,13 +43,23 @@ public class Player extends Actor {
         if (nextCell.getType() == CellType.STAIRS) {
             Game.setMap();
         }
+        if (nextCell.getType() == CellType.LADDER) {
+            System.out.printf("prosze stanac na drabinie");
+            Game.setPreviousMap();
+        }
         if (nextCell.getNormalDoor() != null) {
             NormalDoor door = nextCell.getNormalDoor();
             if (door.getIsOpen()) {
-                door.setCell(new OpenDoor(door.getCell()).getCell());
-                removeKey();
+                for (Item item : this.getInventory()) {
+                    if (item instanceof Key) {
+                        door.setCell(new OpenDoor(door.getCell()).getCell());
+                        removeKey();
+                        moveActor(nextCell);
+                        SoundUtils.playSound(SoundUtils.OPEN_DOOR, 0.7f);
+                        return;
+                    }
+                }
                 moveActor(nextCell);
-                SoundUtils.playSound(SoundUtils.OPEN_DOOR, 0.7f);
                 return;
             }
             if (developerNames.contains(smallName)) {
@@ -85,9 +99,12 @@ public class Player extends Actor {
         this.inventory = inventory;
     }
 
+    public void setRightUiPanel(RightUiPanel rightUiPanel) {
+        this.rightUIInventory = rightUiPanel;
+    }
+
     public void pickUpItem() {
         Item item = cell.getItem();
-        System.out.println("Picking the " + item);
         inventory.add(item);
         if (item == null) {
             return;
@@ -125,10 +142,11 @@ public class Player extends Actor {
     }
 
     public void removeKey() {
-        //TODO: iterator
         for (int i = 0; i < inventory.size(); i++) {
             if (inventory.get(i) instanceof Key) {
+                rightUIInventory.getInventory().removeItemFromLoot(inventory.get(i));
                 this.inventory.remove(i);
+                break;
             }
         }
     }

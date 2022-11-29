@@ -3,10 +3,7 @@ package com.codecool.dungeoncrawl.logic;
 import com.codecool.dungeoncrawl.logic.actors.*;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
-import com.codecool.dungeoncrawl.logic.enviroment.Bridge;
-import com.codecool.dungeoncrawl.logic.enviroment.Skull;
-import com.codecool.dungeoncrawl.logic.enviroment.Stairs;
-import com.codecool.dungeoncrawl.logic.enviroment.Water;
+import com.codecool.dungeoncrawl.logic.enviroment.*;
 import com.codecool.dungeoncrawl.logic.items.*;
 
 import java.io.InputStream;
@@ -108,6 +105,10 @@ public class MapLoader {
                     case 't':
                         cell.setType(CellType.STAIRS);
                         new Stairs(cell);
+                        break;
+                    case 'y':
+                        cell.setType(CellType.LADDER);
+                        new Ladder(cell);
                         break;
                     case 'u':
                         cell.setType(CellType.SKULL);
