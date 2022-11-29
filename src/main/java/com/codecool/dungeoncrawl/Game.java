@@ -33,7 +33,6 @@ import java.util.List;
 public class Game {
     private static GameDatabaseManager dbManager;
     private static final GameMenu gameMenu = new GameMenu();
-
     static GraphicsContext context = GameMenu.canvas.getGraphicsContext2D();
 
     public Game() {

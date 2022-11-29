@@ -1,9 +1,6 @@
 package com.codecool.dungeoncrawl.graphics;
 
-import com.codecool.dungeoncrawl.Game;
-import com.codecool.dungeoncrawl.Movements;
-import com.codecool.dungeoncrawl.RightUiPanel;
-import com.codecool.dungeoncrawl.Tiles;
+import com.codecool.dungeoncrawl.*;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
@@ -33,6 +30,7 @@ public class GameMenu {
     private static Movements movements;
     private static Thread thread;
     public static RightUiPanel rightUI = new RightUiPanel(GameMenu.map.getPlayer());
+    public static FileSaver fileSaver = new FileSaver();
     public static Canvas canvas = new Canvas(
             25 * Tiles.TILE_WIDTH,
             21 * Tiles.TILE_WIDTH);
@@ -129,6 +127,7 @@ public class GameMenu {
     }
 
     public static void gameStart(Stage primaryStage) {
+        Stage saveWindow = new Stage();
         rightUI = new RightUiPanel(map.getPlayer());
         Movements.start();
         Game.setupDbManager();
@@ -137,6 +136,13 @@ public class GameMenu {
         rightUI.pickUpButton.setOnAction(mousedown -> {
             map.getPlayer().pickUpItem();
             rightUI.hideButton();;
+        });
+        rightUI.exportButton.setOnAction(mousedown -> {
+            try {
+                fileSaver.start(saveWindow);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
         BorderPane borderPane = new BorderPane();
         map.getPlayer().setRightUiPanel(rightUI);

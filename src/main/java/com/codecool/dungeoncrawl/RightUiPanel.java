@@ -15,6 +15,7 @@ public class RightUiPanel extends GridPane {
     private Label playerInventory = new Label("INVENTORY: ");
     private GameInventory inventory;
     public Button pickUpButton = new Button("Pick up item");
+    public Button exportButton = new Button("Export");
 
     public RightUiPanel(Player player) {
         super();
@@ -29,6 +30,7 @@ public class RightUiPanel extends GridPane {
         this.add(new Label("Strength: "), 0, 2);
         this.add(strengthLabel, 1, 2);
         this.add(pickUpButton, 0, 5);
+        this.add(exportButton, 0, 38);
         this.inventory = new GameInventory();
         hideButton();
         this.add(new Label("INVENTORY:"), 0, 7);
