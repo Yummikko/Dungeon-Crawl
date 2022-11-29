@@ -44,7 +44,7 @@ public class FileSaver extends Application {
         MenuBar menuBar = new MenuBar(file);
         Group root = new Group(menuBar);
         Scene scene = new Scene(root, 595, 355, Color.BEIGE);
-        stage.setTitle("Saving to json");
+        stage.setTitle("Saving current game's status to json");
         stage.setScene(scene);
         stage.show();
     }
