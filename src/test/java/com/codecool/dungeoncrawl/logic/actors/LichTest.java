@@ -62,7 +62,7 @@ public class LichTest {
                 if (cell == null)
                     continue;
                 else if(gameMap.getCell(1, 1).getActor() == null && gameMap.getCell(x, y).getActor() != null) {
-                    assertFalse(gameMap.getCell(x, y).getActor().equals(gameMap.getCell(2, 3)));
+                    assertFalse(gameMap.getCell(x, y).getActor().equals(gameMap.getCell(2, 3).getActor()));
                 }
             }
         }

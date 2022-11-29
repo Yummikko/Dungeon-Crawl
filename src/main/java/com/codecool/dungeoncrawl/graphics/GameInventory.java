@@ -51,7 +51,7 @@ public class GameInventory extends GridPane {
             StackPane holder = new StackPane();
 
             holder.getChildren().add(canvas);
-            holder.setStyle("-fx-padding: 0 3 0 3; -fx-border-style: solid; -fx-border-width: 1px; -fx-border-color: #6D99AE;");
+            holder.setStyle("-fx-padding: 0 3.3 0 3.3; -fx-border-style: solid; -fx-border-width: 1px; -fx-border-color: #6D99AE;");
             Tiles.drawTile(context, item, 0, 0);
             if (colIndex % 4 == 0) {
                 colIndex = 0;
@@ -66,7 +66,7 @@ public class GameInventory extends GridPane {
         setPrefSize(6 * Tiles.TILE_WIDTH, 250);
         setMargin(this, new Insets(10, 0, 20, 0));
         setPadding(new Insets(5));
-        setBorder(new Border(new BorderStroke(Color.DARKBLUE,
+        setBorder(new Border(new BorderStroke(Color.ALICEBLUE,
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3))));
         setBackground(new Background(new BackgroundFill(Color.valueOf("#203E54"), CornerRadii.EMPTY, Insets.EMPTY)));
     }
