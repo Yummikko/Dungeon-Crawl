@@ -152,6 +152,7 @@ public class Game {
             }
         }
         GameMenu.rightUI.setTextForRightUI(gameMenu.map.getPlayer());
+        GameMenu.map.getPlayer().setRightUiPanel(GameMenu.rightUI);
     }
 
     private static void checkIfOnItem() {

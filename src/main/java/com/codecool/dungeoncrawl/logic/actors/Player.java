@@ -2,6 +2,8 @@ package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.Game;
 import com.codecool.dungeoncrawl.Main;
+import com.codecool.dungeoncrawl.RightUiPanel;
+import com.codecool.dungeoncrawl.graphics.GameInventory;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Direction;
@@ -23,6 +25,7 @@ public class Player extends Actor {
     public static final int INITIAL_HEALTH = 35;
     public static final int ATTACK_STRENGTH = 5;
     private List<Item> inventory;
+    private RightUiPanel rightUIInventory;
 
     public Player(Cell cell) {
         super(cell);
@@ -92,6 +95,10 @@ public class Player extends Actor {
         this.inventory = inventory;
     }
 
+    public void setRightUiPanel(RightUiPanel rightUiPanel) {
+        this.rightUIInventory = rightUiPanel;
+    }
+
     public void pickUpItem() {
         Item item = cell.getItem();
         inventory.add(item);
@@ -133,7 +140,9 @@ public class Player extends Actor {
     public void removeKey() {
         for (int i = 0; i < inventory.size(); i++) {
             if (inventory.get(i) instanceof Key) {
+                rightUIInventory.getInventory().removeItemFromLoot(inventory.get(i));
                 this.inventory.remove(i);
+                break;
             }
         }
     }
