@@ -56,20 +56,26 @@ public class Game {
     public static String getNextMap(List maps) {
         int mapsSize = maps.size();
         String mapName = "";
-        switch (mapsSize) {
-            case 1 -> mapName = "/map2.txt";
-            case 2 -> mapName = "/map3.txt";
+
+        if (mapsSize % 2 != 0) {
+            mapName = "/map2.txt";
+        } else {
+            mapName = "/map3.txt";
         }
+
         return mapName;
     }
 
     public static String getPreviousMap(List maps) {
         int mapsSize = maps.size();
         String mapName = "";
-        switch (mapsSize) {
-            case 2 -> mapName = "/map1.txt";
-            case 3 -> mapName = "/map2.txt";
+
+        if (mapsSize % 2 != 0) {
+            mapName = "/map2.txt";
+        } else {
+            mapName = "/map1.txt";
         }
+
         return mapName;
     }
 
