@@ -7,7 +7,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
@@ -46,22 +48,26 @@ public class GameInventory extends GridPane {
         for (Item item : inventory) {
             this.canvas = new Canvas(Tiles.TILE_WIDTH, Tiles.TILE_WIDTH);
             this.context = canvas.getGraphicsContext2D();
+            StackPane holder = new StackPane();
+
+            holder.getChildren().add(canvas);
+            holder.setStyle("-fx-padding: 0 3 0 3; -fx-border-style: solid; -fx-border-width: 1px; -fx-border-color: #6D99AE;");
             Tiles.drawTile(context, item, 0, 0);
-            if (colIndex % 5 == 0) {
+            if (colIndex % 4 == 0) {
                 colIndex = 0;
                 rowIndex++;
             }
-            uiInventory.add(canvas, colIndex++, rowIndex);
+            uiInventory.add(holder, colIndex++, rowIndex);
         }
         this.add(uiInventory, 0, 14, 3, 1);
     }
 
     private void inventoryLayout() {
-        setPrefSize(6 * Tiles.TILE_WIDTH, 200);
+        setPrefSize(6 * Tiles.TILE_WIDTH, 250);
         setMargin(this, new Insets(10, 0, 20, 0));
         setPadding(new Insets(5));
-        setBorder(new Border(new BorderStroke(Color.BLACK,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(2))));
+        setBorder(new Border(new BorderStroke(Color.DARKBLUE,
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3))));
         setBackground(new Background(new BackgroundFill(Color.valueOf("#203E54"), CornerRadii.EMPTY, Insets.EMPTY)));
     }
 }

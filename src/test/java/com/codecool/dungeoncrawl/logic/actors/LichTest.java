@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
+import com.codecool.dungeoncrawl.logic.enviroment.Enviroment;
 import org.junit.jupiter.api.Test;
 
 import static com.codecool.dungeoncrawl.logic.actors.Lich.rand;
@@ -44,6 +45,24 @@ public class LichTest {
             for (int y = 0; y < gameMap.getHeight(); y++) {
                 if(gameMap.getCell(1, 1).getActor() == null && gameMap.getCell(x, y).getActor() != null) {
                     assertFalse(gameMap.getCell(x, y).getActor().equals(gameMap.getCell(3, 2)));
+                }
+            }
+        }
+    }
+
+    @Test
+    void cannotMoveIntoWall() {
+        Lich lich = new Lich(gameMap.getCell(1, 1));
+        Cell wall = new Cell(gameMap, 2, 3, CellType.WALL);
+        Player player = new Player(gameMap.getCell(3, 2));
+        move(gameMap, lich, player);
+        for (int x = 0; x < gameMap.getWidth(); x++) {
+            for (int y = 0; y < gameMap.getHeight(); y++) {
+                Cell cell = gameMap.getCell(x, y);
+                if (cell == null)
+                    continue;
+                else if(gameMap.getCell(1, 1).getActor() == null && gameMap.getCell(x, y).getActor() != null) {
+                    assertFalse(gameMap.getCell(x, y).getActor().equals(gameMap.getCell(2, 3)));
                 }
             }
         }
