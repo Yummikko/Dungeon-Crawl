@@ -1,11 +1,12 @@
 package com.codecool.dungeoncrawl.logic;
 
+import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
+
 public enum CellType {
     EMPTY("empty"),
     FLOOR("floor"),
     STAIRS("stairs"),
-
-//    DOWN_STAIRS("stairs"),
+    WALL("wall"),
     WATER("water"),
     SKULL("skull"),
     CROWN("crown"),
@@ -15,9 +16,8 @@ public enum CellType {
     POISON("poison"),
     WEAPON("weapon"),
     LADDER("ladder"),
-
-    WALL("wall");
-
+    NORMAL_DOOR("door"),
+    OPEN_DOOR("openDoor");
 
     private final String tileName;
 

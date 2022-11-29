@@ -44,7 +44,6 @@ public class Player extends Actor {
             Game.setMap();
         }
         if (nextCell.getType() == CellType.LADDER) {
-            System.out.printf("prosze stanac na drabinie");
             Game.setPreviousMap();
         }
         if (nextCell.getNormalDoor() != null) {
