@@ -27,7 +27,7 @@ public class Game {
     private static GameDatabaseManager dbManager;
     private static final GameMenu gameMenu = new GameMenu();
     private static String mapNameJSON = "map1";
-    private static GameState gameState;
+    private static GameState gameState = new GameState(mapNameJSON, System.currentTimeMillis(), createPlayerModelJSON());;
     private static GraphicsContext context = GameMenu.canvas.getGraphicsContext2D();
 
     public Game() {
