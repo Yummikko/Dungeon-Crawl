@@ -118,7 +118,7 @@ public class Game {
         MapLoader.maps.add(GameMenu.map);
         String mapName = getBonusMap();
         mapNameJSON = mapName.substring(1,5);
-        GameMap bonusMap = MapLoader.loadMap(mapName);
+        GameMap bonusMap = MapLoader.loadMap(mapName, false);
         gameMenu.map = bonusMap;
     }
 
