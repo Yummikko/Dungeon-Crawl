@@ -42,6 +42,9 @@ public class Player extends Actor {
         if (nextCell.getType() == CellType.LADDER) {
             Game.setPreviousMap();
         }
+        if (nextCell.getType() == CellType.PORTAL) {
+            Game.setBonusMap();
+        }
         if (nextCell.getNormalDoor() != null) {
             NormalDoor door = nextCell.getNormalDoor();
             if (door.getIsOpen()) {
