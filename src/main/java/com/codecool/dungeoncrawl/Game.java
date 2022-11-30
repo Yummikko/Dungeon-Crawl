@@ -114,7 +114,7 @@ public class Game {
     }
 
     public static void onKeyReleased(KeyEvent keyEvent) {
-        KeyCombination exitCombinationMac = new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN);
+        KeyCombination exitCombinationMac = new KeyCodeCombination(KeyCode.Q, KeyCombination.SHORTCUT_DOWN);
         KeyCombination exitCombinationWin = new KeyCodeCombination(KeyCode.F4, KeyCombination.ALT_DOWN);
         if (exitCombinationMac.match(keyEvent)
                 || exitCombinationWin.match(keyEvent)

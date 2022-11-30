@@ -145,6 +145,7 @@ public class GameMenu {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+            mousedown.consume();
         });
         BorderPane borderPane = new BorderPane();
         map.getPlayer().setRightUiPanel(rightUI);

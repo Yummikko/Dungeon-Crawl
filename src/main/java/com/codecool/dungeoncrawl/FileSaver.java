@@ -4,12 +4,15 @@ import com.codecool.dungeoncrawl.logic.json.GameJSONGenerator;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -39,18 +42,15 @@ public class FileSaver extends Application {
         fileChooser.setTitle("Save");
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json"));
         //Adding action on the menu item
-        item.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-                String json;
-                File selectedFile = fileChooser.showSaveDialog(stage);
-                try {
-                    json = jsonGenerator.writeDataToJson().toString();
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-                if (file != null)
-                    saveJSONToFile(json, selectedFile);
+        item.setOnAction(e -> {
+            String json;
+            File selectedFile = fileChooser.showSaveDialog(stage);
+            try {
+                json = jsonGenerator.writeDataToJson().toString();
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
             }
+            saveJSONToFile(json, selectedFile);
         });
         //Creating a menu bar and adding menu to it.
         MenuBar menuBar = new MenuBar(file);

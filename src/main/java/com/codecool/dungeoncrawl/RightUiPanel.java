@@ -16,11 +16,12 @@ public class RightUiPanel extends GridPane {
     private GameInventory inventory;
     public Button pickUpButton = new Button("Pick up item");
     public Button exportButton = new Button("Export");
+    public Button importButton = new Button("Import");
 
     public RightUiPanel(Player player) {
         super();
-        this.setPrefWidth(200);
-        this.setPadding(new Insets(10));
+        this.setPrefWidth(225);
+        this.setPadding(new Insets(13));
         this.setStyle("-fx-background-color: #6C8D9E; -fx-font-size: 18px; -fx-text-fill: #6B8D9E;");
         setTextForRightUI(player);
         this.add(new Label("Name: "),0, 0 );
@@ -30,7 +31,11 @@ public class RightUiPanel extends GridPane {
         this.add(new Label("Strength: "), 0, 2);
         this.add(strengthLabel, 1, 2);
         this.add(pickUpButton, 0, 5);
-        this.add(exportButton, 0, 38);
+        this.add(exportButton, 0, 35);
+        this.add(importButton, 1, 35);
+        pickUpButton.setFocusTraversable(false);
+        exportButton.setFocusTraversable(false);
+        importButton.setFocusTraversable(false);
         this.inventory = new GameInventory();
         hideButton();
         this.add(new Label("INVENTORY:"), 0, 7);
