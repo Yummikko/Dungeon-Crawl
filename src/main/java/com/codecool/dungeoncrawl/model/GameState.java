@@ -20,8 +20,8 @@ public class GameState extends BaseModel {
         return savedAt;
     }
 
-    public void setSavedAt(long savedAt) {
-        this.savedAt = savedAt;
+    public void setSavedAt() {
+        this.savedAt = System.currentTimeMillis();
     }
 
     public String getCurrentMap() {

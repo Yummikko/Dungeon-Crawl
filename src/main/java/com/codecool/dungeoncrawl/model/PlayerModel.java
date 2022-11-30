@@ -1,12 +1,16 @@
 package com.codecool.dungeoncrawl.model;
 
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.items.Item;
+
+import java.util.List;
 
 public class PlayerModel extends BaseModel {
     private String playerName;
     private int hp;
     private int x;
     private int y;
+    private List<Item> inventory;
 
     public PlayerModel(Player player) {
         this.playerName = player.getName();

@@ -30,28 +30,26 @@ public class FileSaver extends Application {
         ImageView imgView = new ImageView(fileOne.toURI().toString());
         imgView.setFitWidth(20);
         imgView.setFitHeight(20);
-        Menu file = new Menu("File");
+        Menu file = new Menu("JSON File");
         GameJSONGenerator jsonGenerator = new GameJSONGenerator();
         MenuItem item = new MenuItem("Save", imgView);
         file.getItems().addAll(item);
         //Creating a File chooser
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save");
-        File selectedFile = fileChooser.showSaveDialog(null);
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json"));
         //Adding action on the menu item
         item.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                //Opening a dialog box
-                File file = fileChooser.showSaveDialog(stage);
-                String json = null;
+                String json;
+                File selectedFile = fileChooser.showSaveDialog(stage);
                 try {
                     json = jsonGenerator.writeDataToJson().toString();
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 }
                 if (file != null)
-                    saveJSONToFile(json, file);
+                    saveJSONToFile(json, selectedFile);
             }
         });
         //Creating a menu bar and adding menu to it.

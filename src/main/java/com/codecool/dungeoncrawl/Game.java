@@ -32,8 +32,8 @@ public class Game {
     }
 
     public static GameState createNewGameStateJSON() {
+        mapNameJSON = "map1";
         GameState gameState = new GameState(mapNameJSON, System.currentTimeMillis(), createPlayerModelJSON());
-
         return gameState;
     }
 
@@ -65,7 +65,6 @@ public class Game {
         } else {
             mapName = "/map3.txt";
         }
-        mapNameJSON = mapName;
         return mapName;
     }
 
@@ -78,7 +77,6 @@ public class Game {
         } else {
             mapName = "/map1.txt";
         }
-        mapNameJSON = mapName;
         return mapName;
     }
 
@@ -86,6 +84,7 @@ public class Game {
         MapLoader.maps.add(GameMenu.map);
         List<GameMap> maps = MapLoader.maps;
         String mapName = getNextMap(maps);
+        mapNameJSON = mapName.substring(1,5);
         GameMenu.map = MapLoader.loadMap(mapName);
     }
 
@@ -93,6 +92,7 @@ public class Game {
         MapLoader.maps.add(gameMenu.map);
         List maps = MapLoader.maps;
         String mapName = getPreviousMap(maps);
+        mapNameJSON = mapName.substring(1,5);
         GameMap map2 = MapLoader.loadMap(mapName);
         gameMenu.map = map2;
     }

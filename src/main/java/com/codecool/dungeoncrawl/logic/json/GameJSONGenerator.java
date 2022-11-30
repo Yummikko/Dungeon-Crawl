@@ -13,12 +13,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
-import jakarta.json.Json;
-import jakarta.json.JsonArrayBuilder;
-import jakarta.json.JsonObject;
-import jakarta.json.JsonObjectBuilder;
-import jakarta.json.JsonWriter;
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonWriter;
 
 public class GameJSONGenerator {
 
@@ -29,9 +30,11 @@ public class GameJSONGenerator {
         PlayerModel playerModel = Game.createPlayerModelJSON();
         JsonObjectBuilder gameStateBuilder = Json.createObjectBuilder();
         JsonObjectBuilder playerBuilder = Json.createObjectBuilder();
-        Date date = new Date(gameState.getSavedAt());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        Date now = new Date(gameState.getSavedAt());
+        String savedTime = sdf.format(now);
         gameStateBuilder.add("map", gameState.getCurrentMap())
-                .add("date", date.toString())
+                .add("date", savedTime)
                 .add("player", playerModel.getPlayerName());
 
         playerBuilder.add("playerName", playerModel.getPlayerName())
