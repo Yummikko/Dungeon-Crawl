@@ -30,9 +30,6 @@ public class Game {
     private static GameState gameState = new GameState(mapNameJSON, System.currentTimeMillis(), createPlayerModelJSON());;
     private static GraphicsContext context = GameMenu.canvas.getGraphicsContext2D();
 
-    public Game() {
-
-    }
 
     public static GameState createNewGameStateJSON() {
         gameState = new GameState(mapNameJSON, System.currentTimeMillis(), createPlayerModelJSON());
@@ -92,6 +89,10 @@ public class Game {
         return mapName;
     }
 
+    public static String getBonusMap(){
+        return "/bonus_map.txt";
+    }
+
     public static void setMap() {
         MapLoader.maps.add(GameMenu.map);
         List<GameMap> maps = MapLoader.maps;
@@ -105,13 +106,23 @@ public class Game {
     }
 
     public static void setPreviousMap() {
-        MapLoader.maps.add(gameMenu.map);
+        MapLoader.maps.add(GameMenu.map);
         List maps = MapLoader.maps;
         String mapName = getPreviousMap(maps);
         mapNameJSON = mapName.substring(1,5);
         GameMap map2 = MapLoader.loadMap(mapName);
         gameMenu.map = map2;
     }
+
+    public static void setBonusMap() {
+        MapLoader.maps.add(GameMenu.map);
+        String mapName = getBonusMap();
+        mapNameJSON = mapName.substring(1,5);
+        GameMap bonusMap = MapLoader.loadMap(mapName);
+        gameMenu.map = bonusMap;
+    }
+
+
 
     public static void onKeyReleased(KeyEvent keyEvent) {
         KeyCombination exitCombinationMac = new KeyCodeCombination(KeyCode.Q, KeyCombination.SHORTCUT_DOWN);

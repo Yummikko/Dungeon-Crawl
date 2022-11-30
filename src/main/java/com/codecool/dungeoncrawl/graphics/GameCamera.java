@@ -14,6 +14,7 @@ public class GameCamera {
     private float yOffset;
     private GameMap firstLevel = MapLoader.loadMap("/map1.txt");
     private GameMap thirdLevel = MapLoader.loadMap("/map3.txt");
+    private GameMap bonusMap = MapLoader.loadMap("/bonus_map.txt");
 
     public GameCamera(float xOffset, float yOffset, GameMap map) {
         this.map = map;
@@ -22,7 +23,7 @@ public class GameCamera {
     }
 
     public void centerOnPlayer(Player player, GameMap map) {
-         if (map.getWidth() == firstLevel.getWidth() || map.getWidth() == thirdLevel.getWidth()) {
+         if (map.getWidth() == firstLevel.getWidth() || map.getWidth() == thirdLevel.getWidth() || map.getWidth() == bonusMap.getWidth()) {
             xOffset = player.getX() - map.getWidth() / 2 + 2;
             yOffset = player.getY() - map.getHeight() / 2 + 2;
         } else {
