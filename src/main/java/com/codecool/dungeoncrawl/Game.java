@@ -9,6 +9,8 @@ import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.DarkLord;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
+import com.codecool.dungeoncrawl.model.GameState;
+import com.codecool.dungeoncrawl.model.PlayerModel;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -22,10 +24,22 @@ import java.util.List;
 public class Game {
     private static GameDatabaseManager dbManager;
     private static final GameMenu gameMenu = new GameMenu();
+    private static String mapNameJSON;
     static GraphicsContext context = GameMenu.canvas.getGraphicsContext2D();
 
     public Game() {
 
+    }
+
+    public static GameState createNewGameStateJSON() {
+        GameState gameState = new GameState(mapNameJSON, System.currentTimeMillis(), createPlayerModelJSON());
+
+        return gameState;
+    }
+
+    public static PlayerModel createPlayerModelJSON() {
+        PlayerModel playerModel = new PlayerModel(GameMenu.map.getPlayer());
+        return playerModel;
     }
 
     private static void checkIfMonstersHealth(List<Actor> enemies) {
@@ -51,7 +65,7 @@ public class Game {
         } else {
             mapName = "/map3.txt";
         }
-
+        mapNameJSON = mapName;
         return mapName;
     }
 
@@ -64,7 +78,7 @@ public class Game {
         } else {
             mapName = "/map1.txt";
         }
-
+        mapNameJSON = mapName;
         return mapName;
     }
 
