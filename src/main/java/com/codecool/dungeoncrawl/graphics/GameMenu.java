@@ -22,7 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class GameMenu {
-    public static GameMap map = MapLoader.loadMap("/map1.txt");
+    public static GameMap map = MapLoader.loadMap("/map1.txt", false);
     public static GameCamera gameCamera = new GameCamera(0, 0, map);
     private static GameMap map1;
     public static Stage stage;
@@ -96,7 +96,7 @@ public class GameMenu {
 
         startButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
             try {
-                map1 = MapLoader.loadMap("/map1.txt");
+                map1 = MapLoader.loadMap("/map1.txt", false);
                 map = map1;
                 map.getPlayer().setName(textField.getText());
                 gameStart(primaryStage);

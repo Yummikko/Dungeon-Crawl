@@ -12,8 +12,8 @@ public class GameCamera {
     private final GameMap map;
     private float xOffset;
     private float yOffset;
-    private GameMap firstLevel = MapLoader.loadMap("/map1.txt");
-    private GameMap thirdLevel = MapLoader.loadMap("/map3.txt");
+    private GameMap firstLevel = MapLoader.loadMap("/map1.txt", false);
+    private GameMap thirdLevel = MapLoader.loadMap("/map3.txt", false);
 
     public GameCamera(float xOffset, float yOffset, GameMap map) {
         this.map = map;

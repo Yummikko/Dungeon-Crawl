@@ -16,7 +16,7 @@ public class MapLoader {
 
     private MapLoader() {}
 
-    public static GameMap loadMap(String mapname) {
+    public static GameMap loadMap(String mapname, boolean goingBack) {
         InputStream is = MapLoader.class.getResourceAsStream(mapname);
 
         Scanner scanner = new Scanner(is);
@@ -76,22 +76,47 @@ public class MapLoader {
                         map.addActor(new Spider(cell));
                         break;
                     case '@':
-                        cell.setType(CellType.FLOOR);
-                        Player nextPlayer = new Player(cell);
-                        map.setPlayer(nextPlayer);
-                        for (int i = 0; i < maps.size(); i++) {
-                            for (int j = 1; j < maps.size() + j; j++) {
-                                if (maps.size() == j) {
-                                    nextPlayer.setName(maps.get(i).getPlayer().getName());
-                                    nextPlayer.setInventory(maps.get(i).getPlayer().getInventory());
-                                    nextPlayer.setHealth(maps.get(i).getPlayer().getHealth());
-                                    nextPlayer.setStrength(maps.get(i).getPlayer().getStrength());
-                                    break;
+                        if (goingBack) {
+                            break;
+                        } else {
+                            cell.setType(CellType.FLOOR);
+                            Player nextPlayer = new Player(cell);
+                            map.setPlayer(nextPlayer);
+                            for (int i = 0; i < maps.size(); i++) {
+                                for (int j = 1; j < maps.size() + j; j++) {
+                                    if (maps.size() == j) {
+                                        nextPlayer.setName(maps.get(i).getPlayer().getName());
+                                        nextPlayer.setInventory(maps.get(i).getPlayer().getInventory());
+                                        nextPlayer.setHealth(maps.get(i).getPlayer().getHealth());
+                                        nextPlayer.setStrength(maps.get(i).getPlayer().getStrength());
+                                        break;
+                                    }
                                 }
                             }
-                        }
 
-                        break;
+                            break;
+                        }
+                    case '%':
+                        if (goingBack) {
+                            cell.setType(CellType.FLOOR);
+                            Player nextPlayer = new Player(cell);
+                            map.setPlayer(nextPlayer);
+                            for (int i = 0; i < maps.size(); i++) {
+                                for (int j = 1; j < maps.size() + j; j++) {
+                                    if (maps.size() == j) {
+                                        nextPlayer.setName(maps.get(i).getPlayer().getName());
+                                        nextPlayer.setInventory(maps.get(i).getPlayer().getInventory());
+                                        nextPlayer.setHealth(maps.get(i).getPlayer().getHealth());
+                                        nextPlayer.setStrength(maps.get(i).getPlayer().getStrength());
+                                        break;
+                                    }
+                                }
+                            }
+
+                            break;
+                        } else {
+                            break;
+                        }
                     case 'f':
                         cell.setType(CellType.FLOOR);
                         items.add(new Food(cell));

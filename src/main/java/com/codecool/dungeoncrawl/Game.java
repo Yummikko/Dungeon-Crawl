@@ -101,7 +101,7 @@ public class Game {
         if (gameState.getDiscoveredMaps().size() <= 3 && !gameState.getDiscoveredMaps().contains(mapNameJSON)) {
             gameState.addDiscoveredMap(mapNameJSON);
         }
-        GameMenu.map = MapLoader.loadMap(mapName);
+        GameMenu.map = MapLoader.loadMap(mapName, false);
     }
 
     public static void setPreviousMap() {
@@ -109,7 +109,7 @@ public class Game {
         List maps = MapLoader.maps;
         String mapName = getPreviousMap(maps);
         mapNameJSON = mapName.substring(1,5);
-        GameMap map2 = MapLoader.loadMap(mapName);
+        GameMap map2 = MapLoader.loadMap(mapName, true);
         gameMenu.map = map2;
     }
 
