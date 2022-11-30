@@ -9,6 +9,7 @@ import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.DarkLord;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
+import com.codecool.dungeoncrawl.model.EnemyModel;
 import com.codecool.dungeoncrawl.model.GameState;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 import javafx.scene.canvas.GraphicsContext;
@@ -19,27 +20,38 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
     private static GameDatabaseManager dbManager;
     private static final GameMenu gameMenu = new GameMenu();
-    private static String mapNameJSON;
-    static GraphicsContext context = GameMenu.canvas.getGraphicsContext2D();
+    private static String mapNameJSON = "map1";
+    private static GameState gameState;
+    private static GraphicsContext context = GameMenu.canvas.getGraphicsContext2D();
 
     public Game() {
 
     }
 
     public static GameState createNewGameStateJSON() {
-        mapNameJSON = "map1";
-        GameState gameState = new GameState(mapNameJSON, System.currentTimeMillis(), createPlayerModelJSON());
+        gameState = new GameState(mapNameJSON, System.currentTimeMillis(), createPlayerModelJSON());
+        gameState.addDiscoveredMap(mapNameJSON);
         return gameState;
     }
 
     public static PlayerModel createPlayerModelJSON() {
         PlayerModel playerModel = new PlayerModel(GameMenu.map.getPlayer());
         return playerModel;
+    }
+
+    public static List<EnemyModel> createEnemyModelsJSON(GameMap map) {
+        List<EnemyModel> enemiesOnMap = new ArrayList<>();
+        for (Actor enemy : map.getEnemies()) {
+            EnemyModel enemyModel = new EnemyModel(enemy);
+            enemiesOnMap.add(enemyModel);
+        }
+        return enemiesOnMap;
     }
 
     private static void checkIfMonstersHealth(List<Actor> enemies) {
@@ -85,6 +97,10 @@ public class Game {
         List<GameMap> maps = MapLoader.maps;
         String mapName = getNextMap(maps);
         mapNameJSON = mapName.substring(1,5);
+
+        if (gameState.getDiscoveredMaps().size() <= 3 && !gameState.getDiscoveredMaps().contains(mapNameJSON)) {
+            gameState.addDiscoveredMap(mapNameJSON);
+        }
         GameMenu.map = MapLoader.loadMap(mapName);
     }
 
