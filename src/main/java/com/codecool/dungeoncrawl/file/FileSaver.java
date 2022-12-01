@@ -48,8 +48,10 @@ public class FileSaver extends Application {
                         System.out.println("Pressed OK.");
                     }
                 });
-            } else
+            } else {
                 saveJSONToFile(json, selectedFile);
+                stage.close();
+            }
         });
         //Creating a menu bar and adding menu to it.
         MenuBar menuBar = new MenuBar(file);

@@ -42,6 +42,7 @@ public class FileChooserJson extends Application {
                         if (file1 != null) {
                             label.setText(file1.getAbsolutePath() + " selected");
                             jsonReader.parseJsonToMap(file1.getAbsolutePath());
+                            stage.close();
                         }
                         else {
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
