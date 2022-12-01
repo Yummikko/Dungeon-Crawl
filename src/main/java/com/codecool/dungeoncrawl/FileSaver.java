@@ -2,27 +2,17 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.json.GameJSONGenerator;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static com.sun.javafx.scene.control.skin.Utils.getResource;
 
 public class FileSaver extends Application {
     @Override

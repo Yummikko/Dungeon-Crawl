@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    private static GameDatabaseManager dbManager;
     private static final GameMenu gameMenu = new GameMenu();
     private static String mapNameJSON = "map1";
     public static List<String> visitedMaps = new ArrayList<>();
@@ -136,6 +135,7 @@ public class Game {
         GameMap bonusMap = MapLoader.loadMap(mapName, false);
         gameMenu.map = bonusMap;
     }
+
 
 
 
