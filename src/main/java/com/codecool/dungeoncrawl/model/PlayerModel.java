@@ -8,17 +8,16 @@ import java.util.List;
 public class PlayerModel extends BaseModel {
     private String playerName;
     private int hp;
+    private int strength;
     private int x;
     private int y;
-    private List<Item> inventory;
 
     public PlayerModel(Player player) {
         this.playerName = player.getName();
         this.x = player.getX();
         this.y = player.getY();
-
+        this.strength = player.getStrength();
         this.hp = player.getHealth();
-
     }
 
     public String getPlayerName() {
@@ -47,6 +46,14 @@ public class PlayerModel extends BaseModel {
 
     public int getY() {
         return y;
+    }
+
+    public int getStrength() {
+        return strength;
+    }
+
+    public void setStrength(int strength) {
+        this.strength = strength;
     }
 
     public void setY(int y) {

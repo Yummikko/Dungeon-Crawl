@@ -9,9 +9,7 @@ import java.util.List;
 public class GameState extends BaseModel {
     private long savedAt;
     private String currentMap;
-    private List<String> discoveredMaps = new ArrayList<>();
     private PlayerModel player;
-    private List<Actor> enemies;
 
     public GameState(String currentMap, long savedAt, PlayerModel player) {
         this.currentMap = currentMap;
@@ -35,13 +33,6 @@ public class GameState extends BaseModel {
         this.currentMap = currentMap;
     }
 
-    public List<String> getDiscoveredMaps() {
-        return discoveredMaps;
-    }
-
-    public void addDiscoveredMap(String map) {
-        this.discoveredMaps.add(map);
-    }
 
     public PlayerModel getPlayer() {
         return player;
@@ -49,13 +40,5 @@ public class GameState extends BaseModel {
 
     public void setPlayer(PlayerModel player) {
         this.player = player;
-    }
-
-    public void setEnemies(List<Actor> enemies) {
-        this.enemies = enemies;
-    }
-
-    public List<Actor> getEnemies() {
-        return enemies;
     }
 }

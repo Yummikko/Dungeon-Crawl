@@ -168,6 +168,7 @@ public class GameMenu {
         movements = new Movements(map, new Game());
         thread = new Thread(movements);
         thread.start();
+        Game.visitedMaps.add("map1");
     }
 
     public static void showSaveGameStage(KeyEvent keyEvent) {

@@ -65,7 +65,7 @@ public class GameInventory extends GridPane {
     private void inventoryLayout() {
         setPrefSize(6 * Tiles.TILE_WIDTH, 250);
         setMargin(this, new Insets(10, 0, 20, 0));
-        setPadding(new Insets(5));
+        setPadding(new Insets(10, 15, 10, 15));
         setBorder(new Border(new BorderStroke(Color.ALICEBLUE,
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3))));
         setBackground(new Background(new BackgroundFill(Color.valueOf("#203E54"), CornerRadii.EMPTY, Insets.EMPTY)));

@@ -7,9 +7,7 @@ import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -50,7 +48,18 @@ public class FileSaver extends Application {
             } catch (FileNotFoundException ex) {
                 throw new RuntimeException(ex);
             }
-            saveJSONToFile(json, selectedFile);
+            if (selectedFile == null) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Message for Player");
+                alert.setHeaderText("You didn't save!");
+                alert.setContentText("Press OK to close");
+                alert.showAndWait().ifPresent(rs -> {
+                    if (rs == ButtonType.OK) {
+                        System.out.println("Pressed OK.");
+                    }
+                });
+            } else
+                saveJSONToFile(json, selectedFile);
         });
         //Creating a menu bar and adding menu to it.
         MenuBar menuBar = new MenuBar(file);

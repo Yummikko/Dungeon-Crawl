@@ -9,6 +9,7 @@ import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.model.EnemyModel;
 import com.codecool.dungeoncrawl.model.GameState;
+import com.codecool.dungeoncrawl.model.ItemModel;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 
 import java.io.File;
@@ -24,17 +25,21 @@ import javax.json.*;
 
 public class GameJSONGenerator {
 
-    public static String fileName;
     public static File writeDataToJson() throws FileNotFoundException {
         /* create models */
         GameState gameState = Game.createNewGameStateJSON();
         PlayerModel playerModel = Game.createPlayerModelJSON();
         List<EnemyModel> enemyModels = Game.createEnemyModelsJSON(GameMenu.map);
+        List<ItemModel> itemModels = Game.createItemModelsJSON(GameMenu.map);
         /* create JsonObjects */
         JsonObjectBuilder gameStateBuilder = Json.createObjectBuilder();
         JsonObjectBuilder playerBuilder = Json.createObjectBuilder();
         JsonObjectBuilder enemyBuilder = Json.createObjectBuilder();
+        JsonObjectBuilder itemInventoryBuilder = Json.createObjectBuilder();
+        JsonArrayBuilder inventoryBuilder = Json.createArrayBuilder();
         JsonArrayBuilder enemiesBuilder = Json.createArrayBuilder();
+        JsonObjectBuilder itemBuilder = Json.createObjectBuilder();
+        JsonArrayBuilder itemsBuilder = Json.createArrayBuilder();
         // necessary variables initialization
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         Date now = new Date(gameState.getSavedAt());
@@ -45,15 +50,20 @@ public class GameJSONGenerator {
         else
             inventory = new ArrayList<>();
         /* Building JSON file */
+        // create a new json from gamestate and player models
         gameStateBuilder.add("map", gameState.getCurrentMap())
                 .add("date", savedTime)
-                .add("player", playerModel.getPlayerName())
-                .add("discoveredMaps", gameState.getDiscoveredMaps().toString());
+                .add("discoveredMaps", Game.visitedMaps.toString());
         playerBuilder.add("playerName", playerModel.getPlayerName())
                 .add("positionX", playerModel.getX())
                 .add("positionY", playerModel.getY())
                 .add("health", playerModel.getHp())
-                .add("inventory", inventory.toString());
+                .add("strength", playerModel.getStrength());
+        for (Item item : inventory) {
+            itemInventoryBuilder.add("itemName", getInventoryName(item.toString()));
+            inventoryBuilder.add(itemInventoryBuilder);
+        }
+        playerBuilder.add("Inventory", inventoryBuilder);
         gameStateBuilder.add("player", playerBuilder);
         // create a new json from enemyModels
         for (EnemyModel enemyModel : enemyModels) {
@@ -64,6 +74,15 @@ public class GameJSONGenerator {
             enemiesBuilder.add(enemyBuilder);
         }
         gameStateBuilder.add("enemiesLeft", enemiesBuilder);
+        // create json from itemModels
+        for (ItemModel itemModel : itemModels) {
+            itemBuilder.add("itemName", getItemTrueName(itemModel.getItemName()))
+                    .add("positionX", itemModel.getX())
+                    .add("positionY", itemModel.getY());
+            itemsBuilder.add(itemBuilder);
+        }
+        gameStateBuilder.add("itemsLeft", itemsBuilder);
+        // Build the JSON
         JsonObject empJsonObject = gameStateBuilder.build();
 
         File file = new File(empJsonObject.toString());
@@ -81,9 +100,47 @@ public class GameJSONGenerator {
             enemyName = "lich";
         else if (name.toLowerCase().contains("octopus"))
             enemyName = "octopus";
-        else if (name.toLowerCase().contains("darkLord"))
+        else if (name.toLowerCase().contains("darklord"))
             enemyName = "darkLord";
         return enemyName;
+    }
+
+    public static String getItemTrueName(String name) {
+        String itemName = "";
+        if (name.toLowerCase().contains("weapon"))
+            itemName = "weapon";
+        else if (name.toLowerCase().contains("axe"))
+            itemName = "axe";
+        else if (name.toLowerCase().contains("key"))
+            itemName = "key";
+        else if (name.toLowerCase().contains("poison"))
+            itemName = "poison";
+        else if (name.toLowerCase().contains("shield"))
+            itemName = "shield";
+        else if (name.toLowerCase().contains("crown"))
+            itemName = "crown";
+        else if (name.toLowerCase().contains("food"))
+            itemName = "food";
+        return itemName;
+    }
+
+    public static String getInventoryName(String name) {
+        String itemName = "";
+        if (name.toLowerCase().contains("weapon"))
+            itemName = "weapon";
+        else if (name.toLowerCase().contains("axe"))
+            itemName = "axe";
+        else if (name.toLowerCase().contains("key"))
+            itemName = "key";
+        else if (name.toLowerCase().contains("poison"))
+            itemName = "poison";
+        else if (name.toLowerCase().contains("shield"))
+            itemName = "shield";
+        else if (name.toLowerCase().contains("crown"))
+            itemName = "crown";
+        else if (name.toLowerCase().contains("food"))
+            itemName = "food";
+        return itemName;
     }
 
 }

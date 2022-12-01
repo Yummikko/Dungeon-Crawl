@@ -12,7 +12,7 @@ public class DarkLord extends Actor implements Enemy {
 
     public DarkLord(Cell cell) {
         super(cell);
-        this.setHealth(50);
+        this.setHealth(75);
         this.setStrength(10);
     }
 
@@ -36,7 +36,7 @@ public class DarkLord extends Actor implements Enemy {
         int bossY = cell.getY();
         Cell cell = map.getCell(posX+randomPosNext, posY+randomPos);
         Cell nextCell = map.getCell(posX+randomPos, posY+randomPosNext);
-        if (map.getPhantoms().size() < 3) {
+        if (map.getPhantoms().size() < 5) {
             if (nextCell == null || nextCell.getType().equals(CellType.WALL)
                     || nextCell.getType().equals(CellType.WATER)
                     || nextCell.getType().equals(CellType.CROWN)

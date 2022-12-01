@@ -9,8 +9,10 @@ import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.DarkLord;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
+import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.model.EnemyModel;
 import com.codecool.dungeoncrawl.model.GameState;
+import com.codecool.dungeoncrawl.model.ItemModel;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
@@ -27,13 +29,13 @@ public class Game {
     private static GameDatabaseManager dbManager;
     private static final GameMenu gameMenu = new GameMenu();
     private static String mapNameJSON = "map1";
-    private static GameState gameState = new GameState(mapNameJSON, System.currentTimeMillis(), createPlayerModelJSON());;
+    public static List<String> visitedMaps = new ArrayList<>();
+    public static GameState gameState = new GameState(mapNameJSON, System.currentTimeMillis(), createPlayerModelJSON());
     private static GraphicsContext context = GameMenu.canvas.getGraphicsContext2D();
 
 
     public static GameState createNewGameStateJSON() {
         gameState = new GameState(mapNameJSON, System.currentTimeMillis(), createPlayerModelJSON());
-        gameState.addDiscoveredMap(mapNameJSON);
         return gameState;
     }
 
@@ -50,6 +52,16 @@ public class Game {
         }
         return enemiesOnMap;
     }
+
+    public static List<ItemModel> createItemModelsJSON(GameMap map) {
+        List<ItemModel> itemsOnMap = new ArrayList<>();
+        for (Item item : map.getItems()) {
+            ItemModel itemModel  = new ItemModel(item.getCell().getItem().toString(), item.getX(), item.getY());
+            itemsOnMap.add(itemModel);
+        }
+        return itemsOnMap;
+    }
+
 
     private static void checkIfMonstersHealth(List<Actor> enemies) {
         // loop backwards to avoid ConcurrentModificationException
@@ -99,8 +111,8 @@ public class Game {
         String mapName = getNextMap(maps);
         mapNameJSON = mapName.substring(1,5);
 
-        if (gameState.getDiscoveredMaps().size() <= 3 && !gameState.getDiscoveredMaps().contains(mapNameJSON)) {
-            gameState.addDiscoveredMap(mapNameJSON);
+        if (!visitedMaps.contains(mapNameJSON)) {
+            visitedMaps.add(mapNameJSON);
         }
         GameMenu.map = MapLoader.loadMap(mapName, false);
     }
@@ -118,6 +130,9 @@ public class Game {
         MapLoader.maps.add(GameMenu.map);
         String mapName = getBonusMap();
         mapNameJSON = mapName.substring(1,5);
+        if (!visitedMaps.contains(mapNameJSON)) {
+            visitedMaps.add(mapNameJSON);
+        }
         GameMap bonusMap = MapLoader.loadMap(mapName, false);
         gameMenu.map = bonusMap;
     }
