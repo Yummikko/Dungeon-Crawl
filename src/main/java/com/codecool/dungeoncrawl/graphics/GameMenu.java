@@ -34,6 +34,7 @@ public class GameMenu {
     private static Thread thread;
     public static RightUiPanel rightUI = new RightUiPanel(GameMenu.map.getPlayer());
     public static FileSaver fileSaver = new FileSaver();
+    public static FileChooserJson fileLoader = new FileChooserJson();
     public static Canvas canvas = new Canvas(
             25 * Tiles.TILE_WIDTH,
             21 * Tiles.TILE_WIDTH);
@@ -131,6 +132,7 @@ public class GameMenu {
 
     public static void gameStart(Stage primaryStage) {
         Stage saveWindow = new Stage();
+        Stage loadWindow = new Stage();
         rightUI = new RightUiPanel(map.getPlayer());
         Movements.start();
         SoundUtils.playContinuously(SoundUtils.BACKGROUND, 0.5f);
@@ -142,6 +144,14 @@ public class GameMenu {
         rightUI.exportButton.setOnAction(mousedown -> {
             try {
                 fileSaver.start(saveWindow);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            mousedown.consume();
+        });
+        rightUI.importButton.setOnAction(mousedown -> {
+            try {
+                fileLoader.start(loadWindow);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
