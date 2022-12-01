@@ -27,7 +27,7 @@ import java.util.List;
 
 public class Game {
     private static final GameMenu gameMenu = new GameMenu();
-    private static String mapNameJSON = "map1";
+    public static String mapNameJSON = "map1";
     public static List<String> visitedMaps = new ArrayList<>();
     public static GameState gameState = new GameState(mapNameJSON, System.currentTimeMillis(), createPlayerModelJSON());
     private static GraphicsContext context = GameMenu.canvas.getGraphicsContext2D();
@@ -108,7 +108,7 @@ public class Game {
         MapLoader.maps.add(GameMenu.map);
         List<GameMap> maps = MapLoader.maps;
         String mapName = getNextMap(maps);
-        mapNameJSON = mapName.substring(1,5);
+        mapNameJSON = mapName;
 
         if (!visitedMaps.contains(mapNameJSON)) {
             visitedMaps.add(mapNameJSON);
@@ -120,7 +120,7 @@ public class Game {
         MapLoader.maps.add(GameMenu.map);
         List maps = MapLoader.maps;
         String mapName = getPreviousMap(maps);
-        mapNameJSON = mapName.substring(1,5);
+        mapNameJSON = mapName;
         GameMap map2 = MapLoader.loadMap(mapName, true);
         gameMenu.map = map2;
     }
@@ -128,7 +128,7 @@ public class Game {
     public static void setBonusMap() {
         MapLoader.maps.add(GameMenu.map);
         String mapName = getBonusMap();
-        mapNameJSON = "bonus_map";
+        mapNameJSON = mapName;
         if (!visitedMaps.contains(mapNameJSON)) {
             visitedMaps.add(mapNameJSON);
         }

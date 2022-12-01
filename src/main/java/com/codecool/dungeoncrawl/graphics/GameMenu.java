@@ -180,7 +180,11 @@ public class GameMenu {
         movements = new Movements(map, new Game());
         thread = new Thread(movements);
         thread.start();
-        Game.visitedMaps.add("map1");
+        Game.visitedMaps.clear();
+        Game.mapNameJSON = "/map1.txt";
+        if (!Game.visitedMaps.contains(Game.mapNameJSON)) {
+            Game.visitedMaps.add(Game.mapNameJSON);
+        }
     }
 
     public static void showSaveGameStage(KeyEvent keyEvent) {

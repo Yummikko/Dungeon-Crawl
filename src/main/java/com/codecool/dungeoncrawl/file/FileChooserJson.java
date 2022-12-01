@@ -23,8 +23,8 @@ public class FileChooserJson extends Application {
             File fileOne = new File(".\\src\\main\\resources\\load-file-16.png");
             GameJSONToMap jsonReader = new GameJSONToMap();
             ImageView imgView = new ImageView(fileOne.toURI().toString());
-            imgView.setFitWidth(16);
-            imgView.setFitHeight(16);
+            imgView.setFitWidth(24);
+            imgView.setFitHeight(24);
             MenuItem item = new MenuItem("Load", imgView);
             // set title for the stage
             stage.setTitle("File Loader");
