@@ -45,4 +45,12 @@ class ActorTest {
         assertEquals(2, skeleton.getX());
         assertEquals(1, skeleton.getY());
     }
+
+    @Test
+    void playerShouldDieAfterLostAllHealth() {
+        Player player = new Player(gameMap.getCell(1, 1));
+        player.setHealth(0);
+
+        assertTrue(player.isDead());
+    }
 }
