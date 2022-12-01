@@ -1,27 +1,14 @@
 package com.codecool.dungeoncrawl.logic.json;
 
-import java.io.File;    // for reading file data
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.*;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
-import javax.json.Json;
 
 public class GameJSONToMap {
     public void parseJsonToMap(String filePath) {
@@ -39,17 +26,31 @@ public class GameJSONToMap {
             System.out.println(maps);
 
             // loop array
-            JSONArray msg = (JSONArray) jsonObject.get("player");
-            Iterator<Object> iterator = msg.iterator();
+            JSONArray playerData = (JSONArray) jsonObject.get("player");
+            Iterator<Object> iterator = playerData.iterator();
             while (iterator.hasNext()) {
                 System.out.println(iterator.next());
             }
 
+            Iterator<Object> enemies = getDataFromJSONArray(jsonObject, "enemiesLeft");
+            while (enemies.hasNext()) {
+                System.out.println(enemies.next());
+            }
+            /* create 2d array that has same structure as json file
+            hold all necessary data there
+            think about how to load state of the previous map as well*/
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public static Iterator<Object> getDataFromJSONArray(JSONObject jsonObject, String objName) {
+        JSONArray data = (JSONArray) jsonObject.get(objName);
+        Iterator<Object> iterator = data.iterator();
+        return iterator;
 
     }
 
