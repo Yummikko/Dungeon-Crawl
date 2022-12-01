@@ -128,7 +128,7 @@ public class Game {
     public static void setBonusMap() {
         MapLoader.maps.add(GameMenu.map);
         String mapName = getBonusMap();
-        mapNameJSON = mapName.substring(1,5);
+        mapNameJSON = "bonus_map";
         if (!visitedMaps.contains(mapNameJSON)) {
             visitedMaps.add(mapNameJSON);
         }

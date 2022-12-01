@@ -1,6 +1,8 @@
 package com.codecool.dungeoncrawl.graphics;
 
 import com.codecool.dungeoncrawl.*;
+import com.codecool.dungeoncrawl.file.FileChooserJson;
+import com.codecool.dungeoncrawl.file.FileSaver;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.controller.SaveController;

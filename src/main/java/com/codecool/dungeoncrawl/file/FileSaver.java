@@ -1,4 +1,4 @@
-package com.codecool.dungeoncrawl;
+package com.codecool.dungeoncrawl.file;
 
 import com.codecool.dungeoncrawl.logic.json.GameJSONGenerator;
 import javafx.application.Application;
@@ -21,7 +21,7 @@ public class FileSaver extends Application {
         ImageView imgView = new ImageView(fileOne.toURI().toString());
         imgView.setFitWidth(20);
         imgView.setFitHeight(20);
-        Menu file = new Menu("JSON File");
+        Menu file = new Menu("Export JSON File");
         GameJSONGenerator jsonGenerator = new GameJSONGenerator();
         MenuItem item = new MenuItem("Save", imgView);
         file.getItems().addAll(item);
