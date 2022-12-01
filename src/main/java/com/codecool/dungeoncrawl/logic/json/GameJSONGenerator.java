@@ -32,6 +32,7 @@ public class GameJSONGenerator {
         JsonObjectBuilder enemyBuilder = Json.createObjectBuilder();
         JsonObjectBuilder itemInventoryBuilder = Json.createObjectBuilder();
         JsonArrayBuilder inventoryBuilder = Json.createArrayBuilder();
+        JsonArrayBuilder playerDataBuilder = Json.createArrayBuilder();
         JsonArrayBuilder enemiesBuilder = Json.createArrayBuilder();
         JsonObjectBuilder itemBuilder = Json.createObjectBuilder();
         JsonArrayBuilder itemsBuilder = Json.createArrayBuilder();
@@ -59,7 +60,8 @@ public class GameJSONGenerator {
             inventoryBuilder.add(itemInventoryBuilder);
         }
         playerBuilder.add("Inventory", inventoryBuilder);
-        gameStateBuilder.add("player", playerBuilder);
+        playerDataBuilder.add(playerBuilder);
+        gameStateBuilder.add("player", playerDataBuilder);
         // create a new json from enemyModels
         for (EnemyModel enemyModel : enemyModels) {
             enemyBuilder.add("enemyName", getEnemyName(enemyModel.toString()))
