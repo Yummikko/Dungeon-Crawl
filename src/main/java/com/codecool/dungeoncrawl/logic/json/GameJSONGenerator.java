@@ -3,9 +3,6 @@ package com.codecool.dungeoncrawl.logic.json;
 
 import com.codecool.dungeoncrawl.Game;
 import com.codecool.dungeoncrawl.graphics.GameMenu;
-import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.actors.Actor;
-import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.model.EnemyModel;
 import com.codecool.dungeoncrawl.model.GameState;
@@ -14,8 +11,6 @@ import com.codecool.dungeoncrawl.model.PlayerModel;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
