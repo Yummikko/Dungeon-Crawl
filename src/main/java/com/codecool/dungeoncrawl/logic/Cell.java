@@ -62,6 +62,10 @@ public class Cell implements Drawable {
         this.openDoor = openDoor;
     }
 
+    public OpenDoor getOpenDoor() {
+        return openDoor;
+    }
+
     public Item getItem() {
         return item;
     }

@@ -1,22 +1,17 @@
 package com.codecool.dungeoncrawl.model;
 
-public class ItemModel {
-    private String itemName;
+import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class OpenDoorModel extends BaseModel{
     private int x;
     private int y;
 
-    public ItemModel(String itemName, int x, int y) {
-        this.itemName = itemName;
+    public OpenDoorModel(int x, int y) {
         this.x = x;
         this.y = y;
-    }
-
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    public String getItemName() {
-        return itemName;
     }
 
     public int getX() {

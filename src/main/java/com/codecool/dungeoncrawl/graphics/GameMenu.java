@@ -6,6 +6,7 @@ import com.codecool.dungeoncrawl.file.FileSaver;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.controller.SaveController;
+import com.codecool.dungeoncrawl.logic.json.GameJSONToMap;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -180,7 +181,11 @@ public class GameMenu {
         movements = new Movements(map, new Game());
         thread = new Thread(movements);
         thread.start();
-        Game.visitedMaps.add("map1");
+        Game.visitedMaps.clear();
+        Game.mapNameJSON = "/map1.txt";
+        if (!Game.visitedMaps.contains(Game.mapNameJSON)) {
+            Game.visitedMaps.add(Game.mapNameJSON);
+        }
     }
 
     public static void showSaveGameStage(KeyEvent keyEvent) {
@@ -196,6 +201,61 @@ public class GameMenu {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void loadGameJSON() {
+        Stage saveWindow = new Stage();
+        Stage loadWindow = new Stage();
+        rightUI = new RightUiPanel(map.getPlayer());
+        Movements.start();
+        SoundUtils.playContinuously(SoundUtils.BACKGROUND, 0.5f);
+        GridPane ui = rightUI;
+        rightUI.pickUpButton.setOnAction(mousedown -> {
+            map.getPlayer().pickUpItem();
+            rightUI.hideButton();
+        });
+        rightUI.exportButton.setOnAction(mousedown -> {
+            try {
+                fileSaver.start(saveWindow);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            mousedown.consume();
+        });
+        rightUI.importButton.setOnAction(mousedown -> {
+            try {
+                fileLoader.start(loadWindow);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            mousedown.consume();
+        });
+        BorderPane borderPane = new BorderPane();
+        map.getPlayer().setRightUiPanel(rightUI);
+        rightUI.getInventory().setPlayer(map.getPlayer());
+        borderPane.setCenter(canvas);
+        borderPane.setRight(ui);
+        map.getPlayer().setInventory(rightUI.getInventory().getItems());
+
+        Scene scene = new Scene(borderPane);
+        stage.setScene(scene);
+        Game.refresh();
+        scene.setOnKeyPressed(Game::onKeyPressed);
+        scene.setOnKeyReleased(Game::onKeyReleased);
+        scene.setOnKeyReleased(GameMenu::showSaveGameStage);
+
+        stage.setTitle("Dungeon Crawl");
+        stage.show();
+        canvas.setScaleX(1.2);
+        canvas.setScaleY(1.2);
+        movements = new Movements(map, new Game());
+        thread = new Thread(movements);
+        thread.start();
+        Game.visitedMaps.clear();
+        Game.mapNameJSON = GameJSONToMap.currentMap;
+        if (!Game.visitedMaps.contains(Game.mapNameJSON)) {
+            Game.visitedMaps.add(Game.mapNameJSON);
         }
     }
 

@@ -3,6 +3,8 @@ package com.codecool.dungeoncrawl.logic;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Phantom;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.doors.Door;
+import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.items.Item;
 
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ public class GameMap {
     private final List<Actor> enemies;
     private Player player;
     private List<Item> items;
+    private List<OpenDoor> openDoors;
 
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
@@ -26,6 +29,7 @@ public class GameMap {
             }
         }
         this.enemies = new ArrayList<>();
+        this.openDoors = new ArrayList<>();
     }
 
     public Cell getCell(int x, int y) {
@@ -74,4 +78,11 @@ public class GameMap {
         return items;
     }
 
+    public void addOpenDoor(OpenDoor openDoor) {
+        if (!openDoors.contains(openDoor))
+            openDoors.add(openDoor);
+    }
+    public List<OpenDoor> getOpenDoors() {
+        return openDoors;
+    }
 }

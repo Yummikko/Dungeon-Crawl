@@ -8,7 +8,7 @@ import javafx.application.Platform;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Movements implements Runnable {
-    private GameMap map;
+    private static GameMap map;
     private Game game;
     private final static AtomicBoolean running = new AtomicBoolean(true);
     public Movements(GameMap map, Game game) {
@@ -50,5 +50,9 @@ public class Movements implements Runnable {
 
     public static void start() {
         running.set(true);
+    }
+
+    public static void setLoadedMap(GameMap newMap) {
+        map = newMap;
     }
 }
