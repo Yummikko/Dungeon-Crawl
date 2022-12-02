@@ -129,6 +129,7 @@ public class MapLoaderJSON {
                             System.out.println("size " + GameJSONToMap.playerData.size());
                             for (int j = 0; j < GameJSONToMap.inventoryPlayer.size(); j++) {
                                 InventoryModel item = GameJSONToMap.inventoryPlayer.get(j);
+                                System.out.println(item.getItem().toLowerCase());
                                 if (item.getItem().toLowerCase().contains("axe"))
                                     nextPlayer.getInventory().add(new Axe(newCell));
                                 else if (item.getItem().toLowerCase().contains("shield"))
