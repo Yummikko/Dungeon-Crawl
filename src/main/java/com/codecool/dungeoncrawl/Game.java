@@ -1,6 +1,5 @@
 package com.codecool.dungeoncrawl;
 
-import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.graphics.GameMenu;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.Direction;
@@ -9,11 +8,9 @@ import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.DarkLord;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
+import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.items.Item;
-import com.codecool.dungeoncrawl.model.EnemyModel;
-import com.codecool.dungeoncrawl.model.GameState;
-import com.codecool.dungeoncrawl.model.ItemModel;
-import com.codecool.dungeoncrawl.model.PlayerModel;
+import com.codecool.dungeoncrawl.model.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -28,6 +25,11 @@ import java.util.List;
 public class Game {
     private static final GameMenu gameMenu = new GameMenu();
     public static String mapNameJSON = "map1";
+    private static int mapNumber = 0;
+    public static GameMap firstLevel = gameMenu.map;
+    public static GameMap secondLevel;
+    public static GameMap thirdLevel;
+    public static GameMap bonusLevel;
     public static List<String> visitedMaps = new ArrayList<>();
     public static GameState gameState = new GameState(mapNameJSON, System.currentTimeMillis(), createPlayerModelJSON());
     private static GraphicsContext context = GameMenu.canvas.getGraphicsContext2D();
@@ -41,6 +43,14 @@ public class Game {
     public static PlayerModel createPlayerModelJSON() {
         PlayerModel playerModel = new PlayerModel(GameMenu.map.getPlayer());
         return playerModel;
+    }
+    public static List<OpenDoorModel> createOpenDoorModelsJSON(GameMap map) {
+        List<OpenDoorModel> openDoorModels = new ArrayList<>();
+        for (OpenDoor openDoor : map.getOpenDoors()) {
+            OpenDoorModel openDoorModel = new OpenDoorModel(openDoor.getCell().getX(), openDoor.getCell().getY(), openDoor, map.getOpenDoors());
+            openDoorModels.add(openDoorModel);
+        }
+        return openDoorModels;
     }
 
     public static List<EnemyModel> createEnemyModelsJSON(GameMap map) {
@@ -61,7 +71,6 @@ public class Game {
         return itemsOnMap;
     }
 
-
     private static void checkIfMonstersHealth(List<Actor> enemies) {
         // loop backwards to avoid ConcurrentModificationException
         for (int i = enemies.size() - 1; i >= 0; i--) {
@@ -74,6 +83,10 @@ public class Game {
                 }
             }
         }
+    }
+
+    public static void saveMap(int mapNum) {
+
     }
 
     public static String getNextMap(List maps) {
@@ -196,6 +209,9 @@ public class Game {
                 } else if (cell.getDoor() != null) {
                     if (cell.getDoor() instanceof NormalDoor)
                         gameMenu.map.getPlayer().openClosedDoor(cell.getNormalDoor());
+                    else if (cell.getDoor() instanceof OpenDoor) {
+                        gameMenu.map.addOpenDoor(cell.getOpenDoor());
+                    }
                     Tiles.drawTile(context, cell.getDoor(), (int) (x - xOffset), (int) (y - yOffset));
                 } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), (int) (x - xOffset), (int) (y - yOffset));

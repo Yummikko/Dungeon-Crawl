@@ -3,11 +3,9 @@ package com.codecool.dungeoncrawl.logic.json;
 
 import com.codecool.dungeoncrawl.Game;
 import com.codecool.dungeoncrawl.graphics.GameMenu;
+import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.items.Item;
-import com.codecool.dungeoncrawl.model.EnemyModel;
-import com.codecool.dungeoncrawl.model.GameState;
-import com.codecool.dungeoncrawl.model.ItemModel;
-import com.codecool.dungeoncrawl.model.PlayerModel;
+import com.codecool.dungeoncrawl.model.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,6 +24,7 @@ public class GameJSONGenerator {
         PlayerModel playerModel = Game.createPlayerModelJSON();
         List<EnemyModel> enemyModels = Game.createEnemyModelsJSON(GameMenu.map);
         List<ItemModel> itemModels = Game.createItemModelsJSON(GameMenu.map);
+        List<OpenDoorModel> openDoorModels = Game.createOpenDoorModelsJSON(GameMenu.map);
         /* create JsonObjects */
         JsonObjectBuilder gameStateBuilder = Json.createObjectBuilder();
         JsonObjectBuilder playerBuilder = Json.createObjectBuilder();
@@ -36,15 +35,23 @@ public class GameJSONGenerator {
         JsonArrayBuilder enemiesBuilder = Json.createArrayBuilder();
         JsonObjectBuilder itemBuilder = Json.createObjectBuilder();
         JsonArrayBuilder itemsBuilder = Json.createArrayBuilder();
+        JsonObjectBuilder openDoorBuilder = Json.createObjectBuilder();
+        JsonArrayBuilder openDoorsBuilder = Json.createArrayBuilder();
         // necessary variables initialization
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         Date now = new Date(gameState.getSavedAt());
         String savedTime = sdf.format(now);
         List<Item> inventory;
+        List<OpenDoor> openDoors;
         if (GameMenu.map.getPlayer().getInventory() != null)
             inventory = GameMenu.map.getPlayer().getInventory();
         else
             inventory = new ArrayList<>();
+
+        if (GameMenu.map.getOpenDoors() != null)
+            openDoors = GameMenu.map.getOpenDoors();
+        else
+            openDoors = new ArrayList<>();
         /* Building JSON file */
         // create a new json from gamestate and player models
         gameStateBuilder.add("map", gameState.getCurrentMap())
@@ -59,9 +66,14 @@ public class GameJSONGenerator {
             itemInventoryBuilder.add("itemName", getInventoryName(item.toString()));
             inventoryBuilder.add(itemInventoryBuilder);
         }
+        for (OpenDoor openDoor : openDoors) {
+            openDoorBuilder.add("positionX", openDoor.getCell().getX())
+                    .add("positionY", openDoor.getCell().getY());
+        }
         playerBuilder.add("Inventory", inventoryBuilder);
         playerDataBuilder.add(playerBuilder);
         gameStateBuilder.add("player", playerDataBuilder);
+        gameStateBuilder.add("openDoors", openDoorBuilder);
         // create a new json from enemyModels
         for (EnemyModel enemyModel : enemyModels) {
             enemyBuilder.add("enemyName", getEnemyName(enemyModel.toString()))

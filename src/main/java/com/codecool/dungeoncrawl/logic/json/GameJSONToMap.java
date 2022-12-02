@@ -11,6 +11,10 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class GameJSONToMap {
+    private String currentMap;
+    private List<String> discoveredMaps = new ArrayList<>();
+    private List<String> itemsInInventory = new ArrayList<>();
+    private HashMap<String, String> playerData = new HashMap<String, String>();
     public void parseJsonToMap(String filePath) {
         JSONParser parser = new JSONParser();
 
