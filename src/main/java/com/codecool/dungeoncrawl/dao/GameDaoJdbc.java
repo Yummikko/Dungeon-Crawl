@@ -1,11 +1,13 @@
 package com.codecool.dungeoncrawl.dao;
 
 import com.codecool.dungeoncrawl.logic.actors.*;
+import com.codecool.dungeoncrawl.logic.controller.GameInfoShort;
 import com.codecool.dungeoncrawl.logic.items.*;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -179,8 +181,34 @@ public class GameDaoJdbc {
         }
     }
 
-    public List<PlayerModel> getAll() {
-        return null;
+    public void load(GameInfoShort gameInfo) {
+        Integer gameId = gameInfo.getId();
+        // player
+        String a = "SELECT * FROM player p LEFT JOIN actor a on p.actor_id = a.id WHERE actor_id = 'gameId';";
+        // inventory
+        String b = "SELECT * FROM player_player_items ppi LEFT JOIN player_item pi on ppi.player_item_id = pi.id WHERE actor_id = 'actorId';";
+
+        // enemies
+        String c = "SELECT * FROM game_enemies ge LEFT JOIN actor a on ge.actor_id = a.id WHERE game_id = 'gameId';";
+        // items
+        String d = "SELECT * FROM game_items gi LEFT JOIN item i on gi.item_id = i.id WHERE game_id = 'gameId';";
+    }
+
+    public void setGamesInfo(List<GameInfoShort> games) {
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "SELECT g.id, name, stage, save_date FROM game g LEFT JOIN player p on actor_id = player_id ORDER BY save_date DESC;";
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                String name = resultSet.getString("name");
+                LocalDateTime time = resultSet.getTimestamp("save_date").toLocalDateTime();
+                Integer stage = resultSet.getInt("stage");
+                Integer id = resultSet.getInt("id");
+                games.add(new GameInfoShort(name, time, stage, id));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

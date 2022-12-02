@@ -33,6 +33,7 @@ public class GameMenu {
     public static Button startButton = new Button("Start the Game");
     public static Button backButton = new Button("Back to Menu");
     public static Button rulesButton = new Button("Show game rules");
+    public static Button loadGameButton = new Button("Load saved game");
     public static Button exitGameButton = new Button("Exit Game");
     private static Movements movements;
     private static Thread thread;
@@ -61,10 +62,11 @@ public class GameMenu {
             }
         });
 
+        loadGameAddListener();
         showRules(primaryStage);
         exitGame();
 
-        VBox buttons = new VBox(startGameButton, rulesButton, exitGameButton);
+        VBox buttons = new VBox(startGameButton, loadGameButton, rulesButton, exitGameButton);
 
         buttons.setAlignment(Pos.CENTER);
         buttons.setSpacing(10);
@@ -192,16 +194,24 @@ public class GameMenu {
     public static void showSaveGameStage(KeyEvent keyEvent) {
         KeyCombination combination = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
         if (combination.match(keyEvent)) {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(SaveController.class.getResource("save_view.fxml"));
-                Scene scene = new Scene(fxmlLoader.load());
-                Stage stage1 = new Stage();
-                stage1.setTitle("Save game");
-                stage1.setScene(scene);
-                stage1.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            loadFxmlStage("save_view.fxml", "Save game");
+        }
+    }
+
+    public static void showLoadGameStage() {
+        loadFxmlStage("load_view.fxml", "Load game");
+    }
+
+    private static void loadFxmlStage(String fxmlLocation, String title) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(SaveController.class.getResource(fxmlLocation));
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage1 = new Stage();
+            stage1.setTitle(title);
+            stage1.setScene(scene);
+            stage1.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -308,6 +318,11 @@ public class GameMenu {
                 fileNotFoundException.printStackTrace();
             }
         });
+    }
+
+    public void loadGameAddListener() {
+        loadGameButton.setId("buttons");
+        loadGameButton.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> showLoadGameStage());
     }
 
     public void goBack(Stage primaryStage) {
