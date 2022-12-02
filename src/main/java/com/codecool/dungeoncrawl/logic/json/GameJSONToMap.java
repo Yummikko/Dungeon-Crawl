@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.*;
 
+import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.model.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -12,10 +16,16 @@ import org.json.simple.parser.ParseException;
 
 public class GameJSONToMap {
     private String currentMap;
-    private List<String> discoveredMaps = new ArrayList<>();
-    private List<String> itemsInInventory = new ArrayList<>();
-    private HashMap<String, String> playerData = new HashMap<String, String>();
+    private List<ItemModel> itemsInInventory = new ArrayList<>();
+    private final List<EnemyModel> enemiesList = new ArrayList<>();
+    private List<PlayerModel> playerData = new ArrayList<>();
+    private List<OpenDoorModel> openedDoors = new ArrayList<>();
+    private List<InventoryModel> inventoryPlayer = new ArrayList<>();
+
     public void parseJsonToMap(String filePath) {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        String jsonString;
         JSONParser parser = new JSONParser();
 
         try (Reader reader = new FileReader(filePath)) {
@@ -29,20 +39,55 @@ public class GameJSONToMap {
             String maps = (String) jsonObject.get("discoveredMaps");
             System.out.println(maps);
 
-            // loop array
-            JSONArray playerData = (JSONArray) jsonObject.get("player");
-            Iterator<Object> iterator = playerData.iterator();
-            while (iterator.hasNext()) {
-                System.out.println(iterator.next());
-            }
+            ArrayList<InventoryModel> inventory = (ArrayList<InventoryModel>) jsonObject.get("inventory");
+            System.out.println(inventory);
 
+            // Player
+            PlayerModel playerModel;
+            Iterator<Object> playerStats = getDataFromJSONArray(jsonObject, "player");
+            while (playerStats.hasNext()) {
+                jsonString = playerStats.next().toString();
+                playerModel = gson.fromJson(jsonString, PlayerModel.class);
+                playerData.add(playerModel);
+            }
+            System.out.println(playerData);
+            //Enemies
+            EnemyModel enemyModel;
             Iterator<Object> enemies = getDataFromJSONArray(jsonObject, "enemiesLeft");
             while (enemies.hasNext()) {
-                System.out.println(enemies.next());
+                jsonString = enemies.next().toString();
+                enemyModel = gson.fromJson(jsonString, EnemyModel.class);
+                enemiesList.add(enemyModel);
             }
-            /* create 2d array that has same structure as json file
-            hold all necessary data there
-            think about how to load state of the previous map as well*/
+            System.out.println(enemiesList);
+            //Items
+            ItemModel itemModel;
+            Iterator<Object> items = getDataFromJSONArray(jsonObject, "itemsLeft");
+            while (items.hasNext()) {
+                jsonString = items.next().toString();
+                itemModel = gson.fromJson(jsonString, ItemModel.class);
+                itemsInInventory.add(itemModel);
+            }
+            System.out.println(itemsInInventory);
+            //Open Doors
+            OpenDoorModel openDoorModel;
+            Iterator<Object> openDoors = getDataFromJSONArray(jsonObject, "openDoors");
+            while (openDoors.hasNext()) {
+                jsonString = openDoors.next().toString();
+                openDoorModel = gson.fromJson(jsonString, OpenDoorModel.class);
+                openedDoors.add(openDoorModel);
+            }
+            System.out.println(openedDoors);
+//            Inventory
+            InventoryModel inventoryModel;
+            Iterator<Object> itemsInInventory = getDataFromJSONArray(jsonObject, "inventory");
+            while (itemsInInventory.hasNext()) {
+                jsonString = itemsInInventory.next().toString();
+                inventoryModel = gson.fromJson(jsonString, InventoryModel.class);
+                inventoryPlayer.add(inventoryModel);
+            }
+            System.out.println(inventoryPlayer);
+            //TODO: remember to assign objects to globally declared variables
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {

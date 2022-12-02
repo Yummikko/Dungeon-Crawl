@@ -79,7 +79,8 @@ public class GameMap {
     }
 
     public void addOpenDoor(OpenDoor openDoor) {
-        openDoors.add(openDoor);
+        if (!openDoors.contains(openDoor))
+            openDoors.add(openDoor);
     }
     public List<OpenDoor> getOpenDoors() {
         return openDoors;

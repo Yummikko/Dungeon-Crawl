@@ -22,9 +22,10 @@ public class GameJSONGenerator {
         /* create models */
         GameState gameState = Game.createNewGameStateJSON();
         PlayerModel playerModel = Game.createPlayerModelJSON();
-        List<EnemyModel> enemyModels = Game.createEnemyModelsJSON(GameMenu.map);
-        List<ItemModel> itemModels = Game.createItemModelsJSON(GameMenu.map);
-        List<OpenDoorModel> openDoorModels = Game.createOpenDoorModelsJSON(GameMenu.map);
+        List<EnemyModel> enemyModels = Game.createEnemyModelsJSON(Game.gameMenu.map);
+        List<ItemModel> itemModels = Game.createItemModelsJSON(Game.gameMenu.map);
+        List<OpenDoorModel> openDoorModels = Game.createOpenDoorModelsJSON(Game.gameMenu.map);
+        List<InventoryModel> inventoryModels = Game.createInventoryModelsJSON(Game.gameMenu.map);
         /* create JsonObjects */
         JsonObjectBuilder gameStateBuilder = Json.createObjectBuilder();
         JsonObjectBuilder playerBuilder = Json.createObjectBuilder();
@@ -47,7 +48,6 @@ public class GameJSONGenerator {
             inventory = GameMenu.map.getPlayer().getInventory();
         else
             inventory = new ArrayList<>();
-
         if (GameMenu.map.getOpenDoors() != null)
             openDoors = GameMenu.map.getOpenDoors();
         else
@@ -58,36 +58,37 @@ public class GameJSONGenerator {
                 .add("date", savedTime)
                 .add("discoveredMaps", Game.visitedMaps.toString());
         playerBuilder.add("playerName", playerModel.getPlayerName())
-                .add("positionX", playerModel.getX())
-                .add("positionY", playerModel.getY())
-                .add("health", playerModel.getHp())
+                .add("x", playerModel.getX())
+                .add("y", playerModel.getY())
+                .add("hp", playerModel.getHp())
                 .add("strength", playerModel.getStrength());
         for (Item item : inventory) {
-            itemInventoryBuilder.add("itemName", getInventoryName(item.toString()));
+            itemInventoryBuilder.add("item", getItemTrueName(item.toString()));
             inventoryBuilder.add(itemInventoryBuilder);
         }
         for (OpenDoor openDoor : openDoors) {
-            openDoorBuilder.add("positionX", openDoor.getCell().getX())
-                    .add("positionY", openDoor.getCell().getY());
+            openDoorBuilder.add("x", openDoor.getCell().getX())
+                    .add("y", openDoor.getCell().getY());
+            openDoorsBuilder.add(openDoorBuilder);
         }
-        playerBuilder.add("Inventory", inventoryBuilder);
         playerDataBuilder.add(playerBuilder);
         gameStateBuilder.add("player", playerDataBuilder);
-        gameStateBuilder.add("openDoors", openDoorBuilder);
+        gameStateBuilder.add("inventory", inventoryBuilder);
+        gameStateBuilder.add("openDoors", openDoorsBuilder);
         // create a new json from enemyModels
         for (EnemyModel enemyModel : enemyModels) {
             enemyBuilder.add("enemyName", getEnemyName(enemyModel.toString()))
-                    .add("positionX", enemyModel.getX())
-                    .add("positionY", enemyModel.getY())
-                    .add("health", enemyModel.getHp());
+                    .add("x", enemyModel.getX())
+                    .add("y", enemyModel.getY())
+                    .add("hp", enemyModel.getHp());
             enemiesBuilder.add(enemyBuilder);
         }
         gameStateBuilder.add("enemiesLeft", enemiesBuilder);
         // create json from itemModels
         for (ItemModel itemModel : itemModels) {
             itemBuilder.add("itemName", getItemTrueName(itemModel.getItemName()))
-                    .add("positionX", itemModel.getX())
-                    .add("positionY", itemModel.getY());
+                    .add("x", itemModel.getX())
+                    .add("y", itemModel.getY());
             itemsBuilder.add(itemBuilder);
         }
         gameStateBuilder.add("itemsLeft", itemsBuilder);
@@ -115,25 +116,6 @@ public class GameJSONGenerator {
     }
 
     public static String getItemTrueName(String name) {
-        String itemName = "";
-        if (name.toLowerCase().contains("weapon"))
-            itemName = "weapon";
-        else if (name.toLowerCase().contains("axe"))
-            itemName = "axe";
-        else if (name.toLowerCase().contains("key"))
-            itemName = "key";
-        else if (name.toLowerCase().contains("poison"))
-            itemName = "poison";
-        else if (name.toLowerCase().contains("shield"))
-            itemName = "shield";
-        else if (name.toLowerCase().contains("crown"))
-            itemName = "crown";
-        else if (name.toLowerCase().contains("food"))
-            itemName = "food";
-        return itemName;
-    }
-
-    public static String getInventoryName(String name) {
         String itemName = "";
         if (name.toLowerCase().contains("weapon"))
             itemName = "weapon";

@@ -5,14 +5,14 @@ public class ItemModel {
     private int x;
     private int y;
 
-    public ItemModel(String name, int x, int y) {
-        this.itemName = name;
+    public ItemModel(String itemName, int x, int y) {
+        this.itemName = itemName;
         this.x = x;
         this.y = y;
     }
 
-    public void setItemName(String name) {
-        this.itemName = name;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
     public String getItemName() {

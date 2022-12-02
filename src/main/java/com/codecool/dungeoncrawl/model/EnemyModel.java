@@ -16,9 +16,7 @@ public class EnemyModel extends BaseModel {
         this.enemyName = actor.getCell().getActor().toString();
         this.x = actor.getX();
         this.y = actor.getY();
-
         this.hp = actor.getHealth();
-
     }
 
     public String getEnemyName() {

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    private static final GameMenu gameMenu = new GameMenu();
+    public static final GameMenu gameMenu = new GameMenu();
     public static String mapNameJSON = "map1";
     private static int mapNumber = 0;
     public static GameMap firstLevel = gameMenu.map;
@@ -47,7 +47,7 @@ public class Game {
     public static List<OpenDoorModel> createOpenDoorModelsJSON(GameMap map) {
         List<OpenDoorModel> openDoorModels = new ArrayList<>();
         for (OpenDoor openDoor : map.getOpenDoors()) {
-            OpenDoorModel openDoorModel = new OpenDoorModel(openDoor.getCell().getX(), openDoor.getCell().getY(), openDoor, map.getOpenDoors());
+            OpenDoorModel openDoorModel = new OpenDoorModel(openDoor.getCell().getX(), openDoor.getCell().getY());
             openDoorModels.add(openDoorModel);
         }
         return openDoorModels;
@@ -69,6 +69,15 @@ public class Game {
             itemsOnMap.add(itemModel);
         }
         return itemsOnMap;
+    }
+
+    public static List<InventoryModel> createInventoryModelsJSON(GameMap map) {
+        List<InventoryModel> itemsInInventory = new ArrayList<>();
+        for (Item item : map.getPlayer().getInventory()) {
+            InventoryModel inventoryModel  = new InventoryModel(item.toString());
+            itemsInInventory.add(inventoryModel);
+        }
+        return itemsInInventory;
     }
 
     private static void checkIfMonstersHealth(List<Actor> enemies) {
