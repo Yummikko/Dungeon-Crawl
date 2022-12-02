@@ -10,6 +10,7 @@ import com.codecool.dungeoncrawl.logic.actors.DarkLord;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.logic.json.MapLoaderJSON;
 import com.codecool.dungeoncrawl.model.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
@@ -22,11 +23,13 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.codecool.dungeoncrawl.graphics.GameMenu.map;
+
 public class Game {
     public static final GameMenu gameMenu = new GameMenu();
     public static String mapNameJSON = "map1";
     private static int mapNumber = 0;
-    public static GameMap firstLevel = gameMenu.map;
+    public static GameMap firstLevel = map;
     public static GameMap secondLevel;
     public static GameMap thirdLevel;
     public static GameMap bonusLevel;
@@ -41,7 +44,7 @@ public class Game {
     }
 
     public static PlayerModel createPlayerModelJSON() {
-        PlayerModel playerModel = new PlayerModel(GameMenu.map.getPlayer());
+        PlayerModel playerModel = new PlayerModel(map.getPlayer());
         return playerModel;
     }
     public static List<OpenDoorModel> createOpenDoorModelsJSON(GameMap map) {
@@ -88,7 +91,7 @@ public class Game {
                 enemies.remove(enemy);
                 enemy.getCell().setActor(null);
                 if (enemy instanceof DarkLord) {
-                    ((DarkLord) enemy).removePhantoms(gameMenu.map);
+                    ((DarkLord) enemy).removePhantoms(map);
                 }
             }
         }
@@ -98,6 +101,11 @@ public class Game {
 
     }
 
+    public static void loadFromJson(String mapname) {
+        map = MapLoaderJSON.loadMapJSON(mapname);
+        gameMenu.loadGameJSON();
+        refresh();
+    }
     public static String getNextMap(List maps) {
         int mapsSize = maps.size();
         String mapName = "";
@@ -127,7 +135,7 @@ public class Game {
     }
 
     public static void setMap() {
-        MapLoader.maps.add(GameMenu.map);
+        MapLoader.maps.add(map);
         List<GameMap> maps = MapLoader.maps;
         String mapName = getNextMap(maps);
         mapNameJSON = mapName;
@@ -135,27 +143,27 @@ public class Game {
         if (!visitedMaps.contains(mapNameJSON)) {
             visitedMaps.add(mapNameJSON);
         }
-        GameMenu.map = MapLoader.loadMap(mapName, false);
+        map = MapLoader.loadMap(mapName, false);
     }
 
     public static void setPreviousMap() {
-        MapLoader.maps.add(GameMenu.map);
+        MapLoader.maps.add(map);
         List maps = MapLoader.maps;
         String mapName = getPreviousMap(maps);
         mapNameJSON = mapName;
         GameMap map2 = MapLoader.loadMap(mapName, true);
-        gameMenu.map = map2;
+        map = map2;
     }
 
     public static void setBonusMap() {
-        MapLoader.maps.add(GameMenu.map);
+        MapLoader.maps.add(map);
         String mapName = getBonusMap();
         mapNameJSON = mapName;
         if (!visitedMaps.contains(mapNameJSON)) {
             visitedMaps.add(mapNameJSON);
         }
         GameMap bonusMap = MapLoader.loadMap(mapName, false);
-        gameMenu.map = bonusMap;
+        map = bonusMap;
     }
 
     public static void onKeyReleased(KeyEvent keyEvent) {
@@ -172,22 +180,22 @@ public class Game {
         switch (keyEvent.getCode()) {
             case W:
             case UP:
-                gameMenu.map.getPlayer().move(Direction.NORTH);
+                map.getPlayer().move(Direction.NORTH);
                 refresh();
                 break;
             case S:
             case DOWN:
-                gameMenu.map.getPlayer().move(Direction.SOUTH);
+                map.getPlayer().move(Direction.SOUTH);
                 refresh();
                 break;
             case A:
             case LEFT:
-                gameMenu.map.getPlayer().move(Direction.WEST);
+                map.getPlayer().move(Direction.WEST);
                 refresh();
                 break;
             case D:
             case RIGHT:
-                gameMenu.map.getPlayer().move(Direction.EAST);
+                map.getPlayer().move(Direction.EAST);
                 refresh();
                 break;
         }
@@ -195,10 +203,10 @@ public class Game {
     }
 
     public static void refresh() {
-        GameMenu.gameCamera.centerOnPlayer(gameMenu.map.getPlayer(), gameMenu.map);
+        GameMenu.gameCamera.centerOnPlayer(map.getPlayer(), map);
         moveMonsters();
-        checkIfMonstersHealth(gameMenu.map.getEnemies());
-        if (!gameMenu.map.getPlayer().isAlive()) {
+        checkIfMonstersHealth(map.getEnemies());
+        if (!map.getPlayer().isAlive()) {
             try {
                 gameMenu.gameOver(gameMenu.stage);
             } catch (Exception e) {
@@ -210,16 +218,16 @@ public class Game {
         float yOffset = GameMenu.gameCamera.getyOffset();
         context.setFill(Color.rgb(32, 62, 84));
         context.fillRect(0, 0, GameMenu.canvas.getWidth(), GameMenu.canvas.getHeight());
-        for (int x = 0; x < gameMenu.map.getWidth(); x++) {
-            for (int y = 0; y < gameMenu.map.getHeight(); y++) {
-                Cell cell = gameMenu.map.getCell(x, y);
+        for (int x = 0; x < map.getWidth(); x++) {
+            for (int y = 0; y < map.getHeight(); y++) {
+                Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), (int) (x - xOffset), (int) (y - yOffset));
                 } else if (cell.getDoor() != null) {
                     if (cell.getDoor() instanceof NormalDoor)
-                        gameMenu.map.getPlayer().openClosedDoor(cell.getNormalDoor());
+                        map.getPlayer().openClosedDoor(cell.getNormalDoor());
                     else if (cell.getDoor() instanceof OpenDoor) {
-                        gameMenu.map.addOpenDoor(cell.getOpenDoor());
+                        map.addOpenDoor(cell.getOpenDoor());
                     }
                     Tiles.drawTile(context, cell.getDoor(), (int) (x - xOffset), (int) (y - yOffset));
                 } else if (cell.getItem() != null) {
@@ -231,12 +239,12 @@ public class Game {
                 }
             }
         }
-        GameMenu.rightUI.setTextForRightUI(gameMenu.map.getPlayer());
-        GameMenu.map.getPlayer().setRightUiPanel(GameMenu.rightUI);
+        GameMenu.rightUI.setTextForRightUI(map.getPlayer());
+        map.getPlayer().setRightUiPanel(GameMenu.rightUI);
     }
 
     private static void checkIfOnItem() {
-        if (gameMenu.map.getPlayer().getCell().getItem() != null) {
+        if (map.getPlayer().getCell().getItem() != null) {
             GameMenu.rightUI.showButton();
         } else {
             GameMenu.rightUI.hideButton();
@@ -244,14 +252,14 @@ public class Game {
     }
 
     public static void moveMonsters() {
-        List<Actor> enemies = gameMenu.map.getEnemies();
+        List<Actor> enemies = map.getEnemies();
         for (int i = 0; i < enemies.size(); i++) {
-            enemies.get(i).move(gameMenu.map);
+            enemies.get(i).move(map);
         }
     }
 
     public static void checkForWin(Stage primaryStage) {
-        if (gameMenu.map.getPlayer().inventoryToString().contains("crown")) {
+        if (map.getPlayer().inventoryToString().contains("crown")) {
             Movements.stop();
             gameMenu.youWon(primaryStage);
         }

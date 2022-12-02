@@ -3,7 +3,6 @@ package com.codecool.dungeoncrawl.logic.json;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.*;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
 import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
@@ -18,26 +17,23 @@ import java.util.Scanner;
 
 public class MapLoaderJSON {
     public static List<GameMap> maps = new ArrayList<>();
-    private static GameJSONToMap gameLoader = new GameJSONToMap();
-    public MapLoaderJSON() {
-
-    }
+    public MapLoaderJSON() {}
     //load the map like before but take account of new data and set them with correct position
     public static GameMap loadMapJSON(String mapname) {
-        InputStream is = MapLoader.class.getResourceAsStream(mapname);
+        System.out.println(mapname);
+        InputStream input = MapLoaderJSON.class.getResourceAsStream("/" + mapname);
+        Scanner scannerJSON = new Scanner(input);
+        int width = scannerJSON.nextInt();
+        int height = scannerJSON.nextInt();
 
-        Scanner scanner = new Scanner(is);
-        int width = scanner.nextInt();
-        int height = scanner.nextInt();
-
-        scanner.nextLine(); // empty line
+        scannerJSON.nextLine(); // empty line
 
         GameMap map = new GameMap(width, height, CellType.EMPTY);
         List<Item> items = new ArrayList<>();
         map.setItems(items);
 
         for (int y = 0; y < height; y++) {
-            String line = scanner.nextLine();
+            String line = scannerJSON.nextLine();
             for (int x = 0; x < line.length(); x++) {
                 Cell cell = map.getCell(x, y);
                 switch (line.charAt(x)) {
@@ -51,8 +47,8 @@ public class MapLoaderJSON {
                         cell.setType(CellType.FLOOR);
                         break;
                     case 's':
-                        for (int i = 0; i < gameLoader.enemiesList.size(); i++) {
-                            EnemyModel enemy = gameLoader.enemiesList.get(i);
+                        for (int i = 0; i < GameJSONToMap.enemiesList.size(); i++) {
+                            EnemyModel enemy = GameJSONToMap.enemiesList.get(i);
                             if (enemy.getEnemyName().toLowerCase() == "skeleton") {
                                 cell = new Cell(map, enemy.getX(), enemy.getY(), CellType.FLOOR);
                                 Skeleton skeleton = new Skeleton(cell);
@@ -63,8 +59,8 @@ public class MapLoaderJSON {
                         break;
                     case 'd':
                         cell.setType(CellType.WALL);
-                        for (int i = 0; i < gameLoader.openedDoors.size(); i++) {
-                            OpenDoorModel openDoor = gameLoader.openedDoors.get(i);
+                        for (int i = 0; i < GameJSONToMap.openedDoors.size(); i++) {
+                            OpenDoorModel openDoor = GameJSONToMap.openedDoors.get(i);
                             if(y == openDoor.getY() && x == openDoor.getX())
                                 new OpenDoor(cell);
                             else
@@ -72,8 +68,8 @@ public class MapLoaderJSON {
                         }
                         break;
                     case 'k':
-                        for (int i = 0; i < gameLoader.itemsOnMap.size(); i++) {
-                            ItemModel item = gameLoader.itemsOnMap.get(i);
+                        for (int i = 0; i < GameJSONToMap.itemsOnMap.size(); i++) {
+                            ItemModel item = GameJSONToMap.itemsOnMap.get(i);
                             if(item.getItemName().toLowerCase() == "key") {
                                 cell.setType(CellType.FLOOR);
                                 items.add(new Key(cell));
@@ -81,8 +77,8 @@ public class MapLoaderJSON {
                         }
                         break;
                     case 'p':
-                        for (int i = 0; i < gameLoader.itemsOnMap.size(); i++) {
-                            ItemModel item = gameLoader.itemsOnMap.get(i);
+                        for (int i = 0; i < GameJSONToMap.itemsOnMap.size(); i++) {
+                            ItemModel item = GameJSONToMap.itemsOnMap.get(i);
                             if(item.getItemName().toLowerCase() == "poison") {
                                 cell.setType(CellType.FLOOR);
                                 items.add(new Poison(cell));
@@ -90,8 +86,8 @@ public class MapLoaderJSON {
                         }
                         break;
                     case 'z':
-                        for (int i = 0; i < gameLoader.itemsOnMap.size(); i++) {
-                            ItemModel item = gameLoader.itemsOnMap.get(i);
+                        for (int i = 0; i < GameJSONToMap.itemsOnMap.size(); i++) {
+                            ItemModel item = GameJSONToMap.itemsOnMap.get(i);
                             if(item.getItemName().toLowerCase() == "shield") {
                                 cell.setType(CellType.FLOOR);
                                 items.add(new Shield(cell));
@@ -99,8 +95,8 @@ public class MapLoaderJSON {
                         }
                         break;
                     case 'o':
-                        for (int i = 0; i < gameLoader.enemiesList.size(); i++) {
-                            EnemyModel enemy = gameLoader.enemiesList.get(i);
+                        for (int i = 0; i < GameJSONToMap.enemiesList.size(); i++) {
+                            EnemyModel enemy = GameJSONToMap.enemiesList.get(i);
                             if (enemy.getEnemyName().toLowerCase() == "octopus") {
                                 cell.setType(CellType.FLOOR);
                                 Octopus octopus = new Octopus(cell);
@@ -110,8 +106,8 @@ public class MapLoaderJSON {
                         }
                         break;
                     case 'a':
-                        for (int i = 0; i < gameLoader.enemiesList.size(); i++) {
-                            EnemyModel enemy = gameLoader.enemiesList.get(i);
+                        for (int i = 0; i < GameJSONToMap.enemiesList.size(); i++) {
+                            EnemyModel enemy = GameJSONToMap.enemiesList.get(i);
                             if (enemy.getEnemyName().toLowerCase() == "spider") {
                                 cell.setType(CellType.FLOOR);
                                 Spider spider = new Spider(cell);
@@ -121,36 +117,38 @@ public class MapLoaderJSON {
                         }
                         break;
                     case '@':
-                        for (int i = 0; i < gameLoader.playerData.size(); i++) {
-                            PlayerModel player = gameLoader.playerData.get(i);
+                        for (int i = 0; i < GameJSONToMap.playerData.size(); i++) {
+                            PlayerModel player = GameJSONToMap.playerData.get(i);
                             Cell newCell = new Cell(map, player.getX(), player.getY(), CellType.FLOOR);
                             Player nextPlayer = new Player(newCell);
                             map.setPlayer(nextPlayer);
                             nextPlayer.setName(player.getPlayerName());
                             nextPlayer.setHealth(player.getHp());
                             nextPlayer.setStrength(player.getStrength());
-                            for (int j = 0; j < gameLoader.inventoryPlayer.size(); j++) {
-                                InventoryModel item = gameLoader.inventoryPlayer.get(j);
+                            nextPlayer.getInventory().clear();
+                            System.out.println("size " + GameJSONToMap.playerData.size());
+                            for (int j = 0; j < GameJSONToMap.inventoryPlayer.size(); j++) {
+                                InventoryModel item = GameJSONToMap.inventoryPlayer.get(j);
                                 if (item.getItem().toLowerCase().contains("axe"))
-                                    nextPlayer.getInventory().add(new Axe(null));
+                                    nextPlayer.getInventory().add(new Axe(newCell));
                                 else if (item.getItem().toLowerCase().contains("shield"))
-                                    nextPlayer.getInventory().add(new Shield(null));
+                                    nextPlayer.getInventory().add(new Shield(newCell));
                                 else if (item.getItem().toLowerCase().contains("weapon"))
-                                    nextPlayer.getInventory().add(new Weapon(null));
+                                    nextPlayer.getInventory().add(new Weapon(newCell));
                                 else if (item.getItem().toLowerCase().contains("food"))
-                                    nextPlayer.getInventory().add(new Food(null));
+                                    nextPlayer.getInventory().add(new Food(newCell));
                                 else if (item.getItem().toLowerCase().contains("poison"))
-                                    nextPlayer.getInventory().add(new Poison(null));
+                                    nextPlayer.getInventory().add(new Poison(newCell));
                                 else if (item.getItem().toLowerCase().contains("key"))
-                                    nextPlayer.getInventory().add(new Key(null));
+                                    nextPlayer.getInventory().add(new Key(newCell));
                                 else if (item.getItem().toLowerCase().contains("crown"))
-                                    nextPlayer.getInventory().add(new Crown(null));
+                                    nextPlayer.getInventory().add(new Crown(newCell));
                             }
                         }
                         break;
                     case 'f':
-                        for (int i = 0; i < gameLoader.itemsOnMap.size(); i++) {
-                            ItemModel item = gameLoader.itemsOnMap.get(i);
+                        for (int i = 0; i < GameJSONToMap.itemsOnMap.size(); i++) {
+                            ItemModel item = GameJSONToMap.itemsOnMap.get(i);
                             if(item.getItemName().toLowerCase() == "food") {
                                 cell.setType(CellType.FLOOR);
                                 items.add(new Food(cell));
@@ -158,8 +156,8 @@ public class MapLoaderJSON {
                         }
                         break;
                     case 'w':
-                        for (int i = 0; i < gameLoader.itemsOnMap.size(); i++) {
-                            ItemModel item = gameLoader.itemsOnMap.get(i);
+                        for (int i = 0; i < GameJSONToMap.itemsOnMap.size(); i++) {
+                            ItemModel item = GameJSONToMap.itemsOnMap.get(i);
                             if(item.getItemName().toLowerCase() == "weapon") {
                                 cell.setType(CellType.FLOOR);
                                 items.add(new Weapon(cell));
@@ -167,8 +165,8 @@ public class MapLoaderJSON {
                         }
                         break;
                     case 'v':
-                        for (int i = 0; i < gameLoader.itemsOnMap.size(); i++) {
-                            ItemModel item = gameLoader.itemsOnMap.get(i);
+                        for (int i = 0; i < GameJSONToMap.itemsOnMap.size(); i++) {
+                            ItemModel item = GameJSONToMap.itemsOnMap.get(i);
                             if(item.getItemName().toLowerCase() == "axe") {
                                 cell.setType(CellType.FLOOR);
                                 items.add(new Axe(cell));
@@ -196,8 +194,8 @@ public class MapLoaderJSON {
                         new Skull(cell);
                         break;
                     case 'c':
-                        for (int i = 0; i < gameLoader.itemsOnMap.size(); i++) {
-                            ItemModel item = gameLoader.itemsOnMap.get(i);
+                        for (int i = 0; i < GameJSONToMap.itemsOnMap.size(); i++) {
+                            ItemModel item = GameJSONToMap.itemsOnMap.get(i);
                             if(item.getItemName().toLowerCase() == "crown") {
                                 cell.setType(CellType.FLOOR);
                                 items.add(new Crown(cell));
@@ -209,8 +207,8 @@ public class MapLoaderJSON {
                         new Bridge(cell);
                         break;
                     case 'l':
-                        for (int i = 0; i < gameLoader.enemiesList.size(); i++) {
-                            EnemyModel enemy = gameLoader.enemiesList.get(i);
+                        for (int i = 0; i < GameJSONToMap.enemiesList.size(); i++) {
+                            EnemyModel enemy = GameJSONToMap.enemiesList.get(i);
                             if (enemy.getEnemyName().toLowerCase() == "lich") {
                                 Cell newCell = new Cell(map, enemy.getX(), enemy.getY(), CellType.FLOOR);
                                 Lich lich = new Lich(newCell);
@@ -220,8 +218,8 @@ public class MapLoaderJSON {
                         }
                         break;
                     case 'x':
-                        for (int i = 0; i < gameLoader.enemiesList.size(); i++) {
-                            EnemyModel enemy = gameLoader.enemiesList.get(i);
+                        for (int i = 0; i < GameJSONToMap.enemiesList.size(); i++) {
+                            EnemyModel enemy = GameJSONToMap.enemiesList.get(i);
                             if (enemy.getEnemyName().toLowerCase() == "darklord") {
                                 Cell newCell = new Cell(map, enemy.getX(), enemy.getY(), CellType.FLOOR);
                                 DarkLord darkLord = new DarkLord(newCell);
@@ -231,8 +229,8 @@ public class MapLoaderJSON {
                         }
                         break;
                     case 'g':
-                        for (int i = 0; i < gameLoader.enemiesList.size(); i++) {
-                            EnemyModel enemy = gameLoader.enemiesList.get(i);
+                        for (int i = 0; i < GameJSONToMap.enemiesList.size(); i++) {
+                            EnemyModel enemy = GameJSONToMap.enemiesList.get(i);
                             if (enemy.getEnemyName().toLowerCase() == "phantom") {
                                 Cell newCell = new Cell(map, enemy.getX(), enemy.getY(), CellType.FLOOR);
                                 Phantom phantom = new Phantom(newCell);
@@ -240,6 +238,9 @@ public class MapLoaderJSON {
                                 map.addActor(phantom);
                             }
                         }
+                        break;
+                    case '%':
+                        System.out.println("Do nothing");
                         break;
                     default:
                         throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");

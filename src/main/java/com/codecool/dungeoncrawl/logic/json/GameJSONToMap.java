@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.*;
 
+import com.codecool.dungeoncrawl.Game;
 import com.codecool.dungeoncrawl.model.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,15 +15,16 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class GameJSONToMap {
-    private String currentMap;
+    public static String currentMap;
     private String maps;
-    List<ItemModel> itemsOnMap = new ArrayList<>();
-    List<EnemyModel> enemiesList = new ArrayList<>();
-    List<PlayerModel> playerData = new ArrayList<>();
-    List<OpenDoorModel> openedDoors = new ArrayList<>();
-    List<InventoryModel> inventoryPlayer = new ArrayList<>();
+    static List<ItemModel> itemsOnMap = new ArrayList<>();
+    static List<EnemyModel> enemiesList = new ArrayList<>();
+    static List<PlayerModel> playerData = new ArrayList<>();
+    static List<OpenDoorModel> openedDoors = new ArrayList<>();
+    static List<InventoryModel> inventoryPlayer = new ArrayList<>();
 
     public void parseJsonToMap(String filePath) {
+        clearData();
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
         String jsonString;
@@ -88,6 +90,7 @@ public class GameJSONToMap {
                 inventoryPlayer.add(inventoryModel);
             }
             System.out.println(inventoryPlayer);
+            Game.loadFromJson(currentMap.substring(1));
             //TODO: remember to assign new MapLoaders' variables to globally declared variables here
         } catch (IOException e) {
             e.printStackTrace();
@@ -102,5 +105,13 @@ public class GameJSONToMap {
         Iterator<Object> iterator = data.iterator();
         return iterator;
     }
-
+    public void clearData() {
+        currentMap = null;
+        maps = null;
+        itemsOnMap.clear();
+        inventoryPlayer.clear();
+        enemiesList.clear();
+        playerData.clear();
+        openedDoors.clear();
+    }
 }
