@@ -23,7 +23,7 @@ public class BaseModel {
             try {
                 value = field.get(this);
                 if (value != null) {
-                    sb.append(field.getName() + ":" + value + ",");
+                    sb.append(field.getName() + ":" + value + " ");
                 }
             } catch (IllegalAccessException e) {
 
