@@ -55,7 +55,7 @@ public class MapLoaderJSON {
                                 Skeleton skeleton = new Skeleton(cell);
                                 skeleton.setHealth(enemy.getHp());
                                 map.addActor(skeleton);
-                                break;
+                                GameJSONToMap.enemiesList.remove(enemy);
                             }
                         }
                         break;
@@ -76,7 +76,6 @@ public class MapLoaderJSON {
                             if(item.getItemName().toLowerCase().contains("key")) {
                                 cell.setType(CellType.FLOOR);
                                 items.add(new Key(cell));
-                                break;
                             }
                         }
                         break;
@@ -86,7 +85,6 @@ public class MapLoaderJSON {
                             if(item.getItemName().toLowerCase().contains("poison")) {
                                 cell.setType(CellType.FLOOR);
                                 items.add(new Poison(cell));
-                                break;
                             }
                         }
                         break;
@@ -97,7 +95,6 @@ public class MapLoaderJSON {
                             if(item.getItemName().toLowerCase().contains("shield")) {
                                 cell.setType(CellType.FLOOR);
                                 items.add(new Shield(cell));
-                                break;
                             }
                         }
                         break;
@@ -120,7 +117,6 @@ public class MapLoaderJSON {
                             System.out.println(enemy.getEnemyName().toLowerCase());
                             if (enemy.getEnemyName().toLowerCase().contains("spider")) {
                                 if (cell.getX() == enemy.getX() && cell.getY() == enemy.getY()) {
-                                    System.out.println(enemy.getEnemyName());
                                     cell.setType(CellType.FLOOR);
                                     Spider spider = new Spider(cell);
                                     spider.setHealth(enemy.getHp());
@@ -140,7 +136,6 @@ public class MapLoaderJSON {
                             nextPlayer.setHealth(player.getHp());
                             nextPlayer.setStrength(player.getStrength());
                             nextPlayer.getInventory().clear();
-                            System.out.println("size " + GameJSONToMap.playerData.size());
                             for (int j = 0; j < GameJSONToMap.inventoryPlayer.size(); j++) {
                                 InventoryModel item = GameJSONToMap.inventoryPlayer.get(j);
                                 System.out.println(item.getItem().toLowerCase());
@@ -170,7 +165,6 @@ public class MapLoaderJSON {
                             if(item.getItemName().toLowerCase().contains("food")) {
                                 cell.setType(CellType.FLOOR);
                                 items.add(new Food(cell));
-                                break;
                             }
                         }
                         break;
@@ -180,7 +174,6 @@ public class MapLoaderJSON {
                             if(item.getItemName().toLowerCase().contains("weapon")) {
                                 cell.setType(CellType.FLOOR);
                                 items.add(new Weapon(cell));
-                                break;
                             }
                         }
                         break;
@@ -190,7 +183,6 @@ public class MapLoaderJSON {
                             if(item.getItemName().toLowerCase().contains("axe")) {
                                 cell.setType(CellType.FLOOR);
                                 items.add(new Axe(cell));
-                                break;
                             }
                         }
                         break;
@@ -220,7 +212,6 @@ public class MapLoaderJSON {
                             if(item.getItemName().toLowerCase().contains("crown")) {
                                 cell.setType(CellType.FLOOR);
                                 items.add(new Crown(cell));
-                                break;
                             }
                         }
                         break;
@@ -236,7 +227,7 @@ public class MapLoaderJSON {
                                 Lich lich = new Lich(newCell);
                                 lich.setHealth(enemy.getHp());
                                 map.addActor(lich);
-                                break;
+                                GameJSONToMap.enemiesList.remove(enemy);
                             }
                         }
                         break;
@@ -248,7 +239,7 @@ public class MapLoaderJSON {
                                 DarkLord darkLord = new DarkLord(newCell);
                                 darkLord.setHealth(enemy.getHp());
                                 map.addActor(darkLord);
-                                break;
+                                GameJSONToMap.enemiesList.remove(enemy);
                             }
                         }
                         break;
@@ -260,7 +251,7 @@ public class MapLoaderJSON {
                                 Phantom phantom = new Phantom(newCell);
                                 phantom.setHealth(enemy.getHp());
                                 map.addActor(phantom);
-                                break;
+                                GameJSONToMap.enemiesList.remove(enemy);
                             }
                         }
                         break;
@@ -272,7 +263,6 @@ public class MapLoaderJSON {
                 }
             }
         }
-        Game.refresh();
         return map;
     }
 }
