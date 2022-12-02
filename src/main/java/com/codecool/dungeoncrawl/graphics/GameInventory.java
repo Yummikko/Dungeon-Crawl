@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.graphics;
 
 import com.codecool.dungeoncrawl.Tiles;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.items.Crown;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -14,13 +15,14 @@ import javafx.scene.layout.*;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameInventory extends GridPane {
 
     private Canvas canvas;
     private GraphicsContext context;
-    private ObservableList<Item> inventory;
+    public static ObservableList<Item> inventory;
     private Player player;
 
     public GameInventory() {
@@ -35,7 +37,8 @@ public class GameInventory extends GridPane {
         });
     }
 
-    public List<Item> getItems() { return  inventory; }
+    public static List<Item> getItems() { return  inventory; }
+
     public void setPlayer(Player player) { this.player = player; }
     public void removeItemFromLoot(Item item) { this.getChildren().remove(item); }
     public void clearInventoryUI() { this.getChildren().clear(); }
@@ -69,5 +72,9 @@ public class GameInventory extends GridPane {
         setBorder(new Border(new BorderStroke(Color.ALICEBLUE,
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3))));
         setBackground(new Background(new BackgroundFill(Color.valueOf("#203E54"), CornerRadii.EMPTY, Insets.EMPTY)));
+    }
+
+    public void add(Item item) {
+        this.inventory.add(item);
     }
 }

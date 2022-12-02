@@ -1,6 +1,8 @@
 package com.codecool.dungeoncrawl.logic.json;
 
 import com.codecool.dungeoncrawl.Game;
+import com.codecool.dungeoncrawl.graphics.GameInventory;
+import com.codecool.dungeoncrawl.graphics.GameMenu;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
@@ -10,6 +12,9 @@ import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.enviroment.*;
 import com.codecool.dungeoncrawl.logic.items.*;
 import com.codecool.dungeoncrawl.model.*;
+import com.sun.scenario.effect.Crop;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -138,24 +143,27 @@ public class MapLoaderJSON {
                             nextPlayer.getInventory().clear();
                             for (int j = 0; j < GameJSONToMap.inventoryPlayer.size(); j++) {
                                 InventoryModel item = GameJSONToMap.inventoryPlayer.get(j);
-                                System.out.println(item.getItem().toLowerCase());
                                 if (item.getItem().toLowerCase().contains("axe")) {
-                                    System.out.println("added axe");
                                     nextPlayer.getInventory().add(new Axe(newCell));
-                                    System.out.println(nextPlayer.getInventory().toString());
                                 }
-                                else if (item.getItem().toLowerCase().contains("shield"))
+                                else if (item.getItem().toLowerCase().contains("shield")) {
                                     nextPlayer.getInventory().add(new Shield(newCell));
-                                else if (item.getItem().toLowerCase().contains("weapon"))
+                                }
+                                else if (item.getItem().toLowerCase().contains("weapon")) {
                                     nextPlayer.getInventory().add(new Weapon(newCell));
-                                else if (item.getItem().toLowerCase().contains("food"))
+                                }
+                                else if (item.getItem().toLowerCase().contains("food")) {
                                     nextPlayer.getInventory().add(new Food(newCell));
-                                else if (item.getItem().toLowerCase().contains("poison"))
+                                }
+                                else if (item.getItem().toLowerCase().contains("poison")) {
                                     nextPlayer.getInventory().add(new Poison(newCell));
-                                else if (item.getItem().toLowerCase().contains("key"))
+                                }
+                                else if (item.getItem().toLowerCase().contains("key")) {
                                     nextPlayer.getInventory().add(new Key(newCell));
-                                else if (item.getItem().toLowerCase().contains("crown"))
+                                }
+                                else if (item.getItem().toLowerCase().contains("crown")) {
                                     nextPlayer.getInventory().add(new Crown(newCell));
+                                }
                             }
                         }
                         break;

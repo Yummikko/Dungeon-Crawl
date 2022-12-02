@@ -6,6 +6,7 @@ import com.codecool.dungeoncrawl.file.FileSaver;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.controller.SaveController;
+import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.json.GameJSONToMap;
 import com.codecool.dungeoncrawl.logic.util.SoundUtils;
 import javafx.geometry.Insets;
@@ -234,6 +235,11 @@ public class GameMenu {
         BorderPane borderPane = new BorderPane();
         map.getPlayer().setRightUiPanel(rightUI);
         rightUI.getInventory().setPlayer(map.getPlayer());
+        for (int i = 0; i < map.getPlayer().getInventory().size(); i++) {
+            Item item = map.getPlayer().getInventory().get(i);
+            rightUI.getInventory().add(item);
+        }
+        System.out.println(rightUI.getInventory().getItems());
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
         map.getPlayer().setInventory(rightUI.getInventory().getItems());

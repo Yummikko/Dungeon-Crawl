@@ -46,6 +46,10 @@ public class RightUiPanel extends GridPane {
         return inventory;
     }
 
+    public void setInventory(GameInventory inventory) {
+        this.inventory = inventory;
+    }
+
     public void hideButton() {
         pickUpButton.setVisible(false);
     }
