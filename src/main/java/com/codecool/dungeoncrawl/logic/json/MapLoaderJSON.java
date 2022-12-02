@@ -53,7 +53,7 @@ public class MapLoaderJSON {
                     case 's':
                         for (int i = 0; i < gameLoader.enemiesList.size(); i++) {
                             EnemyModel enemy = gameLoader.enemiesList.get(i);
-                            if (enemy.getEnemyName() == "skeleton") {
+                            if (enemy.getEnemyName().toLowerCase() == "skeleton") {
                                 cell = new Cell(map, enemy.getX(), enemy.getY(), CellType.FLOOR);
                                 Skeleton skeleton = new Skeleton(cell);
                                 skeleton.setHealth(enemy.getHp());
@@ -74,55 +74,106 @@ public class MapLoaderJSON {
                     case 'k':
                         for (int i = 0; i < gameLoader.itemsOnMap.size(); i++) {
                             ItemModel item = gameLoader.itemsOnMap.get(i);
-                            if(item.getItemName() == "key") {
-                                cell = new Cell(map, item.getX(), item.getY(), CellType.FLOOR);
+                            if(item.getItemName().toLowerCase() == "key") {
+                                cell.setType(CellType.FLOOR);
                                 items.add(new Key(cell));
                             }
                         }
                         break;
                     case 'p':
-                        cell.setType(CellType.FLOOR);
-                        items.add(new Poison(cell));
+                        for (int i = 0; i < gameLoader.itemsOnMap.size(); i++) {
+                            ItemModel item = gameLoader.itemsOnMap.get(i);
+                            if(item.getItemName().toLowerCase() == "poison") {
+                                cell.setType(CellType.FLOOR);
+                                items.add(new Poison(cell));
+                            }
+                        }
                         break;
                     case 'z':
-                        cell.setType(CellType.FLOOR);
-                        items.add(new Shield(cell));
+                        for (int i = 0; i < gameLoader.itemsOnMap.size(); i++) {
+                            ItemModel item = gameLoader.itemsOnMap.get(i);
+                            if(item.getItemName().toLowerCase() == "shield") {
+                                cell.setType(CellType.FLOOR);
+                                items.add(new Shield(cell));
+                            }
+                        }
                         break;
                     case 'o':
-                        cell.setType(CellType.FLOOR);
-                        map.addActor(new Octopus(cell));
+                        for (int i = 0; i < gameLoader.enemiesList.size(); i++) {
+                            EnemyModel enemy = gameLoader.enemiesList.get(i);
+                            if (enemy.getEnemyName().toLowerCase() == "octopus") {
+                                cell.setType(CellType.FLOOR);
+                                Octopus octopus = new Octopus(cell);
+                                octopus.setHealth(enemy.getHp());
+                                map.addActor(octopus);
+                            }
+                        }
                         break;
                     case 'a':
-                        cell.setType(CellType.FLOOR);
-                        map.addActor(new Spider(cell));
+                        for (int i = 0; i < gameLoader.enemiesList.size(); i++) {
+                            EnemyModel enemy = gameLoader.enemiesList.get(i);
+                            if (enemy.getEnemyName().toLowerCase() == "spider") {
+                                cell.setType(CellType.FLOOR);
+                                Spider spider = new Spider(cell);
+                                spider.setHealth(enemy.getHp());
+                                map.addActor(spider);
+                            }
+                        }
                         break;
                     case '@':
-                        cell.setType(CellType.FLOOR);
-                        Player nextPlayer = new Player(cell);
-                        map.setPlayer(nextPlayer);
-                        for (int i = 0; i < maps.size(); i++) {
-                            for (int j = 1; j < maps.size() + j; j++) {
-                                if (maps.size() == j) {
-                                    nextPlayer.setName(maps.get(i).getPlayer().getName());
-                                    nextPlayer.setInventory(maps.get(i).getPlayer().getInventory());
-                                    nextPlayer.setHealth(maps.get(i).getPlayer().getHealth());
-                                    nextPlayer.setStrength(maps.get(i).getPlayer().getStrength());
-                                    break;
-                                }
+                        for (int i = 0; i < gameLoader.playerData.size(); i++) {
+                            PlayerModel player = gameLoader.playerData.get(i);
+                            Cell newCell = new Cell(map, player.getX(), player.getY(), CellType.FLOOR);
+                            Player nextPlayer = new Player(newCell);
+                            map.setPlayer(nextPlayer);
+                            nextPlayer.setName(player.getPlayerName());
+                            nextPlayer.setHealth(player.getHp());
+                            nextPlayer.setStrength(player.getStrength());
+                            for (int j = 0; j < gameLoader.inventoryPlayer.size(); j++) {
+                                InventoryModel item = gameLoader.inventoryPlayer.get(j);
+                                if (item.getItem().toLowerCase().contains("axe"))
+                                    nextPlayer.getInventory().add(new Axe(null));
+                                else if (item.getItem().toLowerCase().contains("shield"))
+                                    nextPlayer.getInventory().add(new Shield(null));
+                                else if (item.getItem().toLowerCase().contains("weapon"))
+                                    nextPlayer.getInventory().add(new Weapon(null));
+                                else if (item.getItem().toLowerCase().contains("food"))
+                                    nextPlayer.getInventory().add(new Food(null));
+                                else if (item.getItem().toLowerCase().contains("poison"))
+                                    nextPlayer.getInventory().add(new Poison(null));
+                                else if (item.getItem().toLowerCase().contains("key"))
+                                    nextPlayer.getInventory().add(new Key(null));
+                                else if (item.getItem().toLowerCase().contains("crown"))
+                                    nextPlayer.getInventory().add(new Crown(null));
                             }
                         }
                         break;
                     case 'f':
-                        cell.setType(CellType.FLOOR);
-                        items.add(new Food(cell));
+                        for (int i = 0; i < gameLoader.itemsOnMap.size(); i++) {
+                            ItemModel item = gameLoader.itemsOnMap.get(i);
+                            if(item.getItemName().toLowerCase() == "food") {
+                                cell.setType(CellType.FLOOR);
+                                items.add(new Food(cell));
+                            }
+                        }
                         break;
                     case 'w':
-                        cell.setType(CellType.FLOOR);
-                        items.add(new Weapon(cell));
+                        for (int i = 0; i < gameLoader.itemsOnMap.size(); i++) {
+                            ItemModel item = gameLoader.itemsOnMap.get(i);
+                            if(item.getItemName().toLowerCase() == "weapon") {
+                                cell.setType(CellType.FLOOR);
+                                items.add(new Weapon(cell));
+                            }
+                        }
                         break;
                     case 'v':
-                        cell.setType(CellType.FLOOR);
-                        new Axe(cell);
+                        for (int i = 0; i < gameLoader.itemsOnMap.size(); i++) {
+                            ItemModel item = gameLoader.itemsOnMap.get(i);
+                            if(item.getItemName().toLowerCase() == "axe") {
+                                cell.setType(CellType.FLOOR);
+                                items.add(new Axe(cell));
+                            }
+                        }
                         break;
                     case 'n':
                         cell.setType(CellType.PORTAL);
@@ -145,24 +196,50 @@ public class MapLoaderJSON {
                         new Skull(cell);
                         break;
                     case 'c':
-                        cell.setType(CellType.FLOOR);
-                        items.add(new Crown(cell));
+                        for (int i = 0; i < gameLoader.itemsOnMap.size(); i++) {
+                            ItemModel item = gameLoader.itemsOnMap.get(i);
+                            if(item.getItemName().toLowerCase() == "crown") {
+                                cell.setType(CellType.FLOOR);
+                                items.add(new Crown(cell));
+                            }
+                        }
                         break;
                     case 'b':
                         cell.setType(CellType.FLOOR);
                         new Bridge(cell);
                         break;
                     case 'l':
-                        cell.setType(CellType.FLOOR);
-                        map.addActor(new Lich(cell));
+                        for (int i = 0; i < gameLoader.enemiesList.size(); i++) {
+                            EnemyModel enemy = gameLoader.enemiesList.get(i);
+                            if (enemy.getEnemyName().toLowerCase() == "lich") {
+                                Cell newCell = new Cell(map, enemy.getX(), enemy.getY(), CellType.FLOOR);
+                                Lich lich = new Lich(newCell);
+                                lich.setHealth(enemy.getHp());
+                                map.addActor(lich);
+                            }
+                        }
                         break;
                     case 'x':
-                        cell.setType(CellType.FLOOR);
-                        map.addActor(new DarkLord(cell));
+                        for (int i = 0; i < gameLoader.enemiesList.size(); i++) {
+                            EnemyModel enemy = gameLoader.enemiesList.get(i);
+                            if (enemy.getEnemyName().toLowerCase() == "darklord") {
+                                Cell newCell = new Cell(map, enemy.getX(), enemy.getY(), CellType.FLOOR);
+                                DarkLord darkLord = new DarkLord(newCell);
+                                darkLord.setHealth(enemy.getHp());
+                                map.addActor(darkLord);
+                            }
+                        }
                         break;
                     case 'g':
-                        cell.setType(CellType.FLOOR);
-                        map.addActor(new Phantom(cell));
+                        for (int i = 0; i < gameLoader.enemiesList.size(); i++) {
+                            EnemyModel enemy = gameLoader.enemiesList.get(i);
+                            if (enemy.getEnemyName().toLowerCase() == "phantom") {
+                                Cell newCell = new Cell(map, enemy.getX(), enemy.getY(), CellType.FLOOR);
+                                Phantom phantom = new Phantom(newCell);
+                                phantom.setHealth(enemy.getHp());
+                                map.addActor(phantom);
+                            }
+                        }
                         break;
                     default:
                         throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");

@@ -18,9 +18,9 @@ public class GameJSONToMap {
     private String maps;
     List<ItemModel> itemsOnMap = new ArrayList<>();
     List<EnemyModel> enemiesList = new ArrayList<>();
-    private List<PlayerModel> playerData = new ArrayList<>();
+    List<PlayerModel> playerData = new ArrayList<>();
     List<OpenDoorModel> openedDoors = new ArrayList<>();
-    private List<InventoryModel> inventoryPlayer = new ArrayList<>();
+    List<InventoryModel> inventoryPlayer = new ArrayList<>();
 
     public void parseJsonToMap(String filePath) {
         GsonBuilder gsonBuilder = new GsonBuilder();
