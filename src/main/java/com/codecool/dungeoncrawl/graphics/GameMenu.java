@@ -204,7 +204,7 @@ public class GameMenu {
         }
     }
 
-    public void loadGameJSON() {
+    public void loadGameJSON(GameMap map) {
         Stage saveWindow = new Stage();
         Stage loadWindow = new Stage();
         rightUI = new RightUiPanel(map.getPlayer());

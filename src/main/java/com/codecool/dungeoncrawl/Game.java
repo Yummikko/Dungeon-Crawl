@@ -103,7 +103,7 @@ public class Game {
 
     public static void loadFromJson(String mapname) {
         map = MapLoaderJSON.loadMapJSON(mapname);
-        gameMenu.loadGameJSON();
+        gameMenu.loadGameJSON(map);
         refresh();
     }
     public static String getNextMap(List maps) {
