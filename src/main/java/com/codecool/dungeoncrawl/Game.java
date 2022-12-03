@@ -101,10 +101,9 @@ public class Game {
 
     }
 
-    public static void loadFromJson(String mapname) {
-        map = MapLoaderJSON.loadMapJSON(mapname);
+    public static void loadFromJson(String mapName) {
+        map = MapLoaderJSON.loadMapJSON(mapName);
         gameMenu.loadGameJSON(map);
-        refresh();
     }
     public static String getNextMap(List maps) {
         int mapsSize = maps.size();

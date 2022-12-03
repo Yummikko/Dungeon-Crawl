@@ -206,6 +206,7 @@ public class GameMenu {
     }
 
     public void loadGameJSON(GameMap map) {
+        SoundUtils.stopAll();
         Stage saveWindow = new Stage();
         Stage loadWindow = new Stage();
         rightUI = new RightUiPanel(map.getPlayer());

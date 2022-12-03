@@ -79,8 +79,10 @@ public class MapLoaderJSON {
                         for (int i = 0; i < GameJSONToMap.itemsOnMap.size(); i++) {
                             ItemModel item = GameJSONToMap.itemsOnMap.get(i);
                             if(item.getItemName().toLowerCase().contains("key")) {
-                                cell.setType(CellType.FLOOR);
-                                items.add(new Key(cell));
+                                if (cell.getX() == item.getX() && cell.getY() == item.getY()) {
+                                    cell.setType(CellType.FLOOR);
+                                    items.add(new Key(cell));
+                                }
                             }
                         }
                         break;
@@ -88,8 +90,11 @@ public class MapLoaderJSON {
                         for (int i = 0; i < GameJSONToMap.itemsOnMap.size(); i++) {
                             ItemModel item = GameJSONToMap.itemsOnMap.get(i);
                             if(item.getItemName().toLowerCase().contains("poison")) {
-                                cell.setType(CellType.FLOOR);
-                                items.add(new Poison(cell));
+                                if (cell.getX() == item.getX() && cell.getY() == item.getY()) {
+                                    cell.setType(CellType.FLOOR);
+                                    items.add(new Poison(cell));
+                                }
+                                
                             }
                         }
                         break;
@@ -98,8 +103,10 @@ public class MapLoaderJSON {
                             System.out.println(GameJSONToMap.enemiesList.size());
                             ItemModel item = GameJSONToMap.itemsOnMap.get(i);
                             if(item.getItemName().toLowerCase().contains("shield")) {
-                                cell.setType(CellType.FLOOR);
-                                items.add(new Shield(cell));
+                                if (cell.getX() == item.getX() && cell.getY() == item.getY()) {
+                                    cell.setType(CellType.FLOOR);
+                                    items.add(new Shield(cell));
+                                }
                             }
                         }
                         break;
@@ -135,7 +142,6 @@ public class MapLoaderJSON {
                             PlayerModel player = GameJSONToMap.playerData.get(i);
                             Cell newCell = new Cell(map, player.getX(), player.getY(), CellType.FLOOR);
                             Player nextPlayer = new Player(newCell);
-                            newCell.setActor(nextPlayer);
                             map.setPlayer(nextPlayer);
                             nextPlayer.setName(player.getPlayerName());
                             nextPlayer.setHealth(player.getHp());
@@ -171,8 +177,10 @@ public class MapLoaderJSON {
                         for (int i = 0; i < GameJSONToMap.itemsOnMap.size(); i++) {
                             ItemModel item = GameJSONToMap.itemsOnMap.get(i);
                             if(item.getItemName().toLowerCase().contains("food")) {
-                                cell.setType(CellType.FLOOR);
-                                items.add(new Food(cell));
+                                if (cell.getX() == item.getX() && cell.getY() == item.getY()) {
+                                    cell.setType(CellType.FLOOR);
+                                    items.add(new Food(cell));
+                                }
                             }
                         }
                         break;
@@ -180,8 +188,10 @@ public class MapLoaderJSON {
                         for (int i = 0; i < GameJSONToMap.itemsOnMap.size(); i++) {
                             ItemModel item = GameJSONToMap.itemsOnMap.get(i);
                             if(item.getItemName().toLowerCase().contains("weapon")) {
-                                cell.setType(CellType.FLOOR);
-                                items.add(new Weapon(cell));
+                                if (cell.getX() == item.getX() && cell.getY() == item.getY()) {
+                                    cell.setType(CellType.FLOOR);
+                                    items.add(new Weapon(cell));
+                                }
                             }
                         }
                         break;
@@ -189,8 +199,10 @@ public class MapLoaderJSON {
                         for (int i = 0; i < GameJSONToMap.itemsOnMap.size(); i++) {
                             ItemModel item = GameJSONToMap.itemsOnMap.get(i);
                             if(item.getItemName().toLowerCase().contains("axe")) {
-                                cell.setType(CellType.FLOOR);
-                                items.add(new Axe(cell));
+                                if (cell.getX() == item.getX() && cell.getY() == item.getY()) {
+                                    cell.setType(CellType.FLOOR);
+                                    items.add(new Axe(cell));
+                                }
                             }
                         }
                         break;
@@ -218,8 +230,10 @@ public class MapLoaderJSON {
                         for (int i = 0; i < GameJSONToMap.itemsOnMap.size(); i++) {
                             ItemModel item = GameJSONToMap.itemsOnMap.get(i);
                             if(item.getItemName().toLowerCase().contains("crown")) {
-                                cell.setType(CellType.FLOOR);
-                                items.add(new Crown(cell));
+                                if (cell.getX() == item.getX() && cell.getY() == item.getY()) {
+                                    cell.setType(CellType.FLOOR);
+                                    items.add(new Crown(cell));
+                                }
                             }
                         }
                         break;
