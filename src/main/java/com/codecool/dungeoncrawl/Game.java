@@ -172,25 +172,29 @@ public class Game {
         switch (keyEvent.getCode()) {
             case W:
             case UP:
-                playerCell.setActor(null);
+                if (playerCell != null)
+                    playerCell.setActor(null);
                 map.getPlayer().move(Direction.NORTH);
                 refresh();
                 break;
             case S:
             case DOWN:
-                playerCell.setActor(null);
+                if (playerCell != null)
+                    playerCell.setActor(null);
                 map.getPlayer().move(Direction.SOUTH);
                 refresh();
                 break;
             case A:
             case LEFT:
-                playerCell.setActor(null);
+                if (playerCell != null)
+                    playerCell.setActor(null);
                 map.getPlayer().move(Direction.WEST);
                 refresh();
                 break;
             case D:
             case RIGHT:
-                playerCell.setActor(null);
+                if (playerCell != null)
+                    playerCell.setActor(null);
                 map.getPlayer().move(Direction.EAST);
                 refresh();
                 break;
