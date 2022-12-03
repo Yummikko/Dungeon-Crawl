@@ -50,7 +50,6 @@ public class GameMenu {
     }
 
     public void mainMenu(Stage primaryStage) throws FileNotFoundException, RuntimeException {
-        SoundUtils.playContinuously(SoundUtils.MENU_BACKGROUND, .6f);
         Button startGameButton = new Button("Start the Game");
         startGameButton.setId("buttons");
 
