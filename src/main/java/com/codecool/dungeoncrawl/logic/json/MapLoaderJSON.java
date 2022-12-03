@@ -25,9 +25,8 @@ public class MapLoaderJSON {
     public static List<GameMap> maps = new ArrayList<>();
     public MapLoaderJSON() {}
     //load the map like before but take account of new data and set them with correct position
-    public static GameMap loadMapJSON(String mapname) {
-        System.out.println(mapname);
-        InputStream input = MapLoaderJSON.class.getResourceAsStream("/" + mapname);
+    public static GameMap loadMapJSON(String mapName) {
+        InputStream input = MapLoaderJSON.class.getResourceAsStream("/" + mapName);
         Scanner scannerJSON = new Scanner(input);
         int width = scannerJSON.nextInt();
         int height = scannerJSON.nextInt();
@@ -141,34 +140,34 @@ public class MapLoaderJSON {
                         for (int i = 0; i < GameJSONToMap.playerData.size(); i++) {
                             PlayerModel player = GameJSONToMap.playerData.get(i);
                             Cell newCell = new Cell(map, player.getX(), player.getY(), CellType.FLOOR);
-                            Player nextPlayer = new Player(newCell);
-                            map.setPlayer(nextPlayer);
-                            nextPlayer.setName(player.getPlayerName());
-                            nextPlayer.setHealth(player.getHp());
-                            nextPlayer.setStrength(player.getStrength());
-                            nextPlayer.getInventory().clear();
+                            Player lastPlayer = new Player(newCell);
+                            map.setPlayer(lastPlayer);
+                            lastPlayer.setName(player.getPlayerName());
+                            lastPlayer.setHealth(player.getHp());
+                            lastPlayer.setStrength(player.getStrength());
+                            lastPlayer.getInventory().clear();
                             for (int j = 0; j < GameJSONToMap.inventoryPlayer.size(); j++) {
                                 InventoryModel item = GameJSONToMap.inventoryPlayer.get(j);
                                 if (item.getItem().toLowerCase().contains("axe")) {
-                                    nextPlayer.getInventory().add(new Axe(newCell));
+                                    lastPlayer.getInventory().add(new Axe(newCell));
                                 }
                                 else if (item.getItem().toLowerCase().contains("shield")) {
-                                    nextPlayer.getInventory().add(new Shield(newCell));
+                                    lastPlayer.getInventory().add(new Shield(newCell));
                                 }
                                 else if (item.getItem().toLowerCase().contains("weapon")) {
-                                    nextPlayer.getInventory().add(new Weapon(newCell));
+                                    lastPlayer.getInventory().add(new Weapon(newCell));
                                 }
                                 else if (item.getItem().toLowerCase().contains("food")) {
-                                    nextPlayer.getInventory().add(new Food(newCell));
+                                    lastPlayer.getInventory().add(new Food(newCell));
                                 }
                                 else if (item.getItem().toLowerCase().contains("poison")) {
-                                    nextPlayer.getInventory().add(new Poison(newCell));
+                                    lastPlayer.getInventory().add(new Poison(newCell));
                                 }
                                 else if (item.getItem().toLowerCase().contains("key")) {
-                                    nextPlayer.getInventory().add(new Key(newCell));
+                                    lastPlayer.getInventory().add(new Key(newCell));
                                 }
                                 else if (item.getItem().toLowerCase().contains("crown")) {
-                                    nextPlayer.getInventory().add(new Crown(newCell));
+                                    lastPlayer.getInventory().add(new Crown(newCell));
                                 }
                             }
                         }
@@ -278,7 +277,6 @@ public class MapLoaderJSON {
                         }
                         break;
                     case '%':
-                        System.out.println("Do nothing");
                         break;
                     default:
                         throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");

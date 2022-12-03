@@ -33,16 +33,10 @@ public class GameJSONToMap {
         try (Reader reader = new FileReader(filePath)) {
 
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
-            System.out.println(jsonObject);
 
             currentMap = (String) jsonObject.get("map");
-            System.out.println(currentMap);
 
             maps = (String) jsonObject.get("discoveredMaps");
-            System.out.println(maps);
-
-//            ArrayList<InventoryModel> inventory = (ArrayList<InventoryModel>) jsonObject.get("inventory");
-//            System.out.println(inventory);
 
             // Player
             PlayerModel playerModel;
@@ -52,7 +46,6 @@ public class GameJSONToMap {
                 playerModel = gson.fromJson(jsonString, PlayerModel.class);
                 playerData.add(playerModel);
             }
-            System.out.println(playerData);
             //Enemies
             EnemyModel enemyModel;
             Iterator<Object> enemies = getDataFromJSONArray(jsonObject, "enemiesLeft");
@@ -62,7 +55,6 @@ public class GameJSONToMap {
                 System.out.println(enemyModel.getClass());
                 enemiesList.add(enemyModel);
             }
-            System.out.println(enemiesList);
             //Items
             ItemModel itemModel;
             Iterator<Object> items = getDataFromJSONArray(jsonObject, "itemsLeft");
@@ -71,7 +63,6 @@ public class GameJSONToMap {
                 itemModel = gson.fromJson(jsonString, ItemModel.class);
                 itemsOnMap.add(itemModel);
             }
-            System.out.println(itemsOnMap);
             //Open Doors
             OpenDoorModel openDoorModel;
             Iterator<Object> openDoors = getDataFromJSONArray(jsonObject, "openDoors");
@@ -80,7 +71,6 @@ public class GameJSONToMap {
                 openDoorModel = gson.fromJson(jsonString, OpenDoorModel.class);
                 openedDoors.add(openDoorModel);
             }
-            System.out.println(openedDoors);
             //Inventory
             InventoryModel inventoryModel;
             Iterator<Object> itemsInInventory = getDataFromJSONArray(jsonObject, "inventory");
@@ -89,9 +79,7 @@ public class GameJSONToMap {
                 inventoryModel = gson.fromJson(jsonString, InventoryModel.class);
                 inventoryPlayer.add(inventoryModel);
             }
-            System.out.println(inventoryPlayer);
             Game.loadFromJson(currentMap.substring(1));
-            //TODO: remember to assign new MapLoaders' variables to globally declared variables here
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {

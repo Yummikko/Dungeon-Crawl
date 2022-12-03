@@ -1,10 +1,7 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.graphics.GameMenu;
-import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.Direction;
-import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.DarkLord;
 import com.codecool.dungeoncrawl.logic.doors.NormalDoor;
@@ -28,11 +25,7 @@ import static com.codecool.dungeoncrawl.graphics.GameMenu.map;
 public class Game {
     public static final GameMenu gameMenu = new GameMenu();
     public static String mapNameJSON = "map1";
-    private static int mapNumber = 0;
-    public static GameMap firstLevel = map;
-    public static GameMap secondLevel;
-    public static GameMap thirdLevel;
-    public static GameMap bonusLevel;
+    public static Cell playerCell;
     public static List<String> visitedMaps = new ArrayList<>();
     public static GameState gameState = new GameState(mapNameJSON, System.currentTimeMillis(), createPlayerModelJSON());
     private static GraphicsContext context = GameMenu.canvas.getGraphicsContext2D();
@@ -179,21 +172,25 @@ public class Game {
         switch (keyEvent.getCode()) {
             case W:
             case UP:
+                playerCell.setActor(null);
                 map.getPlayer().move(Direction.NORTH);
                 refresh();
                 break;
             case S:
             case DOWN:
+                playerCell.setActor(null);
                 map.getPlayer().move(Direction.SOUTH);
                 refresh();
                 break;
             case A:
             case LEFT:
+                playerCell.setActor(null);
                 map.getPlayer().move(Direction.WEST);
                 refresh();
                 break;
             case D:
             case RIGHT:
+                playerCell.setActor(null);
                 map.getPlayer().move(Direction.EAST);
                 refresh();
                 break;

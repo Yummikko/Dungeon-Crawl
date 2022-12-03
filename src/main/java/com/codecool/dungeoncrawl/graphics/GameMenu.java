@@ -5,6 +5,7 @@ import com.codecool.dungeoncrawl.file.FileChooserJson;
 import com.codecool.dungeoncrawl.file.FileSaver;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.controller.SaveController;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.json.GameJSONToMap;
@@ -264,6 +265,8 @@ public class GameMenu {
         if (!Game.visitedMaps.contains(Game.mapNameJSON)) {
             Game.visitedMaps.add(Game.mapNameJSON);
         }
+        Game.playerCell = map.getCell(map.getPlayer().getX(), map.getPlayer().getY());
+        Game.playerCell.setActor(map.getPlayer());
     }
 
     public void setStage(Stage stage) {
