@@ -91,7 +91,7 @@ public class Game {
     }
 
     public static void saveMap(int mapNum) {
-
+        //TODO: save the last map once moving to next level to JSON file
     }
 
     public static void loadFromJson(String mapName) {

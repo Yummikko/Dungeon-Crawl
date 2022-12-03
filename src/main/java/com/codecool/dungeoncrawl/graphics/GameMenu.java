@@ -51,8 +51,8 @@ public class GameMenu {
     }
 
     public void mainMenu(Stage primaryStage) throws FileNotFoundException, RuntimeException {
+        SoundUtils.playContinuously(SoundUtils.MENU_BACKGROUND, .6f);
         Button startGameButton = new Button("Start the Game");
-        startGameButton.setId("buttons");
         startGameButton.setId("buttons");
 
         startGameButton.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> {
@@ -138,6 +138,7 @@ public class GameMenu {
     }
 
     public static void gameStart(Stage primaryStage) {
+        SoundUtils.stopAll();
         Stage saveWindow = new Stage();
         Stage loadWindow = new Stage();
         rightUI = new RightUiPanel(map.getPlayer());

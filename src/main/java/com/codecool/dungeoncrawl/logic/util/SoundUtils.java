@@ -17,6 +17,7 @@ public class SoundUtils {
     public static final String SWORD_HIT = "/sounds/sword_hit.wav";
     public static final String GAME_OVER = "/sounds/game_over.wav";
     public static final String BACKGROUND = "/sounds/background.wav";
+    public static final String MENU_BACKGROUND = "/sounds/Glory-Eternal.wav";
     public static final String STEP = "/sounds/step.wav";
     public static final String OPEN_DOOR = "/sounds/door-1-open.wav";
     public static final String TELEPORT = "/sounds/teleport.wav";
