@@ -5,7 +5,6 @@ import com.codecool.dungeoncrawl.file.FileChooserJson;
 import com.codecool.dungeoncrawl.file.FileSaver;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.controller.SaveController;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.json.GameJSONToMap;
