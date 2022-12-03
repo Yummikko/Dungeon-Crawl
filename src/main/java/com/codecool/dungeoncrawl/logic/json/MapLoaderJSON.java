@@ -62,6 +62,7 @@ public class MapLoaderJSON {
                                 GameJSONToMap.enemiesList.remove(enemy);
                             }
                         }
+                        cell.setType(CellType.FLOOR);
                         break;
                     case 'd':
                         cell.setType(CellType.WALL);
@@ -84,6 +85,7 @@ public class MapLoaderJSON {
                                 }
                             }
                         }
+                        cell.setType(CellType.FLOOR);
                         break;
                     case 'p':
                         for (int i = 0; i < GameJSONToMap.itemsOnMap.size(); i++) {
@@ -96,6 +98,7 @@ public class MapLoaderJSON {
                                 
                             }
                         }
+                        cell.setType(CellType.FLOOR);
                         break;
                     case 'z':
                         for (int i = 0; i < GameJSONToMap.itemsOnMap.size(); i++) {
@@ -107,6 +110,7 @@ public class MapLoaderJSON {
                                 }
                             }
                         }
+                        cell.setType(CellType.FLOOR);
                         break;
                     case 'o':
                         for (int i = 0; i < GameJSONToMap.enemiesList.size(); i++) {
@@ -120,6 +124,7 @@ public class MapLoaderJSON {
                                 }
                             }
                         }
+                        cell.setType(CellType.FLOOR);
                         break;
                     case 'a':
                         for (int i = 0; i < GameJSONToMap.enemiesList.size(); i++) {
@@ -133,6 +138,7 @@ public class MapLoaderJSON {
                                 }
                             }
                         }
+                        cell.setType(CellType.FLOOR);
                         break;
                     case '@':
                         for (int i = 0; i < GameJSONToMap.playerData.size(); i++) {
@@ -169,6 +175,7 @@ public class MapLoaderJSON {
                                 }
                             }
                         }
+                        cell.setType(CellType.FLOOR);
                         break;
                     case 'f':
                         for (int i = 0; i < GameJSONToMap.itemsOnMap.size(); i++) {
@@ -180,6 +187,7 @@ public class MapLoaderJSON {
                                 }
                             }
                         }
+                        cell.setType(CellType.FLOOR);
                         break;
                     case 'w':
                         for (int i = 0; i < GameJSONToMap.itemsOnMap.size(); i++) {
@@ -191,6 +199,7 @@ public class MapLoaderJSON {
                                 }
                             }
                         }
+                        cell.setType(CellType.FLOOR);
                         break;
                     case 'v':
                         for (int i = 0; i < GameJSONToMap.itemsOnMap.size(); i++) {
@@ -202,6 +211,7 @@ public class MapLoaderJSON {
                                 }
                             }
                         }
+                        cell.setType(CellType.FLOOR);
                         break;
                     case 'n':
                         cell.setType(CellType.PORTAL);
@@ -233,6 +243,7 @@ public class MapLoaderJSON {
                                 }
                             }
                         }
+                        cell.setType(CellType.FLOOR);
                         break;
                     case 'b':
                         cell.setType(CellType.FLOOR);
@@ -249,6 +260,7 @@ public class MapLoaderJSON {
                                 GameJSONToMap.enemiesList.remove(enemy);
                             }
                         }
+                        cell.setType(CellType.FLOOR);
                         break;
                     case 'x':
                         for (int i = 0; i < GameJSONToMap.enemiesList.size(); i++) {
@@ -261,6 +273,7 @@ public class MapLoaderJSON {
                                 GameJSONToMap.enemiesList.remove(enemy);
                             }
                         }
+                        cell.setType(CellType.FLOOR);
                         break;
                     case 'g':
                         for (int i = 0; i < GameJSONToMap.enemiesList.size(); i++) {
@@ -273,8 +286,10 @@ public class MapLoaderJSON {
                                 GameJSONToMap.enemiesList.remove(enemy);
                             }
                         }
+                        cell.setType(CellType.FLOOR);
                         break;
                     case '%':
+                        cell.setType(CellType.FLOOR);
                         break;
                     default:
                         throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
