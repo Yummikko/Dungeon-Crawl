@@ -99,7 +99,6 @@ public class MapLoaderJSON {
                         break;
                     case 'z':
                         for (int i = 0; i < GameJSONToMap.itemsOnMap.size(); i++) {
-                            System.out.println(GameJSONToMap.enemiesList.size());
                             ItemModel item = GameJSONToMap.itemsOnMap.get(i);
                             if(item.getItemName().toLowerCase().contains("shield")) {
                                 if (cell.getX() == item.getX() && cell.getY() == item.getY()) {
@@ -125,7 +124,6 @@ public class MapLoaderJSON {
                     case 'a':
                         for (int i = 0; i < GameJSONToMap.enemiesList.size(); i++) {
                             EnemyModel enemy = GameJSONToMap.enemiesList.get(i);
-                            System.out.println(enemy.getEnemyName().toLowerCase());
                             if (enemy.getEnemyName().toLowerCase().contains("spider")) {
                                 if (cell.getX() == enemy.getX() && cell.getY() == enemy.getY()) {
                                     cell.setType(CellType.FLOOR);

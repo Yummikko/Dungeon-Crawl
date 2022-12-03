@@ -52,7 +52,6 @@ public class GameJSONToMap {
             while (enemies.hasNext()) {
                 jsonString = enemies.next().toString();
                 enemyModel = gson.fromJson(jsonString, EnemyModel.class);
-                System.out.println(enemyModel.getClass());
                 enemiesList.add(enemyModel);
             }
             //Items
