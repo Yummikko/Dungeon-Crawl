@@ -1,8 +1,5 @@
 package com.codecool.dungeoncrawl.logic.json;
 
-import com.codecool.dungeoncrawl.Game;
-import com.codecool.dungeoncrawl.graphics.GameInventory;
-import com.codecool.dungeoncrawl.graphics.GameMenu;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
@@ -12,9 +9,6 @@ import com.codecool.dungeoncrawl.logic.doors.OpenDoor;
 import com.codecool.dungeoncrawl.logic.enviroment.*;
 import com.codecool.dungeoncrawl.logic.items.*;
 import com.codecool.dungeoncrawl.model.*;
-import com.sun.scenario.effect.Crop;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.io.InputStream;
 import java.util.ArrayList;
