@@ -241,7 +241,6 @@ public class GameMenu {
             Item item = map.getPlayer().getInventory().get(i);
             rightUI.getInventory().add(item);
         }
-        System.out.println(rightUI.getInventory().getItems());
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
         map.getPlayer().setInventory(rightUI.getInventory().getItems());
