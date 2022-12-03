@@ -52,7 +52,4 @@ public class Movements implements Runnable {
         running.set(true);
     }
 
-    public static void setLoadedMap(GameMap newMap) {
-        map = newMap;
-    }
 }
