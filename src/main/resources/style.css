@@ -1,0 +1,73 @@
+.root{
+    -fx-background-image: url("background.jpeg");
+    -fx-font-size: 26px;
+    }
+
+.ui {
+    -fx-background-color: rgba(120, 116, 116, 0.2);
+
+}
+
+.GridPane{
+    -fx-background-color: rgba(120, 116, 116, 0.2);
+}
+
+.label {
+    -fx-text-fill: #33ff00;
+    -fx-font-size: 14;
+
+}
+
+#input {
+    -fx-background-color: rgba(177, 177, 177, 0.25);
+    -fx-font-size: 30px;
+    -fx-pref-width: 300px;
+    -fx-padding: 0 150 0 150;
+    -fx-alignment: center;
+    -fx-text-fill: white;
+    -fx-display-caret: false;
+}
+#text {
+    -fx-font-size: 30px;
+    -fx-alignment: center;
+    -fx-fill: white;
+    -fx-display-caret: false;
+    -fx-border-color: white;
+    -fx-border-style: solid;
+    -fx-border-width: 2;
+}
+
+#buttons {
+    -fx-background-color: #203E54;
+    -fx-opacity: .7;
+    -fx-background-size: 300px 35px;
+    /*-fx-border-color: black;*/
+    /*-fx-sha*/
+    -fx-pref-width: 300px;
+    -fx-padding: 5 4 5 4;
+    -fx-font-family: "Monospaced";
+    -fx-font-size: 24px;
+    -fx-text-fill: white;
+}
+
+#buttons:hover{
+    -fx-background-size: 300px 35px;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-pref-width: 300px;
+
+    -fx-padding: 5 10 5 10;
+    -fx-font-family: "Monospaced";
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+    -fx-text-fill: white;
+}
+
+
+#name-label {
+    -fx-font-size: 25px;
+    -fx-alignment: center;
+    -fx-font-weight: bold;
+    -fx-font-family: "monospace";
+    -fx-padding: 0 0 20 0;
+}
